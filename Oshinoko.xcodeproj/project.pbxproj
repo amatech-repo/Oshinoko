@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
+		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
+		3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */; };
+		3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0FC2CE4CC670008DDA9 /* Preview Assets.xcassets */; };
+		3BC2A1072CE4CC670008DDA9 /* OshinokoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1062CE4CC670008DDA9 /* OshinokoTests.swift */; };
+		3BC2A1112CE4CC670008DDA9 /* OshinokoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */; };
+		3BC2A1132CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3BC2A1032CE4CC670008DDA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BC2A0EA2CE4CC650008DDA9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BC2A0F12CE4CC650008DDA9;
+			remoteInfo = Oshinoko;
+		};
+		3BC2A10D2CE4CC670008DDA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BC2A0EA2CE4CC650008DDA9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BC2A0F12CE4CC650008DDA9;
+			remoteInfo = Oshinoko;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oshinoko.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoApp.swift; sourceTree = "<group>"; };
+		3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3BC2A0FC2CE4CC670008DDA9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3BC2A1022CE4CC670008DDA9 /* OshinokoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OshinokoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BC2A1062CE4CC670008DDA9 /* OshinokoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoTests.swift; sourceTree = "<group>"; };
+		3BC2A10C2CE4CC670008DDA9 /* OshinokoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OshinokoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoUITests.swift; sourceTree = "<group>"; };
+		3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3BC2A0EF2CE4CC650008DDA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BC2A0FF2CE4CC670008DDA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BC2A1092CE4CC670008DDA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3BC2A0E92CE4CC650008DDA9 = {
+			isa = PBXGroup;
+			children = (
+				3BC2A0F42CE4CC650008DDA9 /* Oshinoko */,
+				3BC2A1052CE4CC670008DDA9 /* OshinokoTests */,
+				3BC2A10F2CE4CC670008DDA9 /* OshinokoUITests */,
+				3BC2A0F32CE4CC650008DDA9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3BC2A0F32CE4CC650008DDA9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */,
+				3BC2A1022CE4CC670008DDA9 /* OshinokoTests.xctest */,
+				3BC2A10C2CE4CC670008DDA9 /* OshinokoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3BC2A0F42CE4CC650008DDA9 /* Oshinoko */ = {
+			isa = PBXGroup;
+			children = (
+				3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */,
+				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
+				3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */,
+				3BC2A0FB2CE4CC670008DDA9 /* Preview Content */,
+			);
+			path = Oshinoko;
+			sourceTree = "<group>";
+		};
+		3BC2A0FB2CE4CC670008DDA9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3BC2A0FC2CE4CC670008DDA9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3BC2A1052CE4CC670008DDA9 /* OshinokoTests */ = {
+			isa = PBXGroup;
+			children = (
+				3BC2A1062CE4CC670008DDA9 /* OshinokoTests.swift */,
+			);
+			path = OshinokoTests;
+			sourceTree = "<group>";
+		};
+		3BC2A10F2CE4CC670008DDA9 /* OshinokoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */,
+				3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */,
+			);
+			path = OshinokoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3BC2A0F12CE4CC650008DDA9 /* Oshinoko */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BC2A1162CE4CC670008DDA9 /* Build configuration list for PBXNativeTarget "Oshinoko" */;
+			buildPhases = (
+				3BC2A0EE2CE4CC650008DDA9 /* Sources */,
+				3BC2A0EF2CE4CC650008DDA9 /* Frameworks */,
+				3BC2A0F02CE4CC650008DDA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Oshinoko;
+			productName = Oshinoko;
+			productReference = 3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3BC2A1012CE4CC670008DDA9 /* OshinokoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BC2A1192CE4CC670008DDA9 /* Build configuration list for PBXNativeTarget "OshinokoTests" */;
+			buildPhases = (
+				3BC2A0FE2CE4CC670008DDA9 /* Sources */,
+				3BC2A0FF2CE4CC670008DDA9 /* Frameworks */,
+				3BC2A1002CE4CC670008DDA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3BC2A1042CE4CC670008DDA9 /* PBXTargetDependency */,
+			);
+			name = OshinokoTests;
+			productName = OshinokoTests;
+			productReference = 3BC2A1022CE4CC670008DDA9 /* OshinokoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3BC2A10B2CE4CC670008DDA9 /* OshinokoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BC2A11C2CE4CC670008DDA9 /* Build configuration list for PBXNativeTarget "OshinokoUITests" */;
+			buildPhases = (
+				3BC2A1082CE4CC670008DDA9 /* Sources */,
+				3BC2A1092CE4CC670008DDA9 /* Frameworks */,
+				3BC2A10A2CE4CC670008DDA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3BC2A10E2CE4CC670008DDA9 /* PBXTargetDependency */,
+			);
+			name = OshinokoUITests;
+			productName = OshinokoUITests;
+			productReference = 3BC2A10C2CE4CC670008DDA9 /* OshinokoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3BC2A0EA2CE4CC650008DDA9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					3BC2A0F12CE4CC650008DDA9 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					3BC2A1012CE4CC670008DDA9 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 3BC2A0F12CE4CC650008DDA9;
+					};
+					3BC2A10B2CE4CC670008DDA9 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 3BC2A0F12CE4CC650008DDA9;
+					};
+				};
+			};
+			buildConfigurationList = 3BC2A0ED2CE4CC650008DDA9 /* Build configuration list for PBXProject "Oshinoko" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3BC2A0E92CE4CC650008DDA9;
+			productRefGroup = 3BC2A0F32CE4CC650008DDA9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3BC2A0F12CE4CC650008DDA9 /* Oshinoko */,
+				3BC2A1012CE4CC670008DDA9 /* OshinokoTests */,
+				3BC2A10B2CE4CC670008DDA9 /* OshinokoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3BC2A0F02CE4CC650008DDA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */,
+				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BC2A1002CE4CC670008DDA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BC2A10A2CE4CC670008DDA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3BC2A0EE2CE4CC650008DDA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
+				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BC2A0FE2CE4CC670008DDA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BC2A1072CE4CC670008DDA9 /* OshinokoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BC2A1082CE4CC670008DDA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BC2A1132CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift in Sources */,
+				3BC2A1112CE4CC670008DDA9 /* OshinokoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3BC2A1042CE4CC670008DDA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BC2A0F12CE4CC650008DDA9 /* Oshinoko */;
+			targetProxy = 3BC2A1032CE4CC670008DDA9 /* PBXContainerItemProxy */;
+		};
+		3BC2A10E2CE4CC670008DDA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BC2A0F12CE4CC650008DDA9 /* Oshinoko */;
+			targetProxy = 3BC2A10D2CE4CC670008DDA9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3BC2A1142CE4CC670008DDA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3BC2A1152CE4CC670008DDA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3BC2A1172CE4CC670008DDA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
+				DEVELOPMENT_TEAM = 922N7TF68N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = erichan.Oshinoko;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3BC2A1182CE4CC670008DDA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
+				DEVELOPMENT_TEAM = 922N7TF68N;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = erichan.Oshinoko;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3BC2A11A2CE4CC670008DDA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 922N7TF68N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = erichan.OshinokoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Oshinoko.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Oshinoko";
+			};
+			name = Debug;
+		};
+		3BC2A11B2CE4CC670008DDA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 922N7TF68N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = erichan.OshinokoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Oshinoko.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Oshinoko";
+			};
+			name = Release;
+		};
+		3BC2A11D2CE4CC670008DDA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 922N7TF68N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = erichan.OshinokoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Oshinoko;
+			};
+			name = Debug;
+		};
+		3BC2A11E2CE4CC670008DDA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 922N7TF68N;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = erichan.OshinokoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Oshinoko;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3BC2A0ED2CE4CC650008DDA9 /* Build configuration list for PBXProject "Oshinoko" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BC2A1142CE4CC670008DDA9 /* Debug */,
+				3BC2A1152CE4CC670008DDA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BC2A1162CE4CC670008DDA9 /* Build configuration list for PBXNativeTarget "Oshinoko" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BC2A1172CE4CC670008DDA9 /* Debug */,
+				3BC2A1182CE4CC670008DDA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BC2A1192CE4CC670008DDA9 /* Build configuration list for PBXNativeTarget "OshinokoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BC2A11A2CE4CC670008DDA9 /* Debug */,
+				3BC2A11B2CE4CC670008DDA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BC2A11C2CE4CC670008DDA9 /* Build configuration list for PBXNativeTarget "OshinokoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BC2A11D2CE4CC670008DDA9 /* Debug */,
+				3BC2A11E2CE4CC670008DDA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3BC2A0EA2CE4CC650008DDA9 /* Project object */;
+}
