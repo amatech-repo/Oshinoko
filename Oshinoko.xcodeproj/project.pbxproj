@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7F69552CE5519E00518695 /* FirebaseFirestore */; };
 		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
 		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
 		3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +101,13 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		3B7F69542CE5519E00518695 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3BC2A0E92CE4CC650008DDA9 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +115,7 @@
 				3BC2A1052CE4CC670008DDA9 /* OshinokoTests */,
 				3BC2A10F2CE4CC670008DDA9 /* OshinokoUITests */,
 				3BC2A0F32CE4CC650008DDA9 /* Products */,
+				3B7F69542CE5519E00518695 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -175,6 +185,9 @@
 			dependencies = (
 			);
 			name = Oshinoko;
+			packageProductDependencies = (
+				3B7F69552CE5519E00518695 /* FirebaseFirestore */,
+			);
 			productName = Oshinoko;
 			productReference = 3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */;
 			productType = "com.apple.product-type.application";
@@ -247,6 +260,9 @@
 				Base,
 			);
 			mainGroup = 3BC2A0E92CE4CC650008DDA9;
+			packageReferences = (
+				3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 3BC2A0F32CE4CC650008DDA9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -620,6 +636,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3B7F69552CE5519E00518695 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3BC2A0EA2CE4CC650008DDA9 /* Project object */;
 }
