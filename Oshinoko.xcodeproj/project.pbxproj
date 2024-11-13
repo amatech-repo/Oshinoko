@@ -71,6 +71,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B2E302E2CE4DB56001F3553 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3B2E302F2CE4DB68001F3553 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3B2E30302CE4DB7D001F3553 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3B2E30312CE4DB9C001F3553 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		3BC2A0E92CE4CC650008DDA9 = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +124,10 @@
 			children = (
 				3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */,
 				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
+				3B2E30312CE4DB9C001F3553 /* Extensions */,
+				3B2E30302CE4DB7D001F3553 /* Views */,
+				3B2E302F2CE4DB68001F3553 /* ViewModels */,
+				3B2E302E2CE4DB56001F3553 /* Models */,
 				3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */,
 				3BC2A0FB2CE4CC670008DDA9 /* Preview Content */,
 			);
