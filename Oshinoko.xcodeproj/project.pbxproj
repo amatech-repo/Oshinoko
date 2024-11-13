@@ -15,6 +15,7 @@
 		3BC2A1072CE4CC670008DDA9 /* OshinokoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1062CE4CC670008DDA9 /* OshinokoTests.swift */; };
 		3BC2A1112CE4CC670008DDA9 /* OshinokoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */; };
 		3BC2A1132CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */; };
+		3BDECED02CE553A700700A7F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDECECF2CE553A700700A7F /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */,
+				3BDECED02CE553A700700A7F /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +189,7 @@
 			name = Oshinoko;
 			packageProductDependencies = (
 				3B7F69552CE5519E00518695 /* FirebaseFirestore */,
+				3BDECECF2CE553A700700A7F /* Lottie */,
 			);
 			productName = Oshinoko;
 			productReference = 3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */;
@@ -262,6 +265,7 @@
 			mainGroup = 3BC2A0E92CE4CC650008DDA9;
 			packageReferences = (
 				3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				3BDECECE2CE5538200700A7F /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 3BC2A0F32CE4CC650008DDA9 /* Products */;
 			projectDirPath = "";
@@ -646,6 +650,14 @@
 				minimumVersion = 11.5.0;
 			};
 		};
+		3BDECECE2CE5538200700A7F /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -653,6 +665,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		3BDECECF2CE553A700700A7F /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BDECECE2CE5538200700A7F /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
