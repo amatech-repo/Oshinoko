@@ -10,13 +10,21 @@ import SwiftUI
 
 struct AnnotationDetailView: View {
     let annotation: MapAnnotationItem
+    let address: String?
 
     var body: some View {
         VStack {
-            Text("Annotation Details")
+            Text("注釈の詳細")
                 .font(.headline)
-            Text("Coordinate: \(annotation.coordinate.latitude), \(annotation.coordinate.longitude)")
-            Text("Color: \(annotation.color.description)")
+            Text("緯度: \(annotation.coordinate.latitude)")
+            Text("経度: \(annotation.coordinate.longitude)")
+            if let address = address {
+                Text("住所: \(address)")
+                    .padding()
+            } else {
+                Text("住所を取得中...")
+                    .foregroundColor(.gray)
+            }
         }
         .padding()
     }
