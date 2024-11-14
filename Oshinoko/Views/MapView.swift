@@ -4,6 +4,7 @@ import MapKit
 struct MapView: View {
     @StateObject private var viewModel: MapViewModel
     @State private var showModal = false // モーダル表示状態
+    @State private var selectedPinID: String? // 選択されたピンID
 
     init(destination: CLLocationCoordinate2D) {
         _viewModel = StateObject(wrappedValue: MapViewModel(destination: destination))
@@ -19,8 +20,9 @@ struct MapView: View {
                 MapAnnotation(coordinate: item.coordinate) {
                     Button(action: {
                         viewModel.selectedAnnotation = item
-                        viewModel.fetchAddress(for: item.coordinate) // 住所を取得
                         showModal = true
+                        // サンプルのピンID（Firestoreに実際に保存されたIDに変更）
+                        selectedPinID = "samplePinID"
                     }) {
                         Image(systemName: "mappin.circle.fill")
                             .resizable()
@@ -34,11 +36,8 @@ struct MapView: View {
             }
         }
         .sheet(isPresented: $showModal) {
-            if let selectedAnnotation = viewModel.selectedAnnotation {
-                AnnotationDetailView(
-                    annotation: selectedAnnotation,
-                    address: viewModel.address
-                )
+            if let pinID = selectedPinID {
+                ChatView(pinID: pinID, currentUserID: "currentUserID")
             }
         }
     }
