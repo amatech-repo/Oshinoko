@@ -28,7 +28,7 @@ struct Metadata: Codable {
 }
 
 struct ChatMessage: Codable, Identifiable {
-    @DocumentID var id: String?
+    @DocumentID var id: String? // Firestore によって自動設定
     var message: String
     var senderID: String
     var timestamp: Date
