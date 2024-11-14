@@ -7,20 +7,33 @@
 import SwiftUI
 
 struct SignUpView: View {
+    @ObservedObject var authViewModel: AuthViewModel
     @Binding var screenState: ScreenState
 
     var body: some View {
         VStack {
-            TextField("Email", text: .constant(""))
+            TextField("Email", text: $authViewModel.email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-            SecureField("Password", text: .constant(""))
+
+            SecureField("Password", text: $authViewModel.password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+
+            if !authViewModel.errorMessage.isEmpty {
+                Text(authViewModel.errorMessage)
+                    .foregroundColor(.red)
+                    .padding()
+            }
+
             Button("Sign Up") {
-                // 新規登録処理
+                authViewModel.signUp()
+                if authViewModel.isAuthenticated {
+                    screenState = .home
+                }
             }
             .padding()
+
             Button("Already have an account? Log In") {
                 screenState = .login
             }

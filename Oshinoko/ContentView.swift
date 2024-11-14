@@ -10,18 +10,22 @@ import SwiftUI
 enum ScreenState {
     case login
     case signUp
+    case home
 }
 
 struct ContentView: View {
     @State private var screenState: ScreenState = .login
+    @StateObject private var authViewModel = AuthViewModel() // AuthViewModel のインスタンスを共有
 
     var body: some View {
         VStack {
             switch screenState {
             case .login:
-                LoginView(screenState: $screenState)
+                LoginView(authViewModel: authViewModel, screenState: $screenState)
             case .signUp:
-                SignUpView(screenState: $screenState)
+                SignUpView(authViewModel: authViewModel, screenState: $screenState)
+            case .home:
+                HomeView()
             }
         }
     }
