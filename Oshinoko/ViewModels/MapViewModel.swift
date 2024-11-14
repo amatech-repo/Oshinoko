@@ -1,11 +1,13 @@
 import Foundation
 import MapKit
+import SwiftUI
 
 class MapViewModel: ObservableObject {
     @Published var region: MKCoordinateRegion
     @Published var userLocation: CLLocationCoordinate2D?
     @Published var annotations: [MapAnnotationItem] = []
     @Published var route: MapRoute?
+    @Published var selectedAnnotation: MapAnnotationItem? // Track selected annotation
 
     private let locationManager = CLLocationManager()
 
