@@ -9,12 +9,32 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
+    @State private var selectedAnnotation: MapAnnotationItem? = nil
+    @StateObject private var viewModel = MapViewModel()
+
     var body: some View {
-        MapView(viewModel: MapViewModel())
-            .edgesIgnoringSafeArea(.all) // 地図を全画面表示
+        ZStack {
+            MapView(viewModel: viewModel, selectedAnnotation: $selectedAnnotation)
+                .edgesIgnoringSafeArea(.all)
+        }
+        .sheet(item: $selectedAnnotation) { annotation in
+            ModalView(annotation: annotation)
+        }
     }
 }
 
-#Preview {
-    HomeView()
+struct ModalView: View {
+    let annotation: MapAnnotationItem
+
+    var body: some View {
+        VStack {
+            Text("ピンの詳細")
+                .font(.headline)
+            Text("緯度: \(annotation.coordinate.latitude)")
+            Text("経度: \(annotation.coordinate.longitude)")
+            Spacer()
+        }
+        .padding()
+        .background(annotation.color.opacity(0.1))
+    }
 }

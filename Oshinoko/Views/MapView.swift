@@ -1,22 +1,20 @@
-
 import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
     @ObservedObject var viewModel: MapViewModel
+    @Binding var selectedAnnotation: MapAnnotationItem?
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
 
-        // 長押しジェスチャーを追加
         let longPressGesture = UILongPressGestureRecognizer(
             target: context.coordinator,
             action: #selector(context.coordinator.handleLongPress(_:))
         )
         mapView.addGestureRecognizer(longPressGesture)
 
-        // 初期範囲を設定
         mapView.setRegion(viewModel.region, animated: true)
         return mapView
     }
@@ -24,28 +22,25 @@ struct MapView: UIViewRepresentable {
     func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.removeAnnotations(uiView.annotations)
 
-        // アノテーションを追加
-        let pins = viewModel.annotations.map { annotation -> MKPointAnnotation in
+        for annotation in viewModel.annotations {
             let pin = MKPointAnnotation()
             pin.coordinate = annotation.coordinate
-            return pin
+            pin.title = annotation.id.uuidString // 一意のIDを設定
+            uiView.addAnnotation(pin)
         }
-
-        uiView.addAnnotations(pins)
-
-        // デバッグ用ログ
-        print("Updating MapView with annotations: \(pins.map { $0.coordinate })")
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(viewModel: viewModel)
+        Coordinator(viewModel: viewModel, selectedAnnotation: $selectedAnnotation)
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
         var viewModel: MapViewModel
+        @Binding var selectedAnnotation: MapAnnotationItem?
 
-        init(viewModel: MapViewModel) {
+        init(viewModel: MapViewModel, selectedAnnotation: Binding<MapAnnotationItem?>) {
             self.viewModel = viewModel
+            self._selectedAnnotation = selectedAnnotation
         }
 
         @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
@@ -55,15 +50,18 @@ struct MapView: UIViewRepresentable {
                 return
             }
 
-            // タップ位置を座標に変換
             let location = gesture.location(in: mapView)
             let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-
-            // デバッグ用ログ
-            print("Long press detected at coordinate: \(coordinate)")
-
-            // ViewModelにアノテーションを追加
             viewModel.addAnnotation(at: coordinate)
+        }
+
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            guard let annotationID = view.annotation?.title,
+                  let selected = viewModel.annotations.first(where: { $0.id.uuidString == annotationID }) else {
+                return
+            }
+
+            selectedAnnotation = selected
         }
     }
 }

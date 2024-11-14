@@ -2,21 +2,20 @@ import Foundation
 import SwiftUI
 import MapKit
 
-class MapViewModel: NSObject, ObservableObject {
+class MapViewModel: ObservableObject {
     @Published var region: MKCoordinateRegion
     @Published var annotations: [MapAnnotationItem] = []
 
-    override init() {
-        // 初期範囲（例: 東京駅付近）
+    init() {
+        // 日本の中心（例: 東京付近）
         self.region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 35.681236, longitude: 139.767125),
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+            center: CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917), // 東京
+            span: MKCoordinateSpan(latitudeDelta: 5.0, longitudeDelta: 5.0) // 全国を見渡せる範囲
         )
-        super.init()
     }
 
     func addAnnotation(at coordinate: CLLocationCoordinate2D) {
-        print("Adding annotation at: \(coordinate)")
-        annotations.append(MapAnnotationItem(coordinate: coordinate, color: .green))
+        let annotation = MapAnnotationItem(coordinate: coordinate, color: .green)
+        annotations.append(annotation)
     }
 }
