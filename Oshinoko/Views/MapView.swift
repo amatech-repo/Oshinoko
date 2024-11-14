@@ -19,23 +19,26 @@ struct MapView: View {
                 MapAnnotation(coordinate: item.coordinate) {
                     Button(action: {
                         viewModel.selectedAnnotation = item
+                        viewModel.fetchAddress(for: item.coordinate) // 住所を取得
                         showModal = true
                     }) {
-                        Image(systemName: "star.fill") // 任意の画像に変更可能
+                        Image(systemName: "mappin.circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
-                            .foregroundColor(.yellow) // 色を変更可能
+                            .foregroundColor(item.color)
                     }
                 }
             }
             .onAppear {
                 viewModel.fetchUserLocation()
-                viewModel.calculateRoute(to: viewModel.region.center)
             }
         }
         .sheet(isPresented: $showModal) {
             if let selectedAnnotation = viewModel.selectedAnnotation {
-                AnnotationDetailView(annotation: selectedAnnotation)
+                AnnotationDetailView(
+                    annotation: selectedAnnotation,
+                    address: viewModel.address
+                )
             }
         }
     }

@@ -27,6 +27,7 @@
 		3BC2A1112CE4CC670008DDA9 /* OshinokoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */; };
 		3BC2A1132CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */; };
 		3BDECED02CE553A700700A7F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDECECF2CE553A700700A7F /* Lottie */; };
+		3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0701B2CE5DEA70032838F /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		3BC2A10C2CE4CC670008DDA9 /* OshinokoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OshinokoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoUITests.swift; sourceTree = "<group>"; };
 		3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3BE0701B2CE5DEA70032838F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
 				3B56D0A82CE5C053001BF220 /* ModalView.swift */,
+				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				3BAB302A2CE5C6DE009C368B /* AuthModel.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
+				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
