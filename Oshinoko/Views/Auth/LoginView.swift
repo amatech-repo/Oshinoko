@@ -10,37 +10,25 @@ import SwiftUI
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = AuthViewModel()
+    @Binding var screenState: ScreenState
 
     var body: some View {
-        NavigationView {
-            VStack {
-                // 入力フィールド
-                TextField("Email", text: $viewModel.email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                SecureField("Password", text: $viewModel.password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                // エラーメッセージ
-                if !viewModel.errorMessage.isEmpty {
-                    Text(viewModel.errorMessage)
-                        .foregroundColor(.red)
-                        .padding()
-                }
-                // ログインボタン
-                Button("Log In") {
-                    viewModel.logIn()
-                }
+        VStack {
+            TextField("Email", text: .constant(""))
+                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
-                // 新規登録画面へのリンク
-                NavigationLink("Don't have an account? Sign Up", destination: SignUpView())
-                    .padding()
-                    .foregroundColor(.blue)
+            SecureField("Password", text: .constant(""))
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            Button("Log In") {
+                // ログイン処理
             }
             .padding()
-            .navigationTitle("Log In")
+            Button("Don't have an account? Sign Up") {
+                screenState = .signUp
+            }
+            .foregroundColor(.blue)
         }
+        .padding()
     }
 }
