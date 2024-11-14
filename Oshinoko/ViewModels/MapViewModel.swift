@@ -2,10 +2,6 @@ import Foundation
 import MapKit
 import SwiftUI
 
-import Foundation
-import MapKit
-import SwiftUI
-
 class MapViewModel: ObservableObject {
     @Published var region: MKCoordinateRegion
     @Published var userLocation: CLLocationCoordinate2D?

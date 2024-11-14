@@ -10,8 +10,7 @@ import MapKit
 
 struct HomeView: View {
     var body: some View {
-        MapView(destination: CLLocationCoordinate2D(latitude: 35.681236, longitude: 139.767125))
-
+        MapView(mapView: .constant(MKMapView()), viewModel: MapViewModel(destination: CLLocationCoordinate2D(latitude: 35.681236, longitude: 139.767125)))
     }
 }
 
