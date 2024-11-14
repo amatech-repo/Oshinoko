@@ -27,6 +27,7 @@ struct HomeView: View {
             }
             .sheet(item: $selectedPin) { pin in
                 ChatView(pinID: pin.id ?? "", currentUserID: "User123")
+                    
             }
         }
     }
