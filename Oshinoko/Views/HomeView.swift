@@ -9,12 +9,27 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
-    var body: some View {
-        MapView(destination: CLLocationCoordinate2D(latitude: 35.681236, longitude: 139.767125))
+    @State private var mapView = MKMapView()
+    @State private var selectedPin: Pin?
+    @StateObject private var pinsViewModel = PinsViewModel()
 
+    var body: some View {
+        ZStack {
+            MapView(
+                mapView: $mapView,
+                pinsViewModel: pinsViewModel,
+                selectedPin: $selectedPin
+            )
+            .onAppear {
+                Task {
+                    await pinsViewModel.fetchPins()
+                }
+            }
+            .sheet(item: $selectedPin) { pin in
+                ChatView(pinID: pin.id ?? "", currentUserID: "User123")
+                    
+            }
+        }
     }
 }
 
-#Preview {
-    HomeView()
-}

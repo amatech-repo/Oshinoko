@@ -6,7 +6,6 @@
 //
 
 import FirebaseAuth
-import FirebaseCore
 import SwiftUI
 
 class AuthModel {
@@ -14,7 +13,17 @@ class AuthModel {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 completion(.failure(error))
-            } else if let user = result?.user {
+                return
+            }
+
+            if let firebaseUser = result?.user {
+                // FirebaseAuth.User をアプリの User 型にマッピング
+                let user = User(
+                    id: firebaseUser.uid,
+                    name: firebaseUser.displayName ?? "No Name",
+                    email: firebaseUser.email ?? "",
+                    iconURL: ""
+                )
                 completion(.success(user))
             }
         }
@@ -24,9 +33,21 @@ class AuthModel {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 completion(.failure(error))
-            } else if let user = result?.user {
+                return
+            }
+
+            if let firebaseUser = result?.user {
+                // FirebaseAuth.User をアプリの User 型にマッピング
+                let user = User(
+                    id: firebaseUser.uid,
+                    name: firebaseUser.displayName ?? "No Name",
+                    email: firebaseUser.email ?? "",
+                    iconURL: ""
+                )
                 completion(.success(user))
             }
         }
     }
 }
+
+

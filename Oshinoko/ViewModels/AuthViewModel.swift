@@ -12,8 +12,8 @@ import FirebaseCore
 import Combine
 
 class AuthViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var password = ""
+    @Published var email = "test@mail.com"
+    @Published var password = "test12345"
     @Published var errorMessage = ""
     @Published var isAuthenticated = false
 
