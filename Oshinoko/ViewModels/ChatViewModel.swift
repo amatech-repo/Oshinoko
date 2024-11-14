@@ -8,56 +8,94 @@
 import Foundation
 import FirebaseFirestore
 import SwiftUI
-
 import FirebaseStorage
+
+struct AlertMessage: Identifiable {
+    let id = UUID() // 一意の識別子
+    let message: String
+}
 
 @MainActor
 class ChatViewModel: ObservableObject {
+    @Published var selectedImage: UIImage?
     @Published var messages: [ChatMessage] = []
-    @Published var messageText: String = ""
-    @Published var selectedImage: UIImage? // 選択された画像
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: AlertMessage?
+    @Published var messageText: String = "" // メッセージ入力用
 
-    private let db = Firestore.firestore()
+
     private let storage = Storage.storage()
+    private let db = Firestore.firestore()
     private let pinID: String
 
     init(pinID: String) {
         self.pinID = pinID
-        Task {
-            await fetchMessages()
-        }
     }
 
-    // 画像をアップロード
+    // 非同期で画像をアップロード
     func uploadImage(image: UIImage, senderID: String) async {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            print("画像データの変換に失敗")
+            errorMessage = AlertMessage(message: "画像データの変換に失敗しました")
             return
         }
 
-        let imageID = UUID().uuidString // 一意のファイル名を生成
+        let imageID = UUID().uuidString
         let storageRef = storage.reference().child("chat_images/\(imageID).jpg")
 
         do {
-            // 画像をアップロード
             let _ = try await storageRef.putDataAsync(imageData)
-            // ダウンロードURLを取得
             let downloadURL = try await storageRef.downloadURL()
 
-            // Firestore に画像メッセージを保存
             let newMessage = ChatMessage(
                 id: nil,
-                message: "画像を送信しました",
+                message: "画像が送信されました",
                 senderID: senderID,
                 timestamp: Date(),
                 imageURL: downloadURL.absoluteString,
                 isImage: true
             )
+            
             try db.collection("pins").document(pinID).collection("chats").addDocument(from: newMessage)
-
-            await fetchMessages() // メッセージ一覧を再取得
+            selectedImage = nil // 選択画像のリセット
         } catch {
-            print("画像のアップロードエラー: \(error.localizedDescription)")
+            errorMessage = AlertMessage(message: "画像アップロードエラー: \(error.localizedDescription)")
         }
     }
+
+    // Firestore からメッセージを取得
+    func fetchMessages() async {
+        do {
+            let snapshot = try await db.collection("pins").document(pinID).collection("chats")
+                .order(by: "timestamp")
+                .getDocuments()
+            messages = snapshot.documents.compactMap { try? $0.data(as: ChatMessage.self) }
+        } catch {
+            errorMessage = AlertMessage(message: "メッセージ取得エラー: \(error.localizedDescription)")
+        }
+    }
+
+    func sendMessage(senderID: String) async {
+        guard !messageText.isEmpty else { return }
+
+        isLoading = true
+        defer { isLoading = false }
+
+        let newMessage = ChatMessage(
+            id: nil,
+            message: messageText,
+            senderID: senderID,
+            timestamp: Date(),
+            imageURL: nil,
+            isImage: false
+        )
+
+        do {
+            try await db.collection("pins").document(pinID).collection("chats").addDocument(from: newMessage)
+            messages.append(newMessage)
+            messageText = "" // 入力フィールドをクリア
+        } catch {
+            errorMessage = AlertMessage(message: "メッセージ送信に失敗しました: \(error.localizedDescription)")
+        }
+    }
+
 }

@@ -17,6 +17,10 @@ struct Pin: Codable, Identifiable {
 struct Coordinate: Codable {
     var latitude: Double
     var longitude: Double
+
+    func isValid() -> Bool {
+        return (-90...90).contains(latitude) && (-180...180).contains(longitude)
+    }
 }
 
 struct Metadata: Codable {
@@ -25,13 +29,27 @@ struct Metadata: Codable {
     var description: String
     var title: String
     var tags: [String]
+
+    init(
+        createdBy: String,
+        createdAt: Date = Date(),
+        description: String = "",
+        title: String = "",
+        tags: [String] = []
+    ) {
+        self.createdBy = createdBy
+        self.createdAt = createdAt
+        self.description = description
+        self.title = title
+        self.tags = tags
+    }
 }
 
 struct ChatMessage: Codable, Identifiable {
-    @DocumentID var id: String? // Firestore によって自動設定
-    var message: String
-    var senderID: String
-    var timestamp: Date
-    var imageURL: String?
-    var isImage: Bool
+    @DocumentID var id: String?
+    let message: String
+    let senderID: String
+    let timestamp: Date
+    let imageURL: String?
+    let isImage: Bool
 }
