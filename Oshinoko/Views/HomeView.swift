@@ -9,32 +9,26 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
-    @State private var selectedAnnotation: MapAnnotationItem? = nil
-    @StateObject private var viewModel = MapViewModel()
+    @State private var mapView = MKMapView()
+    @State private var selectedPin: Pin?
+    @StateObject private var pinsViewModel = PinsViewModel()
 
     var body: some View {
         ZStack {
-            MapView(viewModel: viewModel, selectedAnnotation: $selectedAnnotation)
-                .edgesIgnoringSafeArea(.all)
-        }
-        .sheet(item: $selectedAnnotation) { annotation in
-            ModalView(annotation: annotation)
+            MapView(
+                mapView: $mapView,
+                pinsViewModel: pinsViewModel,
+                selectedPin: $selectedPin
+            )
+            .onAppear {
+                Task {
+                    await pinsViewModel.fetchPins()
+                }
+            }
+            .sheet(item: $selectedPin) { pin in
+                ChatView(pinID: pin.id ?? "", currentUserID: "User123")
+            }
         }
     }
 }
 
-struct ModalView: View {
-    let annotation: MapAnnotationItem
-
-    var body: some View {
-        VStack {
-            Text("ピンの詳細")
-                .font(.headline)
-            Text("緯度: \(annotation.coordinate.latitude)")
-            Text("経度: \(annotation.coordinate.longitude)")
-            Spacer()
-        }
-        .padding()
-        .background(annotation.color.opacity(0.1))
-    }
-}

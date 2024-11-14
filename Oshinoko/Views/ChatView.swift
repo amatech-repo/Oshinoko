@@ -23,10 +23,11 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 10) {
-                        ForEach(viewModel.messages) { message in
-                            ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
-                                .id(message.id)
+                        ForEach(viewModel.messages, id: \.wrappedID) { message in
+                            ChatMessageView(message: message, isCurrentUser: true)
                         }
+
+
                     }
                     .padding()
                 }

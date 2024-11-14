@@ -75,10 +75,11 @@ class ChatViewModel: ObservableObject {
     }
 
     func sendMessage(senderID: String) async {
+        guard !pinID.isEmpty else {
+            print("Error: pinID is empty")
+            return
+        }
         guard !messageText.isEmpty else { return }
-
-        isLoading = true
-        defer { isLoading = false }
 
         let newMessage = ChatMessage(
             id: nil,
@@ -94,8 +95,10 @@ class ChatViewModel: ObservableObject {
             messages.append(newMessage)
             messageText = "" // 入力フィールドをクリア
         } catch {
-            errorMessage = AlertMessage(message: "メッセージ送信に失敗しました: \(error.localizedDescription)")
+            print("Error sending message: \(error.localizedDescription)")
         }
     }
+
+
 
 }

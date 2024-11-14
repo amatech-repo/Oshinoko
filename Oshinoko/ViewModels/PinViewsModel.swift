@@ -36,19 +36,25 @@ class PinsViewModel: ObservableObject {
     }
 
     // 新しいピンを追加
-    func addPin(coordinate: Coordinate, metadata: Metadata) async {
+    func addPin(coordinate: Coordinate, metadata: Metadata) async throws {
         let pin = Pin(coordinate: coordinate, metadata: metadata)
+        pins.append(pin)
+
+        print("Pin added to ViewModel: \(pin)")
+
         do {
-            try db.collection("pins").addDocument(from: pin)
+            // Firestoreへの書き込みが非同期なので`await`が必要
+            try await db.collection("pins").addDocument(from: pin)
         } catch {
-            print("ピンの追加エラー: \(error.localizedDescription)")
+            print("Firestore error: \(error.localizedDescription)")
+            throw error
         }
     }
 
     // チャットメッセージを追加
     func addMessage(to pinID: String, message: ChatMessage) async {
         do {
-            try db.collection("pins").document(pinID).collection("chats").addDocument(from: message)
+            try await db.collection("pins").document(pinID).collection("chats").addDocument(from: message)
         } catch {
             print("メッセージの追加エラー: \(error.localizedDescription)")
         }
