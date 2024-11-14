@@ -10,7 +10,8 @@ import MapKit
 
 struct HomeView: View {
     var body: some View {
-        MapView(mapView: .constant(MKMapView()), viewModel: MapViewModel(destination: CLLocationCoordinate2D(latitude: 35.681236, longitude: 139.767125)))
+        MapView(viewModel: MapViewModel())
+            .edgesIgnoringSafeArea(.all) // 地図を全画面表示
     }
 }
 

@@ -1,63 +1,69 @@
+
 import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    @Binding var mapView: MKMapView
-    var viewModel: MapViewModel
+    @ObservedObject var viewModel: MapViewModel
 
     func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
         mapView.delegate = context.coordinator
 
         // 長押しジェスチャーを追加
-        let longPressGesture = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleLongPress(_:)))
+        let longPressGesture = UILongPressGestureRecognizer(
+            target: context.coordinator,
+            action: #selector(context.coordinator.handleLongPress(_:))
+        )
         mapView.addGestureRecognizer(longPressGesture)
 
+        // 初期範囲を設定
+        mapView.setRegion(viewModel.region, animated: true)
         return mapView
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        // アノテーションを再描画
         uiView.removeAnnotations(uiView.annotations)
 
-        let annotations = viewModel.annotations.map { annotation in
+        // アノテーションを追加
+        let pins = viewModel.annotations.map { annotation -> MKPointAnnotation in
             let pin = MKPointAnnotation()
             pin.coordinate = annotation.coordinate
             return pin
         }
 
-        uiView.addAnnotations(annotations)
-        print("Annotations added: \(annotations)") // デバッグログ
+        uiView.addAnnotations(pins)
+
+        // デバッグ用ログ
+        print("Updating MapView with annotations: \(pins.map { $0.coordinate })")
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, viewModel: viewModel)
+        Coordinator(viewModel: viewModel)
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: MapView
         var viewModel: MapViewModel
 
-        init(_ parent: MapView, viewModel: MapViewModel) {
-            self.parent = parent
+        init(viewModel: MapViewModel) {
             self.viewModel = viewModel
         }
 
         @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
             guard gesture.state == .began else { return }
+            guard let mapView = gesture.view as? MKMapView else {
+                print("Failed to get MKMapView from gesture")
+                return
+            }
 
-            let location = gesture.location(in: parent.mapView)
-            let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
+            // タップ位置を座標に変換
+            let location = gesture.location(in: mapView)
+            let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+
+            // デバッグ用ログ
             print("Long press detected at coordinate: \(coordinate)")
 
-            viewModel.addAnnotation(at: coordinate) // アノテーションをViewModelに追加
-        }
-
-        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            // ピンが選択された時の処理（必要に応じて）
-        }
-
-        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            // 地図の移動やズーム後の処理（必要に応じて）
+            // ViewModelにアノテーションを追加
+            viewModel.addAnnotation(at: coordinate)
         }
     }
 }
