@@ -25,7 +25,7 @@ class ChatViewModel: ObservableObject {
 
     private let storage = Storage.storage()
     private let db = Firestore.firestore()
-    private let pinID: String
+    let pinID: String
     private var listener: ListenerRegistration?
 
     init(pinID: String) {

@@ -71,6 +71,9 @@ struct ChatView: View {
         .alert(item: $viewModel.errorMessage) { error in
             Alert(title: Text("エラー"), message: Text(error.message), dismissButton: .default(Text("OK")))
         }
+        .onAppear {
+            viewModel.startListeningForMessages(pinID: viewModel.pinID)
+        }
     }
 }
 
