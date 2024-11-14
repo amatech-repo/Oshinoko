@@ -32,7 +32,12 @@ class ChatViewModel: ObservableObject {
         self.pinID = pinID
     }
 
-    func startListeningForMessages() {
+    func startListeningForMessages(pinID: String) {
+        guard !pinID.isEmpty else {
+            print("Error: Pin ID is empty")
+            return
+        }
+
         listener = db.collection("pins")
             .document(pinID)
             .collection("chats")
@@ -40,7 +45,7 @@ class ChatViewModel: ObservableObject {
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.errorMessage = AlertMessage(message: "メッセージリスナーエラー: \(error.localizedDescription)")
+                    print("Failed to listen for messages: \(error.localizedDescription)")
                     return
                 }
                 guard let documents = snapshot?.documents else { return }

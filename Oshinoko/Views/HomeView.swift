@@ -9,14 +9,12 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
-    @State private var mapView = MKMapView()
     @State private var selectedPin: Pin?
     @StateObject private var pinsViewModel = PinsViewModel()
 
     var body: some View {
         ZStack {
             MapView(
-                mapView: $mapView,
                 pinsViewModel: pinsViewModel,
                 selectedPin: $selectedPin
             )
@@ -26,10 +24,11 @@ struct HomeView: View {
                 }
             }
             .sheet(item: $selectedPin) { pin in
-                ChatView(pinID: pin.id ?? "", currentUserID: "User123")
-                    
+                ChatView(
+                    pinID: pin.wrappedID,
+                    currentUserID: "User123"
+                )
             }
         }
     }
 }
-

@@ -2,11 +2,11 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    @Binding var mapView: MKMapView
     @ObservedObject var pinsViewModel: PinsViewModel
     @Binding var selectedPin: Pin?
 
     func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
         mapView.delegate = context.coordinator
 
         let longPressGesture = UILongPressGestureRecognizer(
@@ -29,54 +29,54 @@ struct MapView: UIViewRepresentable {
         }
 
         print("Updating annotations: \(annotations.map { $0.coordinate })")
-
         uiView.addAnnotations(annotations)
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, pinsViewModel: pinsViewModel)
+        Coordinator(self)
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
-        var pinsViewModel: PinsViewModel
 
-        init(_ parent: MapView, pinsViewModel: PinsViewModel) {
+        init(_ parent: MapView) {
             self.parent = parent
-            self.pinsViewModel = pinsViewModel
         }
 
         @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+            guard let mapView = gesture.view as? MKMapView else { return }
             guard gesture.state == .began else { return }
 
-            let location = gesture.location(in: parent.mapView)
-            let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
+            let location = gesture.location(in: mapView)
+            let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
 
-            let newPin = Pin(
-                coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude),
-                metadata: Metadata(
-                    createdBy: "User123",
-                    description: "Description", title: "New Pin"
-                )
+            let metadata = Metadata(
+                createdBy: "User123",
+                description: "A new pin",
+                title: "New Pin"
             )
 
             Task {
                 do {
-                    try await pinsViewModel.addPin(coordinate: newPin.coordinate, metadata: newPin.metadata)
+                    // Firestoreにピンを追加
+                    try await parent.pinsViewModel.addPin(coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude), metadata: metadata)
                 } catch {
                     print("Failed to add pin: \(error.localizedDescription)")
                 }
             }
         }
 
-        @MainActor func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             guard let annotation = view.annotation as? MKPointAnnotation else { return }
+            mapView.deselectAnnotation(annotation, animated: false)
 
-            if let tappedPin = pinsViewModel.pins.first(where: {
-                $0.coordinate.latitude == annotation.coordinate.latitude &&
-                $0.coordinate.longitude == annotation.coordinate.longitude
-            }) {
-                parent.selectedPin = tappedPin
+            Task { @MainActor in
+                if let tappedPin = parent.pinsViewModel.pins.first(where: {
+                    $0.coordinate.latitude == annotation.coordinate.latitude &&
+                    $0.coordinate.longitude == annotation.coordinate.longitude
+                }) {
+                    parent.selectedPin = tappedPin
+                }
             }
         }
     }
