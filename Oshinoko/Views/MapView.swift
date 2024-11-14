@@ -16,13 +16,17 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        uiView.removeAnnotations(uiView.annotations) // 古い注釈を削除
+        // アノテーションを再描画
+        uiView.removeAnnotations(uiView.annotations)
+
         let annotations = viewModel.annotations.map { annotation in
             let pin = MKPointAnnotation()
             pin.coordinate = annotation.coordinate
             return pin
         }
+
         uiView.addAnnotations(annotations)
+        print("Annotations added: \(annotations)") // デバッグログ
     }
 
     func makeCoordinator() -> Coordinator {
@@ -40,65 +44,20 @@ struct MapView: UIViewRepresentable {
 
         @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
             guard gesture.state == .began else { return }
+
             let location = gesture.location(in: parent.mapView)
             let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
-            viewModel.addAnnotation(at: coordinate)
+            print("Long press detected at coordinate: \(coordinate)")
+
+            viewModel.addAnnotation(at: coordinate) // アノテーションをViewModelに追加
         }
 
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            // ピンが選択されたときの処理（必要に応じて）
+            // ピンが選択された時の処理（必要に応じて）
         }
 
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            // 必要なら更新時の処理
+            // 地図の移動やズーム後の処理（必要に応じて）
         }
     }
 }
-
-
-struct MapUIKitView: UIViewRepresentable {
-    @Binding var mapView: MKMapView
-    var viewModel: MapViewModel
-
-    func makeUIView(context: Context) -> MKMapView {
-        mapView.delegate = context.coordinator
-        return mapView
-    }
-
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        uiView.removeAnnotations(uiView.annotations) // 古い注釈を削除
-        let annotations = viewModel.annotations.map { annotation in
-            let pin = MKPointAnnotation()
-            pin.coordinate = annotation.coordinate
-            return pin
-        }
-        uiView.addAnnotations(annotations)
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self, viewModel: viewModel)
-    }
-
-    class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: MapUIKitView
-        var viewModel: MapViewModel
-
-        init(_ parent: MapUIKitView, viewModel: MapViewModel) {
-            self.parent = parent
-            self.viewModel = viewModel
-        }
-
-        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            // ピンが選択されたときの処理（必要に応じて）
-        }
-
-        func mapView(_ mapView: MKMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
-            viewModel.addAnnotation(at: coordinate)
-        }
-
-        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            // 必要なら更新時の処理
-        }
-    }
-}
-
