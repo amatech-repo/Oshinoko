@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B56D0A32CE59FC7001BF220 /* MapAnotationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapAnotationItem.swift */; };
 		3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7F69552CE5519E00518695 /* FirebaseFirestore */; };
 		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
 		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B56D0A22CE59FC7001BF220 /* MapAnotationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnotationItem.swift; sourceTree = "<group>"; };
 		3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oshinoko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoApp.swift; sourceTree = "<group>"; };
 		3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		3B2E302E2CE4DB56001F3553 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3B56D0A22CE59FC7001BF220 /* MapAnotationItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 			files = (
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
+				3B56D0A32CE59FC7001BF220 /* MapAnotationItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
