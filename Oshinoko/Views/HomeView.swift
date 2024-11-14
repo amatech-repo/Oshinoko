@@ -9,26 +9,38 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
-    @State private var selectedPin: Pin?
     @StateObject private var pinsViewModel = PinsViewModel()
+    @State private var selectedPin: Pin?
+    @State private var chatViewModel: ChatViewModel?
 
     var body: some View {
         ZStack {
-            MapView(
-                pinsViewModel: pinsViewModel,
-                selectedPin: $selectedPin
-            )
-            .onAppear {
-                Task {
-                    await pinsViewModel.fetchPins()
+            MapView(pinsViewModel: pinsViewModel, selectedPin: $selectedPin)
+                .onAppear {
+                    Task {
+                        await pinsViewModel.fetchPins()
+                    }
                 }
-            }
-            .sheet(item: $selectedPin) { pin in
-                ChatView(
-                    pinID: pin.wrappedID,
-                    currentUserID: "User123"
-                )
-            }
+                .onChange(of: selectedPin) { newPin in
+                    // 選択されたピンが変更された場合に ChatViewModel を設定
+                    if let newPin = newPin {
+                        if let existingViewModel = chatViewModel, existingViewModel.pinID == newPin.id {
+                            // 既存の ViewModel を使用
+                            chatViewModel = existingViewModel
+                        } else {
+                            // 新しい ViewModel を作成
+                            chatViewModel = ChatViewModel(pinID: newPin.id ?? "")
+                        }
+                    }
+                }
+                .sheet(item: $selectedPin) { pin in
+                    if let viewModel = chatViewModel {
+                        ChatView(viewModel: viewModel, currentUserID: "User123")
+                    } else {
+                        Text("Loading...")
+                    }
+                }
         }
     }
 }
+

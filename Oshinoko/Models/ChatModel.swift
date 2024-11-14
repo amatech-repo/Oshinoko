@@ -8,10 +8,15 @@
 import Foundation
 import FirebaseFirestore
 
-struct Pin: Codable, Identifiable {
+struct Pin: Codable, Identifiable, Equatable {
     @DocumentID var id: String? // Firestoreが自動設定
     var coordinate: Coordinate
     var metadata: Metadata
+
+    // Equatable 準拠のための比較
+    static func == (lhs: Pin, rhs: Pin) -> Bool {
+        lhs.id == rhs.id
+    }
 
     // もし`id`がnilの場合、他の識別子を返す（`ForEach`対応）
     var wrappedID: String {
