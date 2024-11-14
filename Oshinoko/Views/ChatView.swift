@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ChatView: View {
     @StateObject private var viewModel: ChatViewModel
-    @State private var isImagePickerPresented = false // 画像選択モーダル表示
+    @State private var isImagePickerPresented = false
+    @State private var scrollViewProxy: ScrollViewProxy?
     let currentUserID: String
 
     init(pinID: String, currentUserID: String) {
@@ -19,49 +20,26 @@ struct ChatView: View {
 
     var body: some View {
         VStack {
-            ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(viewModel.messages) { message in
-                        HStack {
-                            if message.senderID == currentUserID {
-                                Spacer()
-                                if message.isImage, let imageURL = message.imageURL {
-                                    AsyncImage(url: URL(string: imageURL)) { image in
-                                        image.resizable().scaledToFit()
-                                    } placeholder: {
-                                        ProgressView()
-                                    }
-                                    .frame(maxWidth: 250)
-                                } else {
-                                    Text(message.message)
-                                        .padding()
-                                        .background(Color.blue.opacity(0.2))
-                                        .cornerRadius(8)
-                                        .frame(maxWidth: 250, alignment: .trailing)
-                                }
-                            } else {
-                                if message.isImage, let imageURL = message.imageURL {
-                                    AsyncImage(url: URL(string: imageURL)) { image in
-                                        image.resizable().scaledToFit()
-                                    } placeholder: {
-                                        ProgressView()
-                                    }
-                                    .frame(maxWidth: 250)
-                                } else {
-                                    Text(message.message)
-                                        .padding()
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(8)
-                                        .frame(maxWidth: 250, alignment: .leading)
-                                }
-                                Spacer()
-                            }
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 10) {
+                        ForEach(viewModel.messages, id: \.wrappedID) { message in
+                            ChatMessageView(message: message, isCurrentUser: true)
                         }
+
+
                     }
+                    .padding()
                 }
-                .padding()
+                .onAppear {
+                    scrollViewProxy = proxy
+                }
             }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
+
+            if viewModel.isLoading {
+                ProgressView("送信中…")
+                    .padding()
+            }
 
             HStack {
                 Button(action: {
@@ -79,22 +57,48 @@ struct ChatView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(minHeight: 40)
 
-                Button("送信") {
-                    if let image = viewModel.selectedImage {
-                        Task {
-                            await viewModel.uploadImage(image: image, senderID: currentUserID)
-                            viewModel.selectedImage = nil // 選択状態をリセット
-                        }
-                    } else {
-                        Task {
-                            await viewModel.sendMessage(senderID: currentUserID)
-                        }
+                Button("送信", action: {
+                    Task {
+                        await viewModel.sendMessage(senderID: currentUserID)
                     }
-                }
+                })
+                .disabled(viewModel.messageText.isEmpty)
                 .padding(.horizontal)
             }
             .padding()
         }
+        .onAppear {
+            viewModel.startListeningForMessages()
+        }
         .padding()
+        .alert(item: $viewModel.errorMessage) { error in
+            Alert(title: Text("エラー"), message: Text(error.message), dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
+struct ChatMessageView: View {
+    let message: ChatMessage
+    let isCurrentUser: Bool
+
+    var body: some View {
+        HStack {
+            if isCurrentUser { Spacer() }
+            if message.isImage, let imageURL = message.imageURL {
+                AsyncImage(url: URL(string: imageURL)) { image in
+                    image.resizable().scaledToFit()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(maxWidth: 250)
+            } else {
+                Text(message.message)
+                    .padding()
+                    .background(isCurrentUser ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
+                    .cornerRadius(8)
+                    .frame(maxWidth: 250, alignment: isCurrentUser ? .trailing : .leading)
+            }
+            if !isCurrentUser { Spacer() }
+        }
     }
 }
