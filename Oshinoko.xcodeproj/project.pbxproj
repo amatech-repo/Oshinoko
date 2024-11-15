@@ -14,6 +14,7 @@
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
 		3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* ModalView.swift */; };
 		3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */; };
+		3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */; };
 		3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7F69552CE5519E00518695 /* FirebaseFirestore */; };
 		3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30232CE5C3FF009C368B /* FirebaseAuth */; };
 		3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30252CE5C414009C368B /* FirebaseStorage */; };
@@ -64,6 +65,7 @@
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		3B56D0A82CE5C053001BF220 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardModel.swift; sourceTree = "<group>"; };
 		3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BAB30292CE5C6DE009C368B /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				3BE0701D2CE5E9BF0032838F /* ChatModel.swift */,
 				3BE070212CE5E9FD0032838F /* UserModel.swift */,
 				3B181F342CE6CEC700083F5E /* ModalModel.swift */,
+				3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				3BAB302A2CE5C6DE009C368B /* AuthModel.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
+				3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
