@@ -25,14 +25,26 @@ class ChatViewModel: ObservableObject {
 
     private let storage = Storage.storage()
     private let db = Firestore.firestore()
-    private let pinID: String
+    var pinID: String
     private var listener: ListenerRegistration?
 
-    init(pinID: String) {
-        self.pinID = pinID
+    init(pinID: String? = nil) {
+        if let pinID = pinID, !pinID.isEmpty {
+            self.pinID = pinID
+        } else {
+            // ピンIDが渡されない場合、新しいピンを生成
+            let newPinRef = db.collection("pins").document()
+            self.pinID = newPinRef.documentID
+            print("Generated new pinID: \(self.pinID)") // デバッグログ
+        }
     }
 
     func startListeningForMessages() {
+        guard !pinID.isEmpty else {
+            errorMessage = AlertMessage(message: "ピンIDが無効です")
+            return
+        }
+
         listener = db.collection("pins")
             .document(pinID)
             .collection("chats")
@@ -40,9 +52,10 @@ class ChatViewModel: ObservableObject {
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.errorMessage = AlertMessage(message: "メッセージリスナーエラー: \(error.localizedDescription)")
+                    self.errorMessage = AlertMessage(message: "Failed to fetch messages: \(error.localizedDescription)")
                     return
                 }
+
                 guard let documents = snapshot?.documents else { return }
                 self.messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
             }

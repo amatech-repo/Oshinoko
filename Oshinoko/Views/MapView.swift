@@ -2,83 +2,106 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    @Binding var mapView: MKMapView
     @ObservedObject var pinsViewModel: PinsViewModel
     @Binding var selectedPin: Pin?
+    let onLongPress: (CLLocationCoordinate2D) -> Void
 
     func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
         mapView.delegate = context.coordinator
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
 
+        // 長押しジェスチャーを設定
         let longPressGesture = UILongPressGestureRecognizer(
             target: context.coordinator,
-            action: #selector(context.coordinator.handleLongPress(_:))
+            action: #selector(Coordinator.handleLongPress)
         )
         mapView.addGestureRecognizer(longPressGesture)
+
+        // クラスタリングの設定 (iOS 11 以降)
+        if #available(iOS 11.0, *) {
+            mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+            mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        }
 
         return mapView
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        uiView.removeAnnotations(uiView.annotations)
-
-        let annotations = pinsViewModel.pins.map { pin -> MKPointAnnotation in
+        let currentAnnotations = uiView.annotations.compactMap { $0 as? MKPointAnnotation }
+        let newAnnotations = pinsViewModel.pins.map { pin -> MKPointAnnotation in
             let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: pin.coordinate.latitude, longitude: pin.coordinate.longitude)
+            annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
             annotation.title = pin.metadata.title
             return annotation
         }
 
-        print("Updating annotations: \(annotations.map { $0.coordinate })")
+        // アノテーションの追加と削除
+        let toRemove = currentAnnotations.filter { !newAnnotations.contains($0) }
+        let toAdd = newAnnotations.filter { !currentAnnotations.contains($0) }
 
-        uiView.addAnnotations(annotations)
+        uiView.removeAnnotations(toRemove)
+        uiView.addAnnotations(toAdd)
+
+        // 経路の更新
+        if let route = pinsViewModel.currentRoute, pinsViewModel.isRouteDisplayed {
+            if !uiView.overlays.contains(where: { $0 is MKPolyline }) {
+                uiView.addOverlay(route.polyline)
+            }
+        } else {
+            uiView.removeOverlays(uiView.overlays)
+        }
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, pinsViewModel: pinsViewModel)
+        Coordinator(self)
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
-        var pinsViewModel: PinsViewModel
 
-        init(_ parent: MapView, pinsViewModel: PinsViewModel) {
+        init(_ parent: MapView) {
             self.parent = parent
-            self.pinsViewModel = pinsViewModel
         }
 
-        @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
             guard gesture.state == .began else { return }
-
-            let location = gesture.location(in: parent.mapView)
-            let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
-
-            let newPin = Pin(
-                coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude),
-                metadata: Metadata(
-                    createdBy: "User123",
-                    description: "Description", title: "New Pin"
-                )
-            )
-
-            Task {
-                do {
-                    try await pinsViewModel.addPin(coordinate: newPin.coordinate, metadata: newPin.metadata)
-                } catch {
-                    print("Failed to add pin: \(error.localizedDescription)")
-                }
+            let location = gesture.location(in: gesture.view)
+            if let mapView = gesture.view as? MKMapView {
+                let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+                parent.onLongPress(coordinate)
             }
         }
 
         @MainActor func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             guard let annotation = view.annotation as? MKPointAnnotation else { return }
-
-            if let tappedPin = pinsViewModel.pins.first(where: {
-                $0.coordinate.latitude == annotation.coordinate.latitude &&
-                $0.coordinate.longitude == annotation.coordinate.longitude
+            if let pin = parent.pinsViewModel.pins.first(where: {
+                parent.pinsViewModel.areCoordinatesEqual($0.coordinate.toCLLocationCoordinate2D(), annotation.coordinate)
             }) {
-                parent.selectedPin = tappedPin
+                parent.selectedPin = pin
             }
         }
+
+        // オーバーレイ描画のデリゲート
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if let polyline = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(polyline: polyline)
+                renderer.strokeColor = .blue
+                renderer.lineWidth = 4
+                return renderer
+            }
+            return MKOverlayRenderer(overlay: overlay)
+        }
+    }
+
+    static func dismantleUIView(_ uiView: MKMapView, coordinator: Coordinator) {
+        // UIViewRepresentable が破棄される際のリソース解放
+        uiView.delegate = nil
+        uiView.removeAnnotations(uiView.annotations)
+        uiView.removeOverlays(uiView.overlays)
+        uiView.layer.removeAllAnimations() // Metal レイヤーのアニメーションを停止
+        print("MapView dismantled")
     }
 }
 

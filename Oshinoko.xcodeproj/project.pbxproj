@@ -7,12 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F322CE6478700083F5E /* PinViewsModel.swift */; };
+		3B181F352CE6CEC700083F5E /* ModalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F342CE6CEC700083F5E /* ModalModel.swift */; };
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
 		3B56D0A52CE5A025001BF220 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A42CE5A025001BF220 /* MapViewModel.swift */; };
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
 		3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* ModalView.swift */; };
 		3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */; };
+		3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */; };
+		3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */; };
+		3B6C95AA2CE707B000097366 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3B6C95A92CE707B000097366 /* Alamofire */; };
+		3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95AB2CE709FA00097366 /* TourCardView.swift */; };
+		3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95AD2CE70A0900097366 /* TourCard.swift */; };
+		3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95B02CE70A6300097366 /* PlaceImageView.swift */; };
+		3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */; };
 		3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7F69552CE5519E00518695 /* FirebaseFirestore */; };
+		3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA737E42CE7365200FFEACC /* LocationViewModel.swift */; };
 		3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30232CE5C3FF009C368B /* FirebaseAuth */; };
 		3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30252CE5C414009C368B /* FirebaseStorage */; };
 		3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */; };
@@ -27,7 +37,6 @@
 		3BC2A1072CE4CC670008DDA9 /* OshinokoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1062CE4CC670008DDA9 /* OshinokoTests.swift */; };
 		3BC2A1112CE4CC670008DDA9 /* OshinokoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */; };
 		3BC2A1132CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */; };
-		3BD052292CE6108000BF27C5 /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD052282CE6108000BF27C5 /* PinViewsModel.swift */; };
 		3BDECED02CE553A700700A7F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDECECF2CE553A700700A7F /* Lottie */; };
 		3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0701B2CE5DEA70032838F /* HomeView.swift */; };
 		3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE0701D2CE5E9BF0032838F /* ChatModel.swift */; };
@@ -56,11 +65,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B181F322CE6478700083F5E /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
+		3B181F342CE6CEC700083F5E /* ModalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalModel.swift; sourceTree = "<group>"; };
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		3B56D0A42CE5A025001BF220 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		3B56D0A82CE5C053001BF220 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardModel.swift; sourceTree = "<group>"; };
+		3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardViewModel.swift; sourceTree = "<group>"; };
+		3B6C95AB2CE709FA00097366 /* TourCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardView.swift; sourceTree = "<group>"; };
+		3B6C95AD2CE70A0900097366 /* TourCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCard.swift; sourceTree = "<group>"; };
+		3B6C95B02CE70A6300097366 /* PlaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImageView.swift; sourceTree = "<group>"; };
+		3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingViewModel.swift; sourceTree = "<group>"; };
+		3BA737E42CE7365200FFEACC /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BAB30292CE5C6DE009C368B /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -76,7 +94,6 @@
 		3BC2A10C2CE4CC670008DDA9 /* OshinokoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OshinokoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A1102CE4CC670008DDA9 /* OshinokoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoUITests.swift; sourceTree = "<group>"; };
 		3BC2A1122CE4CC670008DDA9 /* OshinokoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		3BD052282CE6108000BF27C5 /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
 		3BE0701B2CE5DEA70032838F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		3BE0701D2CE5E9BF0032838F /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		3BE070212CE5E9FD0032838F /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -91,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B6C95AA2CE707B000097366 /* Alamofire in Frameworks */,
 				3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */,
 				3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */,
 				3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */,
@@ -122,6 +140,8 @@
 				3BAB30292CE5C6DE009C368B /* AuthModel.swift */,
 				3BE0701D2CE5E9BF0032838F /* ChatModel.swift */,
 				3BE070212CE5E9FD0032838F /* UserModel.swift */,
+				3B181F342CE6CEC700083F5E /* ModalModel.swift */,
+				3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -129,11 +149,14 @@
 		3B2E302F2CE4DB68001F3553 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				3BD052282CE6108000BF27C5 /* PinViewsModel.swift */,
 				3B56D0A42CE5A025001BF220 /* MapViewModel.swift */,
 				3BAB302B2CE5C705009C368B /* AuthViewModel.swift */,
 				3BE070232CE5EA950032838F /* UserViewModel.swift */,
 				3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */,
+				3B181F322CE6478700083F5E /* PinViewsModel.swift */,
+				3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */,
+				3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */,
+				3BA737E42CE7365200FFEACC /* LocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -141,11 +164,13 @@
 		3B2E30302CE4DB7D001F3553 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
 				3B56D0A82CE5C053001BF220 /* ModalView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
+				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -155,6 +180,16 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3B6C95AF2CE70A1D00097366 /* TourCard */ = {
+			isa = PBXGroup;
+			children = (
+				3B6C95AB2CE709FA00097366 /* TourCardView.swift */,
+				3B6C95AD2CE70A0900097366 /* TourCard.swift */,
+				3B6C95B02CE70A6300097366 /* PlaceImageView.swift */,
+			);
+			path = TourCard;
 			sourceTree = "<group>";
 		};
 		3B7F69542CE5519E00518695 /* Frameworks */ = {
@@ -199,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */,
-				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
 				3B2E302E2CE4DB56001F3553 /* Models */,
 				3B2E302F2CE4DB68001F3553 /* ViewModels */,
 				3B2E30302CE4DB7D001F3553 /* Views */,
@@ -266,6 +300,7 @@
 				3BDECECF2CE553A700700A7F /* Lottie */,
 				3BAB30232CE5C3FF009C368B /* FirebaseAuth */,
 				3BAB30252CE5C414009C368B /* FirebaseStorage */,
+				3B6C95A92CE707B000097366 /* Alamofire */,
 			);
 			productName = Oshinoko;
 			productReference = 3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */;
@@ -342,6 +377,7 @@
 			packageReferences = (
 				3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				3BDECECE2CE5538200700A7F /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				3B6C95A82CE7076D00097366 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 3BC2A0F32CE4CC650008DDA9 /* Products */;
 			projectDirPath = "";
@@ -386,24 +422,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */,
 				3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
 				3BAB302A2CE5C6DE009C368B /* AuthModel.swift in Sources */,
+				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
+				3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
+				3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */,
+				3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */,
 				3BE070222CE5E9FD0032838F /* UserModel.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
+				3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */,
+				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */,
+				3B181F352CE6CEC700083F5E /* ModalModel.swift in Sources */,
 				3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */,
 				3B56D0A52CE5A025001BF220 /* MapViewModel.swift in Sources */,
+				3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */,
 				3BE070242CE5EA950032838F /* UserViewModel.swift in Sources */,
 				3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */,
-				3BD052292CE6108000BF27C5 /* PinViewsModel.swift in Sources */,
 				3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,12 +609,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
 				DEVELOPMENT_TEAM = 922N7TF68N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "バックグラウンドで位置を取得します";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "位置を取得します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -583,6 +630,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.erichan.Oshinoko;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -594,12 +642,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
 				DEVELOPMENT_TEAM = 922N7TF68N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "バックグラウンドで位置を取得します";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "位置を取得します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -612,6 +663,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.erichan.Oshinoko;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -736,6 +788,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B6C95A82CE7076D00097366 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.1;
+			};
+		};
 		3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -755,6 +815,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B6C95A92CE707B000097366 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B6C95A82CE7076D00097366 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		3B7F69552CE5519E00518695 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

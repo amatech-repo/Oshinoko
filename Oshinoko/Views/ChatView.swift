@@ -8,15 +8,9 @@
 import SwiftUI
 
 struct ChatView: View {
-    @StateObject private var viewModel: ChatViewModel
+    @StateObject var viewModel: ChatViewModel // `@StateObject`に変更
     @State private var isImagePickerPresented = false
-    @State private var scrollViewProxy: ScrollViewProxy?
     let currentUserID: String
-
-    init(pinID: String, currentUserID: String) {
-        _viewModel = StateObject(wrappedValue: ChatViewModel(pinID: pinID))
-        self.currentUserID = currentUserID
-    }
 
     var body: some View {
         VStack {
@@ -24,53 +18,28 @@ struct ChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 10) {
                         ForEach(viewModel.messages, id: \.wrappedID) { message in
-                            ChatMessageView(message: message, isCurrentUser: true)
+                            ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
                         }
-
-
                     }
                     .padding()
                 }
                 .onAppear {
-                    scrollViewProxy = proxy
+                    viewModel.startListeningForMessages()
                 }
-            }
-
-            if viewModel.isLoading {
-                ProgressView("送信中…")
-                    .padding()
             }
 
             HStack {
-                Button(action: {
-                    isImagePickerPresented = true
-                }) {
-                    Image(systemName: "photo.on.rectangle")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                }
-                .sheet(isPresented: $isImagePickerPresented) {
-                    ImagePicker(selectedImage: $viewModel.selectedImage)
-                }
-
                 TextField("メッセージを入力", text: $viewModel.messageText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(minHeight: 40)
-
-                Button("送信", action: {
+                Button("送信") {
                     Task {
                         await viewModel.sendMessage(senderID: currentUserID)
                     }
-                })
+                }
                 .disabled(viewModel.messageText.isEmpty)
-                .padding(.horizontal)
             }
             .padding()
         }
-        .onAppear {
-            viewModel.startListeningForMessages()
-        }
-        .padding()
         .alert(item: $viewModel.errorMessage) { error in
             Alert(title: Text("エラー"), message: Text(error.message), dismissButton: .default(Text("OK")))
         }
