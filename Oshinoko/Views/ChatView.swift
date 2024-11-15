@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct ChatView: View {
-    @ObservedObject var viewModel: ChatViewModel
+    @StateObject var viewModel: ChatViewModel // `@StateObject`に変更
     @State private var isImagePickerPresented = false
-    @State private var scrollViewProxy: ScrollViewProxy?
     let currentUserID: String
 
     var body: some View {
@@ -25,43 +24,22 @@ struct ChatView: View {
                     .padding()
                 }
                 .onAppear {
-                    scrollViewProxy = proxy
                     viewModel.startListeningForMessages()
                 }
             }
 
-            if viewModel.isLoading {
-                ProgressView("送信中…")
-                    .padding()
-            }
-
             HStack {
-                Button(action: {
-                    isImagePickerPresented = true
-                }) {
-                    Image(systemName: "photo.on.rectangle")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                }
-                .sheet(isPresented: $isImagePickerPresented) {
-                    ImagePicker(selectedImage: $viewModel.selectedImage)
-                }
-
                 TextField("メッセージを入力", text: $viewModel.messageText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(minHeight: 40)
-
-                Button("送信", action: {
+                Button("送信") {
                     Task {
                         await viewModel.sendMessage(senderID: currentUserID)
                     }
-                })
+                }
                 .disabled(viewModel.messageText.isEmpty)
-                .padding(.horizontal)
             }
             .padding()
         }
-        .padding()
         .alert(item: $viewModel.errorMessage) { error in
             Alert(title: Text("エラー"), message: Text(error.message), dismissButton: .default(Text("OK")))
         }

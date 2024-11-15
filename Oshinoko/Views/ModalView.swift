@@ -39,29 +39,6 @@ struct InformationModal: View {
     }
 }
 
-struct HomeModalView: View {
-    let pin: Pin
-    let onEdit: () -> Void
-
-    var body: some View {
-        VStack {
-            Text("ピン情報")
-                .font(.headline)
-            Text("タイトル: \(pin.metadata.title ?? "不明")")
-            Text("説明: \(pin.metadata.description ?? "なし")")
-            Spacer()
-            Button("編集") {
-                onEdit()
-            }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
-        }
-        .padding()
-    }
-}
-
 
 extension CLLocationCoordinate2D: Equatable {
     public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
@@ -71,16 +48,20 @@ extension CLLocationCoordinate2D: Equatable {
 
 struct PinDetailView: View {
     let pin: Pin
+
+    @StateObject private var placesManager = PlacesAPIManager()
+    @State private var latitude: Double?
+    @State private var longitude: Double?
     @StateObject private var chatViewModel: ChatViewModel
 
-    init(pin: Pin) {
-        self.pin = pin
-        // チャット用 ViewModel を初期化（ピンの ID に基づく）
-        _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.id ?? ""))
-    }
+        init(pin: Pin) {
+            self.pin = pin
+            // pin.wrappedID を使用して ChatViewModel を初期化
+            _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
+        }
 
     var body: some View {
-        VStack {
+        ScrollView{
             Text("ピン詳細")
                 .font(.headline)
                 .padding()
@@ -94,11 +75,36 @@ struct PinDetailView: View {
 
             Divider()
 
+            // TouristCardView の表示
+            if let latitude = latitude, let longitude = longitude {
+                TouristCardView(
+                    placesManager: placesManager,
+                    latitude: Binding.constant(latitude),
+                    longitude: Binding.constant(longitude)
+                )
+                .frame(height: 300)
+            } else {
+                Text("位置情報が利用できません")
+                    .foregroundColor(.gray)
+            }
+
             // チャットビューの表示
             ChatView(viewModel: chatViewModel, currentUserID: "User123")
+                
+        }
+        .onAppear {
+            // ピンの位置情報を設定
+            latitude = pin.coordinate.latitude
+            longitude = pin.coordinate.longitude
+
+            // 初回データ取得
+            if let lat = latitude, let lon = longitude {
+
+            }
         }
         .navigationTitle("ピン詳細")
         .navigationBarTitleDisplayMode(.inline)
         .padding()
+
     }
 }

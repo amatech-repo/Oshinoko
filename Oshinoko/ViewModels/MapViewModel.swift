@@ -25,7 +25,7 @@ class MapPinsViewModel: ObservableObject {
             let snapshot = try await db.collection("pins").getDocuments()
             self.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
             self.annotations = pins.map { pin in
-                MapAnnotationItem(coordinate: pin.coordinate.toCLLocationCoordinate2D(), color: .green)
+                MapAnnotationItem(coordinate: pin.coordinate.toCLLocationCoordinate2D(), color: Color.green)
             }
         } catch {
             print("ピンの取得エラー: \(error.localizedDescription)")
