@@ -97,8 +97,4 @@ class PinsViewModel: ObservableObject {
     }
 }
 
-extension Coordinate {
-    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    }
-}
+
