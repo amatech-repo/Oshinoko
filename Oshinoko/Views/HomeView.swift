@@ -10,37 +10,57 @@ import MapKit
 
 struct HomeView: View {
     @StateObject private var pinsViewModel = PinsViewModel()
-    @State private var selectedPin: Pin?
-    @State private var chatViewModel: ChatViewModel?
+    @State private var selectedPin: Pin? // タップされたピン
+    @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置
+    @State private var isShowingInformationModal = false // 情報入力モーダル表示フラグ
 
     var body: some View {
         ZStack {
-            MapView(pinsViewModel: pinsViewModel, selectedPin: $selectedPin)
-                .onAppear {
-                    Task {
-                        await pinsViewModel.fetchPins()
-                    }
+            // カスタム MapView
+            MapView(
+                pinsViewModel: pinsViewModel,
+                selectedPin: $selectedPin,
+                onLongPress: { coordinate in
+                    // 長押し時の処理
+                    newPinCoordinate = coordinate
+                    isShowingInformationModal = true
                 }
-                .onChange(of: selectedPin) { newPin in
-                    // 選択されたピンが変更された場合に ChatViewModel を設定
-                    if let newPin = newPin {
-                        if let existingViewModel = chatViewModel, existingViewModel.pinID == newPin.id {
-                            // 既存の ViewModel を使用
-                            chatViewModel = existingViewModel
-                        } else {
-                            // 新しい ViewModel を作成
-                            chatViewModel = ChatViewModel(pinID: newPin.id ?? "")
+            )
+            .onAppear {
+                // 初回表示時にピン情報を取得
+                Task {
+                    await pinsViewModel.fetchPins()
+                }
+            }
+        }
+        .sheet(isPresented: $isShowingInformationModal) {
+            // ピン作成モーダル
+            if let coordinate = newPinCoordinate {
+                InformationModal(
+                    coordinate: coordinate,
+                    createdBy: "User123", // ログイン中のユーザーID
+                    onSave: { metadata in
+                        Task {
+                            do {
+                                try await pinsViewModel.addPin(
+                                    coordinate: Coordinate(
+                                        latitude: coordinate.latitude,
+                                        longitude: coordinate.longitude
+                                    ),
+                                    metadata: metadata
+                                )
+                                newPinCoordinate = nil // 初期化
+                            } catch {
+                                print("Failed to add pin: \(error.localizedDescription)")
+                            }
                         }
                     }
-                }
-                .sheet(item: $selectedPin) { pin in
-                    if let viewModel = chatViewModel {
-                        ChatView(viewModel: viewModel, currentUserID: "User123")
-                    } else {
-                        Text("Loading...")
-                    }
-                }
+                )
+            }
+        }
+        .sheet(item: $selectedPin) { pin in
+            // 既存ピンをタップした場合に詳細モーダルを表示
+            PinDetailView(pin: pin)
         }
     }
 }
-
