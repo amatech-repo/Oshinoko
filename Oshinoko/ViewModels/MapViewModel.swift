@@ -3,7 +3,6 @@ import SwiftUI
 import MapKit
 import FirebaseFirestore
 
-
 @MainActor
 class MapPinsViewModel: ObservableObject {
     @Published var region: MKCoordinateRegion
@@ -23,13 +22,17 @@ class MapPinsViewModel: ObservableObject {
     }
 
     func calculateRoute(to destination: CLLocationCoordinate2D) {
+        removeRouteOverlay() // 古い経路を削除
+
         let request = MKDirections.Request()
         request.source = MKMapItem.forCurrentLocation()
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
         request.transportType = .automobile
 
         let directions = MKDirections(request: request)
-        directions.calculate { response, error in
+        directions.calculate { [weak self] response, error in
+            guard let self = self else { return }
+
             if let error = error {
                 print("経路計算エラー: \(error.localizedDescription)")
                 return
@@ -114,3 +117,8 @@ class MapPinsViewModel: ObservableObject {
     }
 }
 
+extension Coordinate {
+    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+    }
+}
