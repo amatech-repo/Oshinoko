@@ -39,29 +39,6 @@ struct InformationModal: View {
     }
 }
 
-struct HomeModalView: View {
-    let pin: Pin
-    let onEdit: () -> Void
-
-    var body: some View {
-        VStack {
-            Text("ピン情報")
-                .font(.headline)
-            Text("タイトル: \(pin.metadata.title ?? "不明")")
-            Text("説明: \(pin.metadata.description ?? "なし")")
-            Spacer()
-            Button("編集") {
-                onEdit()
-            }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
-        }
-        .padding()
-    }
-}
-
 
 extension CLLocationCoordinate2D: Equatable {
     public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
@@ -96,6 +73,7 @@ struct PinDetailView: View {
 
             // チャットビューの表示
             ChatView(viewModel: chatViewModel, currentUserID: "User123")
+                .padding()
         }
         .navigationTitle("ピン詳細")
         .navigationBarTitleDisplayMode(.inline)
