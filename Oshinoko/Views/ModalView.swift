@@ -48,6 +48,10 @@ extension CLLocationCoordinate2D: Equatable {
 
 struct PinDetailView: View {
     let pin: Pin
+
+    @StateObject private var placesManager = PlacesAPIManager()
+    @State private var latitude: Double?
+    @State private var longitude: Double?
     @StateObject private var chatViewModel: ChatViewModel
 
     init(pin: Pin) {
@@ -57,7 +61,7 @@ struct PinDetailView: View {
     }
 
     var body: some View {
-        VStack {
+        ScrollView{
             Text("ピン詳細")
                 .font(.headline)
                 .padding()
@@ -71,12 +75,36 @@ struct PinDetailView: View {
 
             Divider()
 
+            // TouristCardView の表示
+            if let latitude = latitude, let longitude = longitude {
+                TouristCardView(
+                    placesManager: placesManager,
+                    latitude: Binding.constant(latitude),
+                    longitude: Binding.constant(longitude)
+                )
+                .frame(height: 300)
+            } else {
+                Text("位置情報が利用できません")
+                    .foregroundColor(.gray)
+            }
+
             // チャットビューの表示
             ChatView(viewModel: chatViewModel, currentUserID: "User123")
                 .padding()
         }
+        .onAppear {
+            // ピンの位置情報を設定
+            latitude = pin.coordinate.latitude
+            longitude = pin.coordinate.longitude
+
+            // 初回データ取得
+            if let lat = latitude, let lon = longitude {
+
+            }
+        }
         .navigationTitle("ピン詳細")
         .navigationBarTitleDisplayMode(.inline)
         .padding()
+
     }
 }

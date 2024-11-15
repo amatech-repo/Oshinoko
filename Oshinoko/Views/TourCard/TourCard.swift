@@ -21,15 +21,8 @@ struct TouristCard: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(place.name)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .lineLimit(1)
-                        .foregroundColor(.white)
 
                     Text(place.vicinity)
-                        .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.7))
-                        .lineLimit(2)
 
                     if let rating = place.rating {
                         RatingView(rating: rating)
