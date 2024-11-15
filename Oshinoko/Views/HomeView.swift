@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var selectedPin: Pin? // タップされたピン
     @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置
     @State private var isShowingInformationModal = false // 情報入力モーダル表示フラグ
+    @StateObject private var chatViewModel = ChatViewModel(pinID: "") // ViewModelをHomeViewで保持
 
     var body: some View {
         ZStack {
@@ -50,6 +51,7 @@ struct HomeView: View {
                                     metadata: metadata
                                 )
                                 newPinCoordinate = nil // 初期化
+                                isShowingInformationModal = false
                             } catch {
                                 print("Failed to add pin: \(error.localizedDescription)")
                             }
@@ -59,8 +61,8 @@ struct HomeView: View {
             }
         }
         .sheet(item: $selectedPin) { pin in
-            // 既存ピンをタップした場合に詳細モーダルを表示
-            PinDetailView(pin: pin)
+            // ピン詳細モーダル
+            PinDetailView(pin: pin) // ViewModelを渡す
         }
     }
 }

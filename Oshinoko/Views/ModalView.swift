@@ -54,11 +54,11 @@ struct PinDetailView: View {
     @State private var longitude: Double?
     @StateObject private var chatViewModel: ChatViewModel
 
-    init(pin: Pin) {
-        self.pin = pin
-        // チャット用 ViewModel を初期化（ピンの ID に基づく）
-        _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.id ?? ""))
-    }
+        init(pin: Pin) {
+            self.pin = pin
+            // pin.wrappedID を使用して ChatViewModel を初期化
+            _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
+        }
 
     var body: some View {
         ScrollView{
@@ -90,7 +90,7 @@ struct PinDetailView: View {
 
             // チャットビューの表示
             ChatView(viewModel: chatViewModel, currentUserID: "User123")
-                .padding()
+                
         }
         .onAppear {
             // ピンの位置情報を設定
