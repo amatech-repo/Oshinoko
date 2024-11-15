@@ -25,7 +25,7 @@ class ChatViewModel: ObservableObject {
 
     private let storage = Storage.storage()
     private let db = Firestore.firestore()
-    private let pinID: String
+    let pinID: String
     private var listener: ListenerRegistration?
 
     init(pinID: String) {
@@ -33,20 +33,28 @@ class ChatViewModel: ObservableObject {
     }
 
     func startListeningForMessages() {
-        listener = db.collection("pins")
-            .document(pinID)
-            .collection("chats")
-            .order(by: "timestamp")
-            .addSnapshotListener { [weak self] snapshot, error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.errorMessage = AlertMessage(message: "メッセージリスナーエラー: \(error.localizedDescription)")
-                    return
-                }
-                guard let documents = snapshot?.documents else { return }
-                self.messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
+
+            guard !pinID.isEmpty else {
+                errorMessage = AlertMessage(message: "Pin ID is empty")
+                return
             }
-    }
+
+            listener = db.collection("pins")
+                .document(pinID)
+                .collection("chats")
+                .order(by: "timestamp")
+                .addSnapshotListener { [weak self] snapshot, error in
+                    guard let self = self else { return }
+                    if let error = error {
+                        print("Failed to listen for messages: \(error.localizedDescription)")
+                        return
+                    }
+
+                    guard let documents = snapshot?.documents else { return }
+                    self.messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
+                    print("Messages updated: \(self.messages)")
+                }
+        }
 
     func stopListeningForMessages() {
         listener?.remove()

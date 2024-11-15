@@ -8,15 +8,10 @@
 import SwiftUI
 
 struct ChatView: View {
-    @StateObject private var viewModel: ChatViewModel
+    @ObservedObject var viewModel: ChatViewModel
     @State private var isImagePickerPresented = false
     @State private var scrollViewProxy: ScrollViewProxy?
     let currentUserID: String
-
-    init(pinID: String, currentUserID: String) {
-        _viewModel = StateObject(wrappedValue: ChatViewModel(pinID: pinID))
-        self.currentUserID = currentUserID
-    }
 
     var body: some View {
         VStack {
@@ -24,15 +19,14 @@ struct ChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 10) {
                         ForEach(viewModel.messages, id: \.wrappedID) { message in
-                            ChatMessageView(message: message, isCurrentUser: true)
+                            ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
                         }
-
-
                     }
                     .padding()
                 }
                 .onAppear {
                     scrollViewProxy = proxy
+                    viewModel.startListeningForMessages()
                 }
             }
 
@@ -66,9 +60,6 @@ struct ChatView: View {
                 .padding(.horizontal)
             }
             .padding()
-        }
-        .onAppear {
-            viewModel.startListeningForMessages()
         }
         .padding()
         .alert(item: $viewModel.errorMessage) { error in

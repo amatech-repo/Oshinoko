@@ -2,16 +2,17 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    @Binding var mapView: MKMapView
     @ObservedObject var pinsViewModel: PinsViewModel
     @Binding var selectedPin: Pin?
+    let onLongPress: (CLLocationCoordinate2D) -> Void
 
     func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
         mapView.delegate = context.coordinator
 
         let longPressGesture = UILongPressGestureRecognizer(
             target: context.coordinator,
-            action: #selector(context.coordinator.handleLongPress(_:))
+            action: #selector(Coordinator.handleLongPress)
         )
         mapView.addGestureRecognizer(longPressGesture)
 
@@ -19,66 +20,45 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
+        // マップ上のアノテーションを更新
         uiView.removeAnnotations(uiView.annotations)
 
-        let annotations = pinsViewModel.pins.map { pin -> MKPointAnnotation in
+        for pin in pinsViewModel.pins {
             let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: pin.coordinate.latitude, longitude: pin.coordinate.longitude)
+            annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
             annotation.title = pin.metadata.title
-            return annotation
+            uiView.addAnnotation(annotation)
         }
-
-        print("Updating annotations: \(annotations.map { $0.coordinate })")
-
-        uiView.addAnnotations(annotations)
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, pinsViewModel: pinsViewModel)
+        Coordinator(self)
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
-        var pinsViewModel: PinsViewModel
 
-        init(_ parent: MapView, pinsViewModel: PinsViewModel) {
+        init(_ parent: MapView) {
             self.parent = parent
-            self.pinsViewModel = pinsViewModel
         }
 
-        @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
             guard gesture.state == .began else { return }
-
-            let location = gesture.location(in: parent.mapView)
-            let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
-
-            let newPin = Pin(
-                coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude),
-                metadata: Metadata(
-                    createdBy: "User123",
-                    description: "Description", title: "New Pin"
-                )
-            )
-
-            Task {
-                do {
-                    try await pinsViewModel.addPin(coordinate: newPin.coordinate, metadata: newPin.metadata)
-                } catch {
-                    print("Failed to add pin: \(error.localizedDescription)")
-                }
+            let location = gesture.location(in: gesture.view)
+            if let mapView = gesture.view as? MKMapView {
+                let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+                parent.onLongPress(coordinate)
             }
         }
 
         @MainActor func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            // ピンがタップされたときに処理を行う
             guard let annotation = view.annotation as? MKPointAnnotation else { return }
-
-            if let tappedPin = pinsViewModel.pins.first(where: {
-                $0.coordinate.latitude == annotation.coordinate.latitude &&
-                $0.coordinate.longitude == annotation.coordinate.longitude
+            if let pin = parent.pinsViewModel.pins.first(where: {
+                $0.coordinate.toCLLocationCoordinate2D() == annotation.coordinate
             }) {
-                parent.selectedPin = tappedPin
+                parent.selectedPin = pin
             }
         }
     }
 }
-
