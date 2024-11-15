@@ -9,10 +9,10 @@ struct MapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        // 現在地の表示設定
-            mapView.showsUserLocation = true
-            mapView.userTrackingMode = .follow
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
 
+        // ロングプレスジェスチャーを追加
         let longPressGesture = UILongPressGestureRecognizer(
             target: context.coordinator,
             action: #selector(Coordinator.handleLongPress)
@@ -23,17 +23,20 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-            uiView.removeAnnotations(uiView.annotations)
+        let existingAnnotations = Set(uiView.annotations.compactMap { $0 as? MKPointAnnotation })
+        let newAnnotations = Set(pinsViewModel.pins.map { pin in
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
+            annotation.title = pin.metadata.title
+            return annotation
+        })
 
-            for pin in pinsViewModel.pins {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
-                annotation.title = pin.metadata.title
-                uiView.addAnnotation(annotation)
-            }
+        let annotationsToAdd = newAnnotations.subtracting(existingAnnotations)
+        let annotationsToRemove = existingAnnotations.subtracting(newAnnotations)
 
-            
-        }
+        uiView.removeAnnotations(Array(annotationsToRemove))
+        uiView.addAnnotations(Array(annotationsToAdd))
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -56,13 +59,13 @@ struct MapView: UIViewRepresentable {
         }
 
         @MainActor func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            // ピンがタップされたときに処理を行う
             guard let annotation = view.annotation as? MKPointAnnotation else { return }
             if let pin = parent.pinsViewModel.pins.first(where: {
-                $0.coordinate.toCLLocationCoordinate2D() == annotation.coordinate
+                parent.pinsViewModel.areCoordinatesEqual($0.coordinate.toCLLocationCoordinate2D(), annotation.coordinate)
             }) {
                 parent.selectedPin = pin
             }
         }
     }
 }
+
