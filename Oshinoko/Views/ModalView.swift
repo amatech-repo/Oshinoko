@@ -53,58 +53,68 @@ struct PinDetailView: View {
     @State private var latitude: Double?
     @State private var longitude: Double?
     @StateObject private var chatViewModel: ChatViewModel
+    @State private var prefectureName: String? = nil
+    @State private var cityName: String? = nil
+    @State private var subLocalityName: String? = nil
+    @State private var prefecturalCapital: String? = nil
+    @StateObject private var geocodingManager = GeocodingManager()
 
-        init(pin: Pin) {
-            self.pin = pin
-            // pin.wrappedID を使用して ChatViewModel を初期化
-            _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
-        }
+    init(pin: Pin) {
+        self.pin = pin
+        _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
+    }
 
     var body: some View {
-        ScrollView{
-            Text("ピン詳細")
-                .font(.headline)
-                .padding()
-
-            // ピンのメタデータ表示
+        ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 Text("タイトル: \(pin.metadata.title)")
                 Text("説明: \(pin.metadata.description)")
+
+                if let prefecture = prefectureName, let city = cityName {
+                    if let subLocality = subLocalityName {
+                        Text("住所: \(prefecture) \(city) \(subLocality)")
+                    } else {
+                        Text("住所: \(prefecture) \(city)")
+                    }
+                } else {
+                    Text("住所を取得中...")
+                        .foregroundColor(.gray)
+                }
+
+                if let capital = prefecturalCapital {
+                    Text("県庁所在地: \(capital)")
+                }
+
+                Divider()
+
+                if let latitude = latitude, let longitude = longitude {
+                    TouristCardView(
+                        placesManager: placesManager,
+                        latitude: Binding.constant(latitude),
+                        longitude: Binding.constant(longitude)
+                    )
+                    .frame(height: 300)
+                } else {
+                    Text("位置情報が利用できません")
+                        .foregroundColor(.gray)
+                }
+
+                ChatView(viewModel: chatViewModel, currentUserID: "User123")
             }
             .padding()
-
-            Divider()
-
-            // TouristCardView の表示
-            if let latitude = latitude, let longitude = longitude {
-                TouristCardView(
-                    placesManager: placesManager,
-                    latitude: Binding.constant(latitude),
-                    longitude: Binding.constant(longitude)
-                )
-                .frame(height: 300)
-            } else {
-                Text("位置情報が利用できません")
-                    .foregroundColor(.gray)
-            }
-
-            // チャットビューの表示
-            ChatView(viewModel: chatViewModel, currentUserID: "User123")
-                
         }
         .onAppear {
-            // ピンの位置情報を設定
             latitude = pin.coordinate.latitude
             longitude = pin.coordinate.longitude
 
-            // 初回データ取得
-            if let lat = latitude, let lon = longitude {
-
+            geocodingManager.getAddressDetails(for: pin.coordinate.toCLLocationCoordinate2D()) { prefecture, city, subLocality in
+                self.prefectureName = prefecture
+                self.cityName = city
+                self.subLocalityName = subLocality
             }
         }
         .navigationTitle("ピン詳細")
         .navigationBarTitleDisplayMode(.inline)
         .padding()
-
     }
 }
