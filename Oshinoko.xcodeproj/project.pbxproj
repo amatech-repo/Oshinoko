@@ -17,6 +17,9 @@
 		3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */; };
 		3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */; };
 		3B6C95AA2CE707B000097366 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3B6C95A92CE707B000097366 /* Alamofire */; };
+		3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95AB2CE709FA00097366 /* TourCardView.swift */; };
+		3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95AD2CE70A0900097366 /* TourCard.swift */; };
+		3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95B02CE70A6300097366 /* PlaceImageView.swift */; };
 		3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7F69552CE5519E00518695 /* FirebaseFirestore */; };
 		3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30232CE5C3FF009C368B /* FirebaseAuth */; };
 		3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30252CE5C414009C368B /* FirebaseStorage */; };
@@ -69,6 +72,9 @@
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardModel.swift; sourceTree = "<group>"; };
 		3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardViewModel.swift; sourceTree = "<group>"; };
+		3B6C95AB2CE709FA00097366 /* TourCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardView.swift; sourceTree = "<group>"; };
+		3B6C95AD2CE70A0900097366 /* TourCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCard.swift; sourceTree = "<group>"; };
+		3B6C95B02CE70A6300097366 /* PlaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImageView.swift; sourceTree = "<group>"; };
 		3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BAB30292CE5C6DE009C368B /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -152,6 +158,7 @@
 		3B2E30302CE4DB7D001F3553 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
 				3B56D0A82CE5C053001BF220 /* ModalView.swift */,
@@ -166,6 +173,16 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3B6C95AF2CE70A1D00097366 /* TourCard */ = {
+			isa = PBXGroup;
+			children = (
+				3B6C95AB2CE709FA00097366 /* TourCardView.swift */,
+				3B6C95AD2CE70A0900097366 /* TourCard.swift */,
+				3B6C95B02CE70A6300097366 /* PlaceImageView.swift */,
+			);
+			path = TourCard;
 			sourceTree = "<group>";
 		};
 		3B7F69542CE5519E00518695 /* Frameworks */ = {
@@ -399,6 +416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */,
 				3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
 				3BAB302A2CE5C6DE009C368B /* AuthModel.swift in Sources */,
@@ -409,9 +427,11 @@
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
+				3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */,
 				3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */,
 				3BE070222CE5E9FD0032838F /* UserModel.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
+				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */,
 				3B181F352CE6CEC700083F5E /* ModalModel.swift in Sources */,
