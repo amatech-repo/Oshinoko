@@ -9,6 +9,9 @@ struct MapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
+        // 現在地の表示設定
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .follow
 
         let longPressGesture = UILongPressGestureRecognizer(
             target: context.coordinator,
@@ -20,16 +23,17 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        // マップ上のアノテーションを更新
-        uiView.removeAnnotations(uiView.annotations)
+            uiView.removeAnnotations(uiView.annotations)
 
-        for pin in pinsViewModel.pins {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
-            annotation.title = pin.metadata.title
-            uiView.addAnnotation(annotation)
+            for pin in pinsViewModel.pins {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
+                annotation.title = pin.metadata.title
+                uiView.addAnnotation(annotation)
+            }
+
+            
         }
-    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)

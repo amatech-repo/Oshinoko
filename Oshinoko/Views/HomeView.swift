@@ -9,11 +9,12 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
-    @StateObject private var pinsViewModel = PinsViewModel()
     @State private var selectedPin: Pin? // タップされたピン
     @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置
     @State private var isShowingInformationModal = false // 情報入力モーダル表示フラグ
     @StateObject private var chatViewModel = ChatViewModel(pinID: "") // ViewModelをHomeViewで保持
+    @ObservedObject var pinsViewModel: PinsViewModel // StateObject → ObservedObject に修正
+
 
     var body: some View {
         ZStack {
@@ -62,7 +63,7 @@ struct HomeView: View {
         }
         .sheet(item: $selectedPin) { pin in
             // ピン詳細モーダル
-            PinDetailView(pin: pin) // ViewModelを渡す
+            PinDetailView(pin: pin, pinsViewModel: pinsViewModel) // ViewModelを渡す
         }
     }
 }
