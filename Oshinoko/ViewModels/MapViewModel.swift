@@ -3,13 +3,14 @@ import SwiftUI
 import MapKit
 import FirebaseFirestore
 
-
 @MainActor
 class MapPinsViewModel: ObservableObject {
     @Published var region: MKCoordinateRegion
     @Published var annotations: [MapAnnotationItem] = []
     @Published var pins: [Pin] = []
     @Published var messages: [ChatMessage] = []
+    @Published var isRouteDisplayed: Bool = false
+    @Published var currentRoute: MKRoute? = nil
 
     private let db = Firestore.firestore()
 
@@ -18,6 +19,36 @@ class MapPinsViewModel: ObservableObject {
             center: CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917),
             span: MKCoordinateSpan(latitudeDelta: 5.0, longitudeDelta: 5.0)
         )
+    }
+
+    func calculateRoute(to destination: CLLocationCoordinate2D) {
+        removeRouteOverlay() // 古い経路を削除
+
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
+        request.transportType = .automobile
+
+        let directions = MKDirections(request: request)
+        directions.calculate { [weak self] response, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("経路計算エラー: \(error.localizedDescription)")
+                return
+            }
+
+            guard let route = response?.routes.first else { return }
+            DispatchQueue.main.async {
+                self.currentRoute = route
+                self.isRouteDisplayed = true
+            }
+        }
+    }
+
+    func removeRouteOverlay() {
+        isRouteDisplayed = false
+        currentRoute = nil
     }
 
     func fetchPins() async {

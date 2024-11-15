@@ -22,6 +22,7 @@
 		3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95B02CE70A6300097366 /* PlaceImageView.swift */; };
 		3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */; };
 		3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7F69552CE5519E00518695 /* FirebaseFirestore */; };
+		3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA737E42CE7365200FFEACC /* LocationViewModel.swift */; };
 		3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30232CE5C3FF009C368B /* FirebaseAuth */; };
 		3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30252CE5C414009C368B /* FirebaseStorage */; };
 		3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */; };
@@ -77,6 +78,7 @@
 		3B6C95AD2CE70A0900097366 /* TourCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCard.swift; sourceTree = "<group>"; };
 		3B6C95B02CE70A6300097366 /* PlaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImageView.swift; sourceTree = "<group>"; };
 		3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingViewModel.swift; sourceTree = "<group>"; };
+		3BA737E42CE7365200FFEACC /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BAB30292CE5C6DE009C368B /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				3B181F322CE6478700083F5E /* PinViewsModel.swift */,
 				3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */,
 				3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */,
+				3BA737E42CE7365200FFEACC /* LocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -167,6 +170,7 @@
 				3B56D0A82CE5C053001BF220 /* ModalView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
+				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -230,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */,
-				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
 				3B2E302E2CE4DB56001F3553 /* Models */,
 				3B2E302F2CE4DB68001F3553 /* ViewModels */,
 				3B2E30302CE4DB7D001F3553 /* Views */,
@@ -435,6 +438,7 @@
 				3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */,
 				3BE070222CE5E9FD0032838F /* UserModel.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
+				3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */,
 				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */,
@@ -605,12 +609,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
 				DEVELOPMENT_TEAM = 922N7TF68N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "バックグラウンドで位置を取得します";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "位置を取得します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -623,6 +630,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.erichan.Oshinoko;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -634,12 +642,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
 				DEVELOPMENT_TEAM = 922N7TF68N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "バックグラウンドで位置を取得します";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "位置を取得します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -652,6 +663,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.erichan.Oshinoko;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

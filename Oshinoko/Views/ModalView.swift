@@ -49,6 +49,9 @@ extension CLLocationCoordinate2D: Equatable {
 struct PinDetailView: View {
     let pin: Pin
 
+    @ObservedObject private var pinsViewModel: PinsViewModel // StateObject → ObservedObject に修正
+    @State private var isRouteDisplayed: Bool = false
+    @State private var currentRoute: MKRoute? = nil
     @StateObject private var placesManager = PlacesAPIManager()
     @State private var latitude: Double?
     @State private var longitude: Double?
@@ -59,8 +62,9 @@ struct PinDetailView: View {
     @State private var prefecturalCapital: String? = nil
     @StateObject private var geocodingManager = GeocodingManager()
 
-    init(pin: Pin) {
+    init(pin: Pin, pinsViewModel: PinsViewModel) {
         self.pin = pin
+        self.pinsViewModel = pinsViewModel // ViewModel を渡す
         _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
     }
 
@@ -100,6 +104,22 @@ struct PinDetailView: View {
                 }
 
                 ChatView(viewModel: chatViewModel, currentUserID: "User123")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 400)
+                Button {
+                    if let latitude = latitude, let longitude = longitude {
+                        pinsViewModel.calculateRoute(to: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                    }
+                } label: {
+                    Text("行く")
+                }
+
+                if pinsViewModel.isRouteDisplayed {
+                    Button("キャンセル") {
+                        pinsViewModel.isRouteDisplayed = false
+                        pinsViewModel.currentRoute = nil
+                    }
+                }
             }
             .padding()
         }
@@ -118,3 +138,4 @@ struct PinDetailView: View {
         .padding()
     }
 }
+
