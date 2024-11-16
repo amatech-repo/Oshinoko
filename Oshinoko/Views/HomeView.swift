@@ -9,61 +9,115 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
+    // MARK: - State Properties
     @State private var selectedPin: Pin? // タップされたピン
-    @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置
-    @State private var isShowingInformationModal = false // 情報入力モーダル表示フラグ
-    @StateObject private var chatViewModel = ChatViewModel(pinID: "") // ViewModelをHomeViewで保持
-    @ObservedObject var pinsViewModel: PinsViewModel // StateObject → ObservedObject に修正
+    @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置の座標
+    @State private var isShowingInformationModal = false // 情報入力モーダルの表示フラグ
+    @State var selection = 1 // タブ選択状態
 
+    // MARK: - Observed ViewModels
+    @StateObject private var chatViewModel = ChatViewModel(pinID: "") // Chat用ViewModel
+    @ObservedObject var pinsViewModel: PinsViewModel // ピン管理用ViewModel
 
+    // MARK: - Body
     var body: some View {
         ZStack {
-            // カスタム MapView
-            MapView(
-                pinsViewModel: pinsViewModel,
-                selectedPin: $selectedPin,
-                onLongPress: { coordinate in
-                    // 長押し時の処理
-                    newPinCoordinate = coordinate
-                    isShowingInformationModal = true
-                }
-            )
-            .onAppear {
-                // 初回表示時にピン情報を取得
-                Task {
-                    await pinsViewModel.fetchPins()
-                }
+            // 背景色を設定
+            Color.red
+                .ignoresSafeArea() // 安全領域を無視して全体に適用
+
+            // コンテンツ (TabView)
+            TabView(selection: $selection) {
+                mapTab
+                    .tabItem {
+                        Label("Map", systemImage: "map")
+                    }
+                    .tag(1)
+
+                textTab(title: "Tab 2 Content")
+                    .tabItem {
+                        Label("AI", systemImage: "message")
+                    }
+                    .tag(2)
+
+                textTab(title: "Tab 3 Content")
+                    .tabItem {
+                        Label("Bookmark", systemImage: "person")
+                    }
+                    .tag(3)
             }
         }
-        .sheet(isPresented: $isShowingInformationModal) {
-            // ピン作成モーダル
-            if let coordinate = newPinCoordinate {
-                InformationModal(
-                    coordinate: coordinate,
-                    createdBy: "User123", // ログイン中のユーザーID
-                    onSave: { metadata in
-                        Task {
-                            do {
-                                try await pinsViewModel.addPin(
-                                    coordinate: Coordinate(
-                                        latitude: coordinate.latitude,
-                                        longitude: coordinate.longitude
-                                    ),
-                                    metadata: metadata
-                                )
-                                newPinCoordinate = nil // 初期化
-                                isShowingInformationModal = false
-                            } catch {
-                                print("Failed to add pin: \(error.localizedDescription)")
-                            }
-                        }
+    }
+
+    // MARK: - Tab 1: Map Tab
+    private var mapTab: some View {
+        VStack(spacing: 0) {
+            ZStack {
+                // カスタム MapView
+                MapView(
+                    pinsViewModel: pinsViewModel,
+                    selectedPin: $selectedPin,
+                    onLongPress: { coordinate in
+                        newPinCoordinate = coordinate
+                        isShowingInformationModal = true
                     }
                 )
+                .frame(height: 720) // MapViewの高さを制限
+                .frame(maxWidth: .infinity)
+                .padding(.bottom)
+                .onAppear {
+                    Task {
+                        await pinsViewModel.fetchPins()
+                    }
+                }
+            }
+
+            Spacer() // タブバーを見やすくするためにスペースを調整
+        }
+        .sheet(isPresented: $isShowingInformationModal) {
+            if let coordinate = newPinCoordinate {
+                createPinModal(for: coordinate)
             }
         }
         .sheet(item: $selectedPin) { pin in
-            // ピン詳細モーダル
-            PinDetailView(pin: pin, pinsViewModel: pinsViewModel) // ViewModelを渡す
+            PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
     }
+
+    // MARK: - Helper Functions
+    private func createPinModal(for coordinate: CLLocationCoordinate2D) -> some View {
+        InformationModal(
+            coordinate: coordinate,
+            createdBy: "User123", // ログイン中のユーザーID
+            onSave: { metadata in
+                Task {
+                    do {
+                        try await pinsViewModel.addPin(
+                            coordinate: Coordinate(
+                                latitude: coordinate.latitude,
+                                longitude: coordinate.longitude
+                            ),
+                            metadata: metadata
+                        )
+                        newPinCoordinate = nil
+                        isShowingInformationModal = false
+                    } catch {
+                        print("Failed to add pin: \(error.localizedDescription)")
+                    }
+                }
+            }
+        )
+    }
+
+    // MARK: - Tab 2 and Tab 3: Placeholder Views
+    private func textTab(title: String) -> some View {
+        VStack {
+            Text(title)
+                .font(.largeTitle)
+                .padding()
+            Spacer()
+        }
+        .background(Color(.systemBackground)) // タブごとに背景色を統一
+    }
 }
+

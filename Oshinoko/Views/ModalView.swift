@@ -113,6 +113,7 @@ struct PinDetailView: View {
                 } label: {
                     Text("行く")
                 }
+                .disabled(pinsViewModel.isRouteDisplayed) // キャンセルボタン表示時に非活性化
 
                 if pinsViewModel.isRouteDisplayed {
                     Button("キャンセル") {
