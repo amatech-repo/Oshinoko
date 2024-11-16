@@ -91,18 +91,19 @@ class MapPinsViewModel: ObservableObject {
         }
     }
 
-    func addPin(coordinate: CLLocationCoordinate2D, metadata: Metadata) async {
-        let newPin = Pin(
-            id: nil,
-            coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude),
-            metadata: metadata
-        )
+    func addPin(coordinate: Coordinate, metadata: Metadata) async {
+        let temporaryID = UUID().uuidString
+        var pin = Pin(id: temporaryID, coordinate: coordinate, metadata: metadata) // 仮IDを設定
+
+        pins.append(pin) // 仮のピンを即時追加
 
         do {
-            try await addPinToFirestore(pin: newPin)
-            await fetchPins() // 再取得して更新
+            let documentRef = try await db.collection("pins").addDocument(from: pin)
+            if let index = pins.firstIndex(where: { $0.id == temporaryID }) {
+                pins[index].id = documentRef.documentID // 仮IDをFirestoreのIDに置き換え
+            }
         } catch {
-            print("Failed to add pin: \(error.localizedDescription)")
+            print("Firestore error: \(error.localizedDescription)")
         }
     }
 

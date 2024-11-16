@@ -10,6 +10,14 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
 
+class UserManager: ObservableObject {
+    @Published var userID: String? = nil
+
+    func updateUserID(_ id: String) {
+        self.userID = id
+    }
+}
+
 @MainActor
 class AuthViewModel: ObservableObject {
     @Published var email: String = "test@mail.com3"

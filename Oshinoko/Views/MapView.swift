@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseCore
 import MapKit
 
 struct MapView: UIViewRepresentable {
@@ -65,14 +66,20 @@ struct MapView: UIViewRepresentable {
             self.parent = parent
         }
 
-        @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
+        @objc @MainActor
+        func handleLongPress(gesture: UILongPressGestureRecognizer) {
             guard gesture.state == .began else { return }
             let location = gesture.location(in: gesture.view)
             if let mapView = gesture.view as? MKMapView {
                 let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-                parent.onLongPress(coordinate)
+                Task {
+                    let metadata = Metadata(createdBy: "User123", description: "Added by user", title: "New Pin")
+                    let newCoordinate = Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                    await parent.pinsViewModel.addPin(coordinate: newCoordinate, metadata: metadata)
+                }
             }
         }
+
 
         @MainActor func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             guard let annotation = view.annotation as? MKPointAnnotation else { return }
