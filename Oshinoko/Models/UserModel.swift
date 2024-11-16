@@ -7,10 +7,11 @@
 
 import Foundation
 import FirebaseFirestore
+
+
 // ユーザー情報のモデル
 struct User: Codable, Identifiable {
     @DocumentID var id: String? // Firestore ドキュメントの ID
     var name: String
-    var email: String
     var iconURL: String
 }

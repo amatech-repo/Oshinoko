@@ -18,22 +18,27 @@ class AppState: ObservableObject {
 }
 
 struct ContentView: View {
-    @ObservedObject var pinsViewModel: PinsViewModel
-    @EnvironmentObject var appState: AppState
+    @StateObject private var appState = AppState()
     @StateObject private var authViewModel = AuthViewModel()
+    @ObservedObject var pinsViewModel: PinsViewModel
 
     var body: some View {
-        NavigationView {
-            VStack {
-                switch appState.screenState {
-                case .login:
-                    LoginView(authViewModel: authViewModel, screenState: $appState.screenState)
-                case .signUp:
-                    SignUpView(authViewModel: authViewModel, screenState: $appState.screenState)
-                case .home:
-                    HomeView(pinsViewModel: pinsViewModel)
-                }
+        NavigationStack {
+            if appState.screenState == .login {
+                LoginView()
+                    .environmentObject(appState)
+                    .environmentObject(authViewModel)
+            } else if appState.screenState == .signUp {
+                SignUpView()
+                    .environmentObject(appState)
+                    .environmentObject(authViewModel)
+            } else {
+                HomeView(pinsViewModel: pinsViewModel)
+                    .environmentObject(appState)
+                    .environmentObject(authViewModel)
             }
         }
     }
 }
+
+

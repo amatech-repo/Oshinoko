@@ -8,20 +8,18 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseStorage
-
-import Foundation
-import FirebaseFirestore
-import FirebaseStorage
+import UIKit
 
 @MainActor
 class UsersViewModel: ObservableObject {
     @Published var currentUser: User? // 現在のログインユーザー
     @Published var users: [User] = [] // すべてのユーザー
+    @Published var selectedImage: UIImage? // ユーザーが選択した画像
 
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
 
-    // ユーザーを取得
+    // Firestoreから全ユーザーを取得
     func fetchUsers() async {
         do {
             let snapshot = try await db.collection("users").getDocuments()
@@ -31,7 +29,7 @@ class UsersViewModel: ObservableObject {
         }
     }
 
-    // ユーザーを Firestore に保存
+    // Firestoreにユーザーを保存
     func saveUser(_ user: User) async {
         guard let userID = user.id else { return }
         do {
@@ -41,9 +39,10 @@ class UsersViewModel: ObservableObject {
         }
     }
 
-    // アイコン画像をアップロード
-    func uploadIcon(image: UIImage, for userID: String) async -> String? {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+    // アルバム画像をアップロード
+    func uploadIcon(for userID: String) async -> String? {
+        guard let selectedImage = selectedImage,
+              let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
             print("画像データの変換に失敗")
             return nil
         }
@@ -60,9 +59,9 @@ class UsersViewModel: ObservableObject {
         }
     }
 
-    // ユーザー情報を更新（アイコン込み）
-    func updateUserIcon(image: UIImage, for userID: String) async {
-        if let url = await uploadIcon(image: image, for: userID) {
+    // アイコンを更新
+    func updateUserIcon(for userID: String) async {
+        if let url = await uploadIcon(for: userID) {
             do {
                 try await db.collection("users").document(userID).updateData(["iconURL": url])
                 print("アイコンURLを更新しました: \(url)")

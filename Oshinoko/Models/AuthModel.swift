@@ -21,7 +21,6 @@ class AuthModel {
                 let user = User(
                     id: firebaseUser.uid,
                     name: firebaseUser.displayName ?? "No Name",
-                    email: firebaseUser.email ?? "",
                     iconURL: ""
                 )
                 completion(.success(user))
@@ -41,7 +40,6 @@ class AuthModel {
                 let user = User(
                     id: firebaseUser.uid,
                     name: firebaseUser.displayName ?? "No Name",
-                    email: firebaseUser.email ?? "",
                     iconURL: ""
                 )
                 completion(.success(user))
