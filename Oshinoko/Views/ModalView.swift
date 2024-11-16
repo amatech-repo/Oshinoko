@@ -102,8 +102,10 @@ struct PinDetailView: View {
                     Text("位置情報が利用できません")
                         .foregroundColor(.gray)
                 }
-
                 ChatView(viewModel: chatViewModel, currentUserID: "User123")
+                    .onAppear {
+                        chatViewModel.startListeningForMessages()
+                    }
                     .frame(maxWidth: .infinity)
                     .frame(height: 400)
                 Button {
@@ -114,6 +116,7 @@ struct PinDetailView: View {
                     Text("行く")
                 }
                 .disabled(pinsViewModel.isRouteDisplayed) // キャンセルボタン表示時に非活性化
+                    .padding()
 
                 if pinsViewModel.isRouteDisplayed {
                     Button("キャンセル") {
@@ -128,6 +131,7 @@ struct PinDetailView: View {
             latitude = pin.coordinate.latitude
             longitude = pin.coordinate.longitude
 
+            // Geocoding を実行
             geocodingManager.getAddressDetails(for: pin.coordinate.toCLLocationCoordinate2D()) { prefecture, city, subLocality in
                 self.prefectureName = prefecture
                 self.cityName = city

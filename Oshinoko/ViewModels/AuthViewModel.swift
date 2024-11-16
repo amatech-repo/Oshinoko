@@ -12,8 +12,8 @@ import FirebaseFirestore
 
 @MainActor
 class AuthViewModel: ObservableObject {
-    @Published var email: String = ""
-    @Published var password: String = ""
+    @Published var email: String = "test@mail.com3"
+    @Published var password: String = "test1234"
     @Published var errorMessage: String = ""
     @Published var isAuthenticated: Bool = false
     @Published var selectedImage: UIImage? // ユーザーが選択した画像

@@ -16,6 +16,8 @@ class PinsViewModel: ObservableObject {
     @Published var currentRoute: MKRoute? = nil
     @Published var isRouteDisplayed: Bool = false
     @Published var currentLocation: CLLocationCoordinate2D? = nil // 現在地を格納
+    @Published var chatViewModels: [String: ChatViewModel] = [:] // 各ピンごとのチャットモデル
+
 
     private var locationManager = LocationManager()
     private var currentDirections: MKDirections? // 現在の経路計算インスタンス
@@ -26,6 +28,17 @@ class PinsViewModel: ObservableObject {
         locationManager.$currentLocation
             .assign(to: &$currentLocation)
     }
+
+    // ChatViewModel を取得または生成
+        func getChatViewModel(for pinID: String) -> ChatViewModel {
+            if let viewModel = chatViewModels[pinID] {
+                return viewModel
+            } else {
+                let newViewModel = ChatViewModel(pinID: pinID)
+                chatViewModels[pinID] = newViewModel
+                return newViewModel
+            }
+        }
 
     // ピンを取得
     func fetchPins() async {
@@ -95,6 +108,8 @@ class PinsViewModel: ObservableObject {
     func areCoordinatesEqual(_ lhs: CLLocationCoordinate2D, _ rhs: CLLocationCoordinate2D, tolerance: Double = 0.0001) -> Bool {
         return abs(lhs.latitude - rhs.latitude) < tolerance && abs(lhs.longitude - rhs.longitude) < tolerance
     }
+
+
 }
 
 

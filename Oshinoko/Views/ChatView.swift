@@ -14,31 +14,38 @@ struct ChatView: View {
 
     var body: some View {
         VStack {
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(spacing: 10) {
-                        ForEach(viewModel.messages, id: \.wrappedID) { message in
-                            ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
+            if viewModel.isLoading {
+                ProgressView("読み込み中...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(spacing: 10) {
+                            ForEach(viewModel.messages, id: \.wrappedID) { message in
+                                ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+
+                HStack {
+                    TextField("メッセージを入力", text: $viewModel.messageText)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button("送信") {
+                        Task {
+                            await viewModel.sendMessage(senderID: currentUserID)
                         }
                     }
-                    .padding()
+                    .disabled(viewModel.messageText.isEmpty)
                 }
-                .onAppear {
-                    viewModel.startListeningForMessages()
-                }
+                .padding()
             }
-
-            HStack {
-                TextField("メッセージを入力", text: $viewModel.messageText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                Button("送信") {
-                    Task {
-                        await viewModel.sendMessage(senderID: currentUserID)
-                    }
-                }
-                .disabled(viewModel.messageText.isEmpty)
+        }
+        .onAppear {
+            if viewModel.messages.isEmpty { // 初期状態でローディングを再開
+                viewModel.startListeningForMessages()
             }
-            .padding()
         }
         .alert(item: $viewModel.errorMessage) { error in
             Alert(title: Text("エラー"), message: Text(error.message), dismissButton: .default(Text("OK")))

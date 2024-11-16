@@ -45,21 +45,32 @@ class ChatViewModel: ObservableObject {
             return
         }
 
+        isLoading = true // ローディング開始
+        print("Starting Firestore listener for pinID: \(pinID)") // デバッグログ
+
         listener = db.collection("pins")
             .document(pinID)
             .collection("chats")
             .order(by: "timestamp")
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
+
+                self.isLoading = false // ローディング終了
                 if let error = error {
                     self.errorMessage = AlertMessage(message: "Failed to fetch messages: \(error.localizedDescription)")
+                    print("Error fetching messages: \(error.localizedDescription)") // エラーログ
                     return
                 }
 
-                guard let documents = snapshot?.documents else { return }
+                guard let documents = snapshot?.documents else {
+                    print("No messages found.") // デバッグログ
+                    return
+                }
+                print("Fetched \(documents.count) messages.") // デバッグログ
                 self.messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
             }
     }
+
 
     func stopListeningForMessages() {
         listener?.remove()
