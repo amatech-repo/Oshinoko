@@ -22,7 +22,7 @@ class MapPinsViewModel: ObservableObject {
     }
 
     func calculateRoute(to destination: CLLocationCoordinate2D) {
-        removeRouteOverlay() // 古い経路を削除
+        removeRouteOverlay()
 
         let request = MKDirections.Request()
         request.source = MKMapItem.forCurrentLocation()
@@ -55,31 +55,35 @@ class MapPinsViewModel: ObservableObject {
         do {
             let snapshot = try await db.collection("pins").getDocuments()
             self.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
-            self.annotations = pins.map { pin in
-                MapAnnotationItem(coordinate: pin.coordinate.toCLLocationCoordinate2D(), color: Color.green)
-            }
         } catch {
             print("ピンの取得エラー: \(error.localizedDescription)")
         }
     }
 
-    func onPinTapped(annotation: MapAnnotationItem) {
-        guard let pin = pins.first(where: { areCoordinatesEqual($0.coordinate.toCLLocationCoordinate2D(), annotation.coordinate) }) else {
-            print("Error: Pin data not found for tapped annotation")
-            return
-        }
-        guard let pinID = pin.id else {
-            print("Error: Pin ID is nil")
+    func addPin(coordinate: Coordinate, metadata: Metadata) async {
+        guard let userIconURL = AuthViewModel.shared.icon else {
+            print("ユーザーアイコンがありません")
             return
         }
 
-        Task {
-            await fetchMessages(for: pinID)
+        let pin = Pin(
+            id: UUID().uuidString,
+            coordinate: coordinate,
+            metadata: metadata,
+            iconURL: userIconURL
+        )
+
+        do {
+            try await addPinToFirestore(pin: pin)
+            pins.append(pin)
+        } catch {
+            print("Firestoreエラー: \(error.localizedDescription)")
         }
     }
 
-    func areCoordinatesEqual(_ lhs: CLLocationCoordinate2D, _ rhs: CLLocationCoordinate2D) -> Bool {
-        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    private func addPinToFirestore(pin: Pin) async throws {
+        let pinData = try Firestore.Encoder().encode(pin)
+        try await db.collection("pins").addDocument(data: pinData)
     }
 
     func fetchMessages(for pinID: String) async {
@@ -90,35 +94,5 @@ class MapPinsViewModel: ObservableObject {
             print("チャットメッセージの取得エラー: \(error.localizedDescription)")
         }
     }
-
-    func addPin(coordinate: CLLocationCoordinate2D, metadata: Metadata) async {
-        let newPin = Pin(
-            id: nil,
-            coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude),
-            metadata: metadata
-        )
-
-        do {
-            try await addPinToFirestore(pin: newPin)
-            await fetchPins() // 再取得して更新
-        } catch {
-            print("Failed to add pin: \(error.localizedDescription)")
-        }
-    }
-
-    private func addPinToFirestore(pin: Pin) async throws {
-        let pinData = try Firestore.Encoder().encode(pin)
-
-        do {
-            let _ = try await db.collection("pins").addDocument(data: pinData)
-        } catch {
-            throw error
-        }
-    }
 }
 
-extension Coordinate {
-    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
-    }
-}

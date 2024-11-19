@@ -7,39 +7,51 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct LoginView: View {
-    @ObservedObject var authViewModel: AuthViewModel
-    @Binding var screenState: ScreenState
+    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var authViewModel: AuthViewModel
 
     var body: some View {
-        VStack {
-            TextField("Email", text: $authViewModel.email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+        VStack(spacing: 16) {
+            Text("Welcome Back")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding(.bottom, 20)
 
-            SecureField("Password", text: $authViewModel.password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            CustomTextField(placeholder: "Email", text: $authViewModel.email)
+            CustomSecureField(placeholder: "Password", text: $authViewModel.password)
 
             if !authViewModel.errorMessage.isEmpty {
                 Text(authViewModel.errorMessage)
                     .foregroundColor(.red)
-                    .padding()
             }
 
-            Button("Log In") {
-                authViewModel.logIn()
-                if authViewModel.isAuthenticated {
-                    screenState = .home
+            Button(action: {
+                Task {
+                    await authViewModel.logIn()
+                    if authViewModel.isAuthenticated {
+                        appState.screenState = .home
+                    }
                 }
+            }) {
+                Text("Log In")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
             }
-            .padding()
 
-            Button("Don't have an account? Sign Up") {
-                screenState = .signUp
+            Button(action: {
+                appState.screenState = .signUp
+            }) {
+                Text("Don't have an account? Sign Up")
+                    .foregroundColor(.blue)
             }
-            .foregroundColor(.blue)
         }
         .padding()
+        .frame(maxWidth: 400)
     }
 }

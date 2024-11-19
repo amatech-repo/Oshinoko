@@ -16,15 +16,30 @@ class PinsViewModel: ObservableObject {
     @Published var currentRoute: MKRoute? = nil
     @Published var isRouteDisplayed: Bool = false
     @Published var currentLocation: CLLocationCoordinate2D? = nil // 現在地を格納
+    @Published var chatViewModels: [String: ChatViewModel] = [:] // 各ピンごとのチャットモデル
+    private let authViewModel: AuthViewModel
+
 
     private var locationManager = LocationManager()
     private var currentDirections: MKDirections? // 現在の経路計算インスタンス
     private let db = Firestore.firestore()
 
-    init() {
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel // AuthViewModel を外部から注入
         // LocationManager の現在地を監視
         locationManager.$currentLocation
             .assign(to: &$currentLocation)
+    }
+
+    // ChatViewModel を取得または生成
+    func getChatViewModel(for pinID: String) -> ChatViewModel {
+        if let viewModel = chatViewModels[pinID] {
+            return viewModel
+        } else {
+            let newViewModel = ChatViewModel(pinID: pinID)
+            chatViewModels[pinID] = newViewModel
+            return newViewModel
+        }
     }
 
     // ピンを取得
@@ -79,22 +94,46 @@ class PinsViewModel: ObservableObject {
         }
     }
 
-    // 新しいピンを追加
     func addPin(coordinate: Coordinate, metadata: Metadata) async {
-        let pin = Pin(coordinate: coordinate, metadata: metadata)
-
+        let userIconURL = fetchUserIcon()
+        let pin = Pin(
+            id: UUID().uuidString,
+            coordinate: coordinate,
+            metadata: metadata,
+            iconURL: userIconURL // 取得したユーザーアイコンURLを使用
+        )
         do {
-            try await db.collection("pins").addDocument(from: pin)
-            pins.append(pin) // ローカル更新
+            try await savePinToFirestore(pin: pin)
+            pins.append(pin)
         } catch {
-            print("Firestore error: \(error.localizedDescription)")
+            print("Firestoreエラー: \(error.localizedDescription)")
         }
+    }
+
+    private func fetchUserIcon() -> String {
+        // ユーザーアイコンURLを取得、デフォルト画像のURLまたは名前を返す
+        if let userIconURL = authViewModel.icon {
+            return userIconURL
+        } else {
+            print("ユーザーアイコンが見つかりません。以下が考えられる原因です：")
+            print("- ユーザーがアイコンを設定していない")
+            print("- 認証が未完了、または情報取得が失敗")
+            print("- AuthViewModelのiconプロパティがnil")
+            return "systemImage.defaultAvatar" // システム画像の名前や適当なデフォルト画像
+        }
+    }
+
+    private func savePinToFirestore(pin: Pin) async throws {
+        let pinData = try Firestore.Encoder().encode(pin)
+        try await db.collection("pins").addDocument(data: pinData)
     }
 
     // 座標の比較 (許容範囲)
     func areCoordinatesEqual(_ lhs: CLLocationCoordinate2D, _ rhs: CLLocationCoordinate2D, tolerance: Double = 0.0001) -> Bool {
         return abs(lhs.latitude - rhs.latitude) < tolerance && abs(lhs.longitude - rhs.longitude) < tolerance
     }
+
+
 }
 
 

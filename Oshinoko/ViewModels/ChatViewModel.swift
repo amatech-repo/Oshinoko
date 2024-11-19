@@ -45,21 +45,32 @@ class ChatViewModel: ObservableObject {
             return
         }
 
+        isLoading = true // ローディング開始
+        print("Starting Firestore listener for pinID: \(pinID)") // デバッグログ
+
         listener = db.collection("pins")
             .document(pinID)
             .collection("chats")
             .order(by: "timestamp")
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
+
+                self.isLoading = false // ローディング終了
                 if let error = error {
                     self.errorMessage = AlertMessage(message: "Failed to fetch messages: \(error.localizedDescription)")
+                    print("Error fetching messages: \(error.localizedDescription)") // エラーログ
                     return
                 }
 
-                guard let documents = snapshot?.documents else { return }
+                guard let documents = snapshot?.documents else {
+                    print("No messages found.") // デバッグログ
+                    return
+                }
+                print("Fetched \(documents.count) messages.") // デバッグログ
                 self.messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
             }
     }
+
 
     func stopListeningForMessages() {
         listener?.remove()
@@ -90,7 +101,8 @@ class ChatViewModel: ObservableObject {
                 senderID: senderID,
                 timestamp: Date(),
                 imageURL: downloadURL.absoluteString,
-                isImage: true
+                isImage: true,
+                senderIconURL: AuthViewModel.shared.icon // アイコン URL を追加
             )
 
             try await db.collection("pins").document(pinID).collection("chats").addDocument(from: newMessage)
@@ -100,6 +112,7 @@ class ChatViewModel: ObservableObject {
         }
     }
 
+
     func sendMessage(senderID: String) async {
         guard !pinID.isEmpty else {
             errorMessage = AlertMessage(message: "ピンIDが無効です")
@@ -108,12 +121,13 @@ class ChatViewModel: ObservableObject {
         guard !messageText.isEmpty else { return }
 
         let newMessage = ChatMessage(
-            id: nil, // 手動で設定しない
+            id: nil, // 自動生成
             message: messageText,
             senderID: senderID,
             timestamp: Date(),
             imageURL: nil,
-            isImage: false
+            isImage: false,
+            senderIconURL: AuthViewModel.shared.icon // アイコン URL を追加
         )
 
         do {
@@ -123,5 +137,6 @@ class ChatViewModel: ObservableObject {
             errorMessage = AlertMessage(message: "メッセージ送信エラー: \(error.localizedDescription)")
         }
     }
+
 }
 
