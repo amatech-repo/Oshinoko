@@ -16,16 +16,19 @@ struct SignUpView: View {
             Text("Create Account")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .foregroundColor(.white)
                 .padding(.bottom, 20)
 
-            // アルバムから画像を選択
             if let selectedImage = authViewModel.selectedImage {
                 Image(uiImage: selectedImage)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.blue, lineWidth: 2))
+                    .overlay(
+                        Circle().stroke(Color.white.opacity(0.5), lineWidth: 2)
+                    )
+                    .shadow(radius: 10)
                     .padding(.bottom)
             } else {
                 PhotosPicker(selection: Binding(
@@ -39,11 +42,13 @@ struct SignUpView: View {
                     }
                 )) {
                     Text("Select Profile Image")
-                        .foregroundColor(.blue)
+                        .font(.headline)
+                        .foregroundColor(.white)
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.blue, lineWidth: 2)
+                                .fill(Color.white.opacity(0.2))
+                                .shadow(radius: 5)
                         )
                 }
             }
@@ -65,31 +70,33 @@ struct SignUpView: View {
                 }
             }) {
                 Text("Sign Up")
+                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.green)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(hex: "F19ED2").opacity(0.7))
+                            .shadow(radius: 5)
+                    )
                     .foregroundColor(.white)
-                    .cornerRadius(8)
             }
 
             Button(action: {
                 appState.screenState = .login
             }) {
                 Text("Already have an account? Log In")
-                    .foregroundColor(.blue)
+                    .font(.footnote)
+                    .foregroundColor(.white) // 白色で見やすく
             }
         }
+        .ignoresSafeArea()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .glassmorphismBackground(
-                    start: Color(hex: "91DDCF"),
-                    end: Color(hex: "F19ED2"),
-                    blurRadius: 20,
-                    opacity: 0.25
-                )
-        .padding()
+            colors: [Color(hex: "91DDCF"), Color(hex: "F19ED2")]
+        )
         .frame(maxWidth: 400)
     }
 
-    // PhotosPickerからUIImageを読み込む
     private func loadImage(item: PhotosPickerItem) async -> UIImage? {
         do {
             if let data = try await item.loadTransferable(type: Data.self) {

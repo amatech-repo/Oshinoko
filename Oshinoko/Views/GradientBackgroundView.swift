@@ -7,17 +7,18 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct GlassmorphismBackground: ViewModifier {
-    let startColor: Color
-    let endColor: Color
+    let colors: [Color]
     let blurRadius: CGFloat
     let opacity: Double
 
     func body(content: Content) -> some View {
         ZStack {
-            // 背景グラデーション
+            // グラデーション背景
             LinearGradient(
-                gradient: Gradient(colors: [startColor, endColor]),
+                gradient: Gradient(colors: colors),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -34,16 +35,17 @@ struct GlassmorphismBackground: ViewModifier {
     }
 }
 
+// MARK: - View拡張
 extension View {
     func glassmorphismBackground(
-        start: Color,
-        end: Color,
-        blurRadius: CGFloat = 10,
-        opacity: Double = 0.3
+        colors: [Color],
+        blurRadius: CGFloat = 20,
+        opacity: Double = 0.25
     ) -> some View {
-        self.modifier(GlassmorphismBackground(startColor: start, endColor: end, blurRadius: blurRadius, opacity: opacity))
+        self.modifier(GlassmorphismBackground(colors: colors, blurRadius: blurRadius, opacity: opacity))
     }
 }
+
 // MARK: - Hexカラーコードを使うための便利な拡張
 extension Color {
     init(hex: String) {
@@ -60,3 +62,41 @@ extension Color {
         self.init(red: red, green: green, blue: blue)
     }
 }
+
+import SwiftUI
+
+struct CustomTextField: View {
+    var placeholder: String
+    @Binding var text: String
+
+    var body: some View {
+        TextField(placeholder, text: $text)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.white.opacity(0.2)) // 半透明の白色背景
+                    .shadow(radius: 7)
+            )
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+
+    }
+}
+
+struct CustomSecureField: View {
+    var placeholder: String
+    @Binding var text: String
+
+    var body: some View {
+        SecureField(placeholder, text: $text)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.white.opacity(0.2)) // 半透明の白色背景
+                    .shadow(radius: 7)
+            )
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+    }
+}
+
