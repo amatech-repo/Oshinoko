@@ -18,6 +18,8 @@ struct HomeView: View {
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "") // Chat用ViewModel
     @ObservedObject var pinsViewModel: PinsViewModel // ピン管理用ViewModel
+    @State private var bookmarks: [Bookmark] = []
+
 
     // MARK: - Body
     var body: some View {
@@ -128,13 +130,16 @@ struct HomeView: View {
 
     // MARK: - Tab 2 and Tab 3: Placeholder Views
     private func textTab(title: String) -> some View {
-        VStack {
-            Text(title)
-                .font(.largeTitle)
-                .padding()
-            Spacer()
+        List(bookmarks, id: \.self) { bookmark in
+            VStack(alignment: .leading) {
+                Text(bookmark.address ?? "住所なし")
+                Text("座標: \(bookmark.latitude), \(bookmark.longitude)")
+                    .font(.caption)
+            }
         }
-        .background(Color(.systemBackground)) // タブごとに背景色を統一
+        .onAppear {
+            bookmarks = CoreDataManager.shared.fetchBookmarks()
+        }
     }
 }
 

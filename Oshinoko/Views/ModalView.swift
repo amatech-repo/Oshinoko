@@ -30,7 +30,7 @@ struct InformationModal: View {
                 },
                 trailing: Button("保存") {
                     onSave(Metadata(
-                        createdBy: authViewModel.name, // 環境オブジェクトを使用
+                        createdBy: authViewModel.name ?? "不明なユーザー", // デフォルト値を設定
                         description: description,
                         title: title
                     ))
@@ -117,6 +117,24 @@ struct PinDetailView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 400)
+
+                Button("ブックマーク") {
+                    if let latitude = latitude, let longitude = longitude {
+                        CoreDataManager.shared.saveBookmark(
+                            id: pin.id ?? "idがないよ",
+                            latitude: latitude,
+                            longitude: longitude,
+                            address: prefectureName ?? "住所不明",
+                            title: pin.metadata.title,
+                            description: pin.metadata.description
+                        )
+                        print("ブックマークを保存しました")
+                    } else {
+                        print("座標が取得できません")
+                    }
+                }
+                .padding()
+
 
                 Button {
                     if let latitude = latitude, let longitude = longitude {

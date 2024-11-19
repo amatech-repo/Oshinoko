@@ -29,6 +29,8 @@
 		3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302B2CE5C705009C368B /* AuthViewModel.swift */; };
 		3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302E2CE5C7D8009C368B /* LoginView.swift */; };
 		3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB30302CE5C7F3009C368B /* SignUpView.swift */; };
+		3BAF4B1E2CECA7F60045179C /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF4B1D2CECA7F60045179C /* CoreDataManager.swift */; };
+		3BAF4B212CECA97F0045179C /* BookmarksDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF4B1F2CECA97F0045179C /* BookmarksDataModel.xcdatamodeld */; };
 		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
 		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
 		3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */; };
@@ -83,6 +85,8 @@
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		3BAB302E2CE5C7D8009C368B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3BAB30302CE5C7F3009C368B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		3BAF4B1D2CECA7F60045179C /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		3BAF4B202CECA97F0045179C /* BookmarkModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookmarkModel.xcdatamodel; sourceTree = "<group>"; };
 		3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oshinoko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoApp.swift; sourceTree = "<group>"; };
 		3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 				3BE0701D2CE5E9BF0032838F /* ChatModel.swift */,
 				3BE070212CE5E9FD0032838F /* UserModel.swift */,
 				3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */,
+				3BAF4B1F2CECA97F0045179C /* BookmarksDataModel.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 				3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */,
 				3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */,
 				3BA737E42CE7365200FFEACC /* LocationViewModel.swift */,
+				3BAF4B1D2CECA7F60045179C /* CoreDataManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -433,6 +439,7 @@
 				3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
+				3BAF4B212CECA97F0045179C /* BookmarksDataModel.xcdatamodeld in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
 				3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */,
@@ -448,6 +455,7 @@
 				3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */,
 				3BE070242CE5EA950032838F /* UserViewModel.swift in Sources */,
 				3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */,
+				3BAF4B1E2CECA7F60045179C /* CoreDataManager.swift in Sources */,
 				3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -841,6 +849,19 @@
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		3BAF4B1F2CECA97F0045179C /* BookmarksDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3BAF4B202CECA97F0045179C /* BookmarkModel.xcdatamodel */,
+			);
+			currentVersion = 3BAF4B202CECA97F0045179C /* BookmarkModel.xcdatamodel */;
+			path = BookmarksDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3BC2A0EA2CE4CC650008DDA9 /* Project object */;
 }
