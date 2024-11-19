@@ -73,22 +73,54 @@ struct ChatMessageView: View {
 
     var body: some View {
         HStack {
-            if isCurrentUser { Spacer() }
-            if message.isImage, let imageURL = message.imageURL {
-                AsyncImage(url: URL(string: imageURL)) { image in
-                    image.resizable().scaledToFit()
-                } placeholder: {
-                    ProgressView()
+            if !isCurrentUser {
+                if let iconURL = message.senderIconURL, let url = URL(string: iconURL) {
+                    AsyncImage(url: url) { image in
+                        image.resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                    } placeholder: {
+                        Circle()
+                            .fill(Color.gray)
+                            .frame(width: 40, height: 40)
+                    }
+                } else {
+                    Circle()
+                        .fill(Color.gray)
+                        .frame(width: 40, height: 40)
                 }
-                .frame(maxWidth: 250)
-            } else {
-                Text(message.message)
-                    .padding()
-                    .background(isCurrentUser ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
-                    .cornerRadius(8)
-                    .frame(maxWidth: 250, alignment: isCurrentUser ? .trailing : .leading)
             }
-            if !isCurrentUser { Spacer() }
+            VStack(alignment: isCurrentUser ? .trailing : .leading) {
+                if message.isImage, let imageURL = message.imageURL {
+                    AsyncImage(url: URL(string: imageURL)) { image in
+                        image.resizable()
+                            .scaledToFit()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: 250)
+                } else {
+                    Text(message.message)
+                        .padding()
+                        .background(isCurrentUser ? Color.blue.opacity(0.2) : Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+                }
+            }
+            if isCurrentUser {
+                if let iconURL = message.senderIconURL, let url = URL(string: iconURL) {
+                    AsyncImage(url: url) { image in
+                        image.resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                    } placeholder: {
+                        Circle()
+                            .fill(Color.gray)
+                            .frame(width: 40, height: 40)
+                    }
+                }
+            }
         }
     }
 }

@@ -64,6 +64,7 @@ struct ChatMessage: Codable, Identifiable {
     let timestamp: Date
     let imageURL: String?
     let isImage: Bool
+    let senderIconURL: String?
 
     // id が nil の場合、他の識別子を提供
     var wrappedID: String {

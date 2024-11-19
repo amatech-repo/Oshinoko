@@ -101,7 +101,8 @@ class ChatViewModel: ObservableObject {
                 senderID: senderID,
                 timestamp: Date(),
                 imageURL: downloadURL.absoluteString,
-                isImage: true
+                isImage: true,
+                senderIconURL: AuthViewModel.shared.icon // アイコン URL を追加
             )
 
             try await db.collection("pins").document(pinID).collection("chats").addDocument(from: newMessage)
@@ -111,6 +112,7 @@ class ChatViewModel: ObservableObject {
         }
     }
 
+
     func sendMessage(senderID: String) async {
         guard !pinID.isEmpty else {
             errorMessage = AlertMessage(message: "ピンIDが無効です")
@@ -119,12 +121,13 @@ class ChatViewModel: ObservableObject {
         guard !messageText.isEmpty else { return }
 
         let newMessage = ChatMessage(
-            id: nil, // 手動で設定しない
+            id: nil, // 自動生成
             message: messageText,
             senderID: senderID,
             timestamp: Date(),
             imageURL: nil,
-            isImage: false
+            isImage: false,
+            senderIconURL: AuthViewModel.shared.icon // アイコン URL を追加
         )
 
         do {
@@ -134,5 +137,6 @@ class ChatViewModel: ObservableObject {
             errorMessage = AlertMessage(message: "メッセージ送信エラー: \(error.localizedDescription)")
         }
     }
+
 }
 
