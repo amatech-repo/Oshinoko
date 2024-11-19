@@ -18,6 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+@main
 struct OshinokoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var appState = AppState()

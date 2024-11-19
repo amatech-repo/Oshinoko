@@ -25,22 +25,22 @@ class PinsViewModel: ObservableObject {
     private let db = Firestore.firestore()
 
     init(authViewModel: AuthViewModel) {
-            self.authViewModel = authViewModel // AuthViewModel を外部から注入
-            // LocationManager の現在地を監視
-            locationManager.$currentLocation
-                .assign(to: &$currentLocation)
-        }
+        self.authViewModel = authViewModel // AuthViewModel を外部から注入
+        // LocationManager の現在地を監視
+        locationManager.$currentLocation
+            .assign(to: &$currentLocation)
+    }
 
     // ChatViewModel を取得または生成
-        func getChatViewModel(for pinID: String) -> ChatViewModel {
-            if let viewModel = chatViewModels[pinID] {
-                return viewModel
-            } else {
-                let newViewModel = ChatViewModel(pinID: pinID)
-                chatViewModels[pinID] = newViewModel
-                return newViewModel
-            }
+    func getChatViewModel(for pinID: String) -> ChatViewModel {
+        if let viewModel = chatViewModels[pinID] {
+            return viewModel
+        } else {
+            let newViewModel = ChatViewModel(pinID: pinID)
+            chatViewModels[pinID] = newViewModel
+            return newViewModel
         }
+    }
 
     // ピンを取得
     func fetchPins() async {
@@ -95,23 +95,33 @@ class PinsViewModel: ObservableObject {
     }
 
     func addPin(coordinate: Coordinate, metadata: Metadata) async {
-            guard let userIconURL = authViewModel.icon else {
-                print("ユーザーアイコンが見つかりません")
-                return
-            }
-            let pin = Pin(
-                id: UUID().uuidString,
-                coordinate: coordinate,
-                metadata: metadata,
-                iconURL: userIconURL // AuthViewModel から取得
-            )
-            do {
-                try await savePinToFirestore(pin: pin)
-                pins.append(pin)
-            } catch {
-                print("Firestoreエラー: \(error.localizedDescription)")
-            }
+        let userIconURL = fetchUserIcon()
+        let pin = Pin(
+            id: UUID().uuidString,
+            coordinate: coordinate,
+            metadata: metadata,
+            iconURL: userIconURL // 取得したユーザーアイコンURLを使用
+        )
+        do {
+            try await savePinToFirestore(pin: pin)
+            pins.append(pin)
+        } catch {
+            print("Firestoreエラー: \(error.localizedDescription)")
         }
+    }
+
+    private func fetchUserIcon() -> String {
+        // ユーザーアイコンURLを取得、デフォルト画像のURLまたは名前を返す
+        if let userIconURL = authViewModel.icon {
+            return userIconURL
+        } else {
+            print("ユーザーアイコンが見つかりません。以下が考えられる原因です：")
+            print("- ユーザーがアイコンを設定していない")
+            print("- 認証が未完了、または情報取得が失敗")
+            print("- AuthViewModelのiconプロパティがnil")
+            return "systemImage.defaultAvatar" // システム画像の名前や適当なデフォルト画像
+        }
+    }
 
     private func savePinToFirestore(pin: Pin) async throws {
         let pinData = try Firestore.Encoder().encode(pin)
