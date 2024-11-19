@@ -11,6 +11,8 @@ struct ChatView: View {
     @StateObject var viewModel: ChatViewModel // `@StateObject`に変更
     @State private var isImagePickerPresented = false
     let currentUserID: String
+    let currentUserName: String
+    let currentUserIcon: String?
 
     var body: some View {
         VStack {
@@ -22,7 +24,19 @@ struct ChatView: View {
                     ScrollView {
                         LazyVStack(spacing: 10) {
                             ForEach(viewModel.messages, id: \.wrappedID) { message in
-                                ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
+                                HStack {
+                                    if let icon = currentUserIcon, let url = URL(string: icon) {
+                                        AsyncImage(url: url) { image in
+                                            image.resizable()
+                                                .scaledToFit()
+                                                .frame(width: 50, height: 50)
+                                                .clipShape(Circle())
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                    }
+                                    ChatMessageView(message: message, isCurrentUser: message.senderID == currentUserID)
+                                }
                             }
                         }
                         .padding()

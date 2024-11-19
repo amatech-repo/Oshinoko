@@ -10,8 +10,8 @@ import SwiftUI
 import MapKit
 
 struct InformationModal: View {
+    @EnvironmentObject var authViewModel: AuthViewModel // AuthViewModelを追加
     let coordinate: CLLocationCoordinate2D
-    let createdBy: String
     let onSave: (Metadata) -> Void
 
     @State private var title: String = ""
@@ -26,18 +26,20 @@ struct InformationModal: View {
             .navigationBarTitle("ピン情報を入力", displayMode: .inline)
             .navigationBarItems(
                 leading: Button("キャンセル") {
-                    // キャンセル処理（必要に応じて追加）
+                    // キャンセル処理
                 },
                 trailing: Button("保存") {
                     onSave(Metadata(
-                        createdBy: createdBy,
-                        description: description, title: title
+                        createdBy: authViewModel.name, // 環境オブジェクトを使用
+                        description: description,
+                        title: title
                     ))
                 }
             )
         }
     }
 }
+
 
 
 extension CLLocationCoordinate2D: Equatable {
@@ -47,9 +49,10 @@ extension CLLocationCoordinate2D: Equatable {
 }
 
 struct PinDetailView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel // 環境オブジェクトとして authViewModel を追加
     let pin: Pin
 
-    @ObservedObject private var pinsViewModel: PinsViewModel // StateObject → ObservedObject に修正
+    @ObservedObject private var pinsViewModel: PinsViewModel
     @State private var isRouteDisplayed: Bool = false
     @State private var currentRoute: MKRoute? = nil
     @StateObject private var placesManager = PlacesAPIManager()
@@ -64,7 +67,7 @@ struct PinDetailView: View {
 
     init(pin: Pin, pinsViewModel: PinsViewModel) {
         self.pin = pin
-        self.pinsViewModel = pinsViewModel // ViewModel を渡す
+        self.pinsViewModel = pinsViewModel
         _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
     }
 
@@ -102,12 +105,19 @@ struct PinDetailView: View {
                     Text("位置情報が利用できません")
                         .foregroundColor(.gray)
                 }
-                ChatView(viewModel: chatViewModel, currentUserID: "User123")
-                    .onAppear {
-                        chatViewModel.startListeningForMessages()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 400)
+
+                ChatView(
+                    viewModel: chatViewModel,
+                    currentUserID: authViewModel.userID ?? "", // @EnvironmentObject を利用
+                    currentUserName: authViewModel.name,
+                    currentUserIcon: authViewModel.icon
+                )
+                .onAppear {
+                    chatViewModel.startListeningForMessages()
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 400)
+
                 Button {
                     if let latitude = latitude, let longitude = longitude {
                         pinsViewModel.calculateRoute(to: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
@@ -115,8 +125,8 @@ struct PinDetailView: View {
                 } label: {
                     Text("行く")
                 }
-                .disabled(pinsViewModel.isRouteDisplayed) // キャンセルボタン表示時に非活性化
-                    .padding()
+                .disabled(pinsViewModel.isRouteDisplayed)
+                .padding()
 
                 if pinsViewModel.isRouteDisplayed {
                     Button("キャンセル") {
@@ -131,7 +141,6 @@ struct PinDetailView: View {
             latitude = pin.coordinate.latitude
             longitude = pin.coordinate.longitude
 
-            // Geocoding を実行
             geocodingManager.getAddressDetails(for: pin.coordinate.toCLLocationCoordinate2D()) { prefecture, city, subLocality in
                 self.prefectureName = prefecture
                 self.cityName = city
@@ -143,4 +152,5 @@ struct PinDetailView: View {
         .padding()
     }
 }
+
 

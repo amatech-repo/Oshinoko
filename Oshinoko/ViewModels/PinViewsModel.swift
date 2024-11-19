@@ -17,17 +17,19 @@ class PinsViewModel: ObservableObject {
     @Published var isRouteDisplayed: Bool = false
     @Published var currentLocation: CLLocationCoordinate2D? = nil // 現在地を格納
     @Published var chatViewModels: [String: ChatViewModel] = [:] // 各ピンごとのチャットモデル
+    private let authViewModel: AuthViewModel
 
 
     private var locationManager = LocationManager()
     private var currentDirections: MKDirections? // 現在の経路計算インスタンス
     private let db = Firestore.firestore()
 
-    init() {
-        // LocationManager の現在地を監視
-        locationManager.$currentLocation
-            .assign(to: &$currentLocation)
-    }
+    init(authViewModel: AuthViewModel) {
+            self.authViewModel = authViewModel // AuthViewModel を外部から注入
+            // LocationManager の現在地を監視
+            locationManager.$currentLocation
+                .assign(to: &$currentLocation)
+        }
 
     // ChatViewModel を取得または生成
         func getChatViewModel(for pinID: String) -> ChatViewModel {
@@ -92,16 +94,28 @@ class PinsViewModel: ObservableObject {
         }
     }
 
-    // 新しいピンを追加
     func addPin(coordinate: Coordinate, metadata: Metadata) async {
-        let pin = Pin(coordinate: coordinate, metadata: metadata)
-
-        do {
-            try await db.collection("pins").addDocument(from: pin)
-            pins.append(pin) // ローカル更新
-        } catch {
-            print("Firestore error: \(error.localizedDescription)")
+            guard let userIconURL = authViewModel.icon else {
+                print("ユーザーアイコンが見つかりません")
+                return
+            }
+            let pin = Pin(
+                id: UUID().uuidString,
+                coordinate: coordinate,
+                metadata: metadata,
+                iconURL: userIconURL // AuthViewModel から取得
+            )
+            do {
+                try await savePinToFirestore(pin: pin)
+                pins.append(pin)
+            } catch {
+                print("Firestoreエラー: \(error.localizedDescription)")
+            }
         }
+
+    private func savePinToFirestore(pin: Pin) async throws {
+        let pinData = try Firestore.Encoder().encode(pin)
+        try await db.collection("pins").addDocument(data: pinData)
     }
 
     // 座標の比較 (許容範囲)

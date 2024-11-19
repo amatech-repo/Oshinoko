@@ -22,6 +22,8 @@ struct Pin: Codable, Identifiable, Equatable {
     var wrappedID: String {
         id ?? UUID().uuidString
     }
+
+    let iconURL: String? // アイコン画像のURLを追加
 }
 
 struct Coordinate: Codable {

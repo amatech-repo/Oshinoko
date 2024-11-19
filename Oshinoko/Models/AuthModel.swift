@@ -8,7 +8,7 @@
 import FirebaseAuth
 import SwiftUI
 
-class AuthModel {
+class AuthModel: ObservableObject {
     func signIn(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {

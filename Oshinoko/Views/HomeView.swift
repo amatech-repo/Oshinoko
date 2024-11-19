@@ -57,6 +57,7 @@ struct HomeView: View {
                 MapView(
                     pinsViewModel: pinsViewModel,
                     selectedPin: $selectedPin,
+                    newPinCoordinate: $newPinCoordinate, isShowingModal: $isShowingInformationModal,
                     onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
@@ -76,9 +77,25 @@ struct HomeView: View {
         }
         .sheet(isPresented: $isShowingInformationModal) {
             if let coordinate = newPinCoordinate {
-                createPinModal(for: coordinate)
+                InformationModal(
+                    coordinate: coordinate,
+                    onSave: { metadata in
+                        Task {
+                            await pinsViewModel.addPin(
+                                coordinate: Coordinate(
+                                    latitude: coordinate.latitude,
+                                    longitude: coordinate.longitude
+                                ),
+                                metadata: metadata
+                            )
+                        }
+                        newPinCoordinate = nil
+                        isShowingInformationModal = false
+                    }
+                )
             }
         }
+
         .sheet(item: $selectedPin) { pin in
             PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
@@ -88,7 +105,6 @@ struct HomeView: View {
     private func createPinModal(for coordinate: CLLocationCoordinate2D) -> some View {
         InformationModal(
             coordinate: coordinate,
-            createdBy: "User123", // ログイン中のユーザーID
             onSave: { metadata in
                 Task {
                     do {
@@ -108,6 +124,7 @@ struct HomeView: View {
             }
         )
     }
+
 
     // MARK: - Tab 2 and Tab 3: Placeholder Views
     private func textTab(title: String) -> some View {
