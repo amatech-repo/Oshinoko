@@ -15,7 +15,7 @@ class AuthModel: ObservableObject {
                 completion(.failure(error))
                 return
             }
-
+            
             if let firebaseUser = result?.user {
                 // FirebaseAuth.User をアプリの User 型にマッピング
                 let user = User(
@@ -27,14 +27,14 @@ class AuthModel: ObservableObject {
             }
         }
     }
-
+    
     func signUp(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
+            
             if let firebaseUser = result?.user {
                 // FirebaseAuth.User をアプリの User 型にマッピング
                 let user = User(

@@ -14,18 +14,18 @@ struct HomeView: View {
     @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置の座標
     @State private var isShowingInformationModal = false // 情報入力モーダルの表示フラグ
     @State var selection = 1 // タブ選択状態
-
+    
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "") // Chat用ViewModel
     @ObservedObject var pinsViewModel: PinsViewModel // ピン管理用ViewModel
-
+    
     // MARK: - Body
     var body: some View {
         ZStack {
             // 背景色を設定
             Color.red
                 .ignoresSafeArea() // 安全領域を無視して全体に適用
-
+            
             // コンテンツ (TabView)
             TabView(selection: $selection) {
                 mapTab
@@ -33,13 +33,13 @@ struct HomeView: View {
                         Label("Map", systemImage: "map")
                     }
                     .tag(1)
-
+                
                 textTab(title: "Tab 2 Content")
                     .tabItem {
                         Label("AI", systemImage: "message")
                     }
                     .tag(2)
-
+                
                 textTab(title: "Tab 3 Content")
                     .tabItem {
                         Label("Bookmark", systemImage: "person")
@@ -48,7 +48,7 @@ struct HomeView: View {
             }
         }
     }
-
+    
     // MARK: - Tab 1: Map Tab
     private var mapTab: some View {
         VStack(spacing: 0) {
@@ -72,7 +72,7 @@ struct HomeView: View {
                     }
                 }
             }
-
+            
             Spacer() // タブバーを見やすくするためにスペースを調整
         }
         .sheet(isPresented: $isShowingInformationModal) {
@@ -95,12 +95,12 @@ struct HomeView: View {
                 )
             }
         }
-
+        
         .sheet(item: $selectedPin) { pin in
             PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
     }
-
+    
     // MARK: - Helper Functions
     private func createPinModal(for coordinate: CLLocationCoordinate2D) -> some View {
         InformationModal(
@@ -124,8 +124,8 @@ struct HomeView: View {
             }
         )
     }
-
-
+    
+    
     // MARK: - Tab 2 and Tab 3: Placeholder Views
     private func textTab(title: String) -> some View {
         VStack {

@@ -51,6 +51,12 @@ struct LoginView: View {
                     .foregroundColor(.blue)
             }
         }
+        .glassmorphismBackground(
+                    start: Color(hex: "91DDCF"),
+                    end: Color(hex: "E8C5E5"),
+                    blurRadius: 20,
+                    opacity: 0.25
+                )
         .padding()
         .frame(maxWidth: 400)
     }

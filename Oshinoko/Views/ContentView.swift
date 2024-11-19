@@ -21,7 +21,7 @@ struct ContentView: View {
     @StateObject private var appState = AppState()
     @StateObject private var authViewModel = AuthViewModel()
     @ObservedObject var pinsViewModel: PinsViewModel
-
+    
     var body: some View {
         NavigationStack {
             if appState.screenState == .login {

@@ -29,6 +29,7 @@
 		3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302B2CE5C705009C368B /* AuthViewModel.swift */; };
 		3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302E2CE5C7D8009C368B /* LoginView.swift */; };
 		3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB30302CE5C7F3009C368B /* SignUpView.swift */; };
+		3BAF4B232CECD2A00045179C /* GradientBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF4B222CECD2A00045179C /* GradientBackgroundView.swift */; };
 		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
 		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
 		3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */; };
@@ -83,6 +84,7 @@
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		3BAB302E2CE5C7D8009C368B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3BAB30302CE5C7F3009C368B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		3BAF4B222CECD2A00045179C /* GradientBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackgroundView.swift; sourceTree = "<group>"; };
 		3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oshinoko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoApp.swift; sourceTree = "<group>"; };
 		3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
 				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
+				3BAF4B222CECD2A00045179C /* GradientBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */,
 				3B56D0A52CE5A025001BF220 /* MapViewModel.swift in Sources */,
 				3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */,
+				3BAF4B232CECD2A00045179C /* GradientBackgroundView.swift in Sources */,
 				3BE070242CE5EA950032838F /* UserViewModel.swift in Sources */,
 				3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */,
 				3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */,

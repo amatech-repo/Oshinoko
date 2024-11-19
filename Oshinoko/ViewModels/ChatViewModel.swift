@@ -22,12 +22,12 @@ class ChatViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: AlertMessage?
     @Published var messageText: String = "" // メッセージ入力用
-
+    
     private let storage = Storage.storage()
     private let db = Firestore.firestore()
     var pinID: String
     private var listener: ListenerRegistration?
-
+    
     init(pinID: String? = nil) {
         if let pinID = pinID, !pinID.isEmpty {
             self.pinID = pinID
@@ -38,30 +38,30 @@ class ChatViewModel: ObservableObject {
             print("Generated new pinID: \(self.pinID)") // デバッグログ
         }
     }
-
+    
     func startListeningForMessages() {
         guard !pinID.isEmpty else {
             errorMessage = AlertMessage(message: "ピンIDが無効です")
             return
         }
-
+        
         isLoading = true // ローディング開始
         print("Starting Firestore listener for pinID: \(pinID)") // デバッグログ
-
+        
         listener = db.collection("pins")
             .document(pinID)
             .collection("chats")
             .order(by: "timestamp")
             .addSnapshotListener { [weak self] snapshot, error in
                 guard let self = self else { return }
-
+                
                 self.isLoading = false // ローディング終了
                 if let error = error {
                     self.errorMessage = AlertMessage(message: "Failed to fetch messages: \(error.localizedDescription)")
                     print("Error fetching messages: \(error.localizedDescription)") // エラーログ
                     return
                 }
-
+                
                 guard let documents = snapshot?.documents else {
                     print("No messages found.") // デバッグログ
                     return
@@ -70,31 +70,31 @@ class ChatViewModel: ObservableObject {
                 self.messages = documents.compactMap { try? $0.data(as: ChatMessage.self) }
             }
     }
-
-
+    
+    
     func stopListeningForMessages() {
         listener?.remove()
         listener = nil
     }
-
+    
     deinit {
         listener?.remove()
     }
-
+    
     func uploadImage(image: UIImage, senderID: String) async {
         guard let resizedImage = image.resized(toWidth: 1024),
               let imageData = resizedImage.jpegData(compressionQuality: 0.8) else {
             errorMessage = AlertMessage(message: "画像データの変換に失敗しました")
             return
         }
-
+        
         let imageID = UUID().uuidString
         let storageRef = storage.reference().child("chat_images/\(imageID).jpg")
-
+        
         do {
             let _ = try await storageRef.putDataAsync(imageData)
             let downloadURL = try await storageRef.downloadURL()
-
+            
             let newMessage = ChatMessage(
                 id: nil,
                 message: "画像が送信されました",
@@ -104,22 +104,22 @@ class ChatViewModel: ObservableObject {
                 isImage: true,
                 senderIconURL: AuthViewModel.shared.icon // アイコン URL を追加
             )
-
+            
             try await db.collection("pins").document(pinID).collection("chats").addDocument(from: newMessage)
             selectedImage = nil
         } catch {
             errorMessage = AlertMessage(message: "画像アップロードエラー: \(error.localizedDescription)")
         }
     }
-
-
+    
+    
     func sendMessage(senderID: String) async {
         guard !pinID.isEmpty else {
             errorMessage = AlertMessage(message: "ピンIDが無効です")
             return
         }
         guard !messageText.isEmpty else { return }
-
+        
         let newMessage = ChatMessage(
             id: nil, // 自動生成
             message: messageText,
@@ -129,7 +129,7 @@ class ChatViewModel: ObservableObject {
             isImage: false,
             senderIconURL: AuthViewModel.shared.icon // アイコン URL を追加
         )
-
+        
         do {
             try await db.collection("pins").document(pinID).collection("chats").addDocument(from: newMessage)
             messageText = "" // 入力フィールドをクリア
@@ -137,6 +137,6 @@ class ChatViewModel: ObservableObject {
             errorMessage = AlertMessage(message: "メッセージ送信エラー: \(error.localizedDescription)")
         }
     }
-
+    
 }
 
