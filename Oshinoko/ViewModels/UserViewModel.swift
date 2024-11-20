@@ -19,17 +19,21 @@ class UsersViewModel: ObservableObject {
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
 
-    // Firestoreから全ユーザーを取得
+    // MARK: - Public Methods
+
+    /// Firestoreから全ユーザーを取得
     func fetchUsers() async {
         do {
-            let snapshot = try await db.collection("users").getDocuments()
-            self.users = snapshot.documents.compactMap { try? $0.data(as: User.self) }
+            users = try await db.collection("users")
+                .getDocuments()
+                .documents
+                .compactMap { try? $0.data(as: User.self) }
         } catch {
             print("ユーザーの取得エラー: \(error.localizedDescription)")
         }
     }
 
-    // Firestoreにユーザーを保存
+    /// Firestoreにユーザーを保存
     func saveUser(_ user: User) async {
         guard let userID = user.id else { return }
         do {
@@ -39,35 +43,36 @@ class UsersViewModel: ObservableObject {
         }
     }
 
-    // アルバム画像をアップロード
-    func uploadIcon(for userID: String) async -> String? {
+    /// アイコンを更新
+    func updateUserIcon(for userID: String) async {
+        if let iconURL = await uploadImage(to: "user_icons/\(userID).jpg") {
+            do {
+                try await db.collection("users").document(userID).updateData(["iconURL": iconURL])
+                print("アイコンURLを更新しました: \(iconURL)")
+            } catch {
+                print("アイコンURLの更新エラー: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // MARK: - Private Helpers
+
+    /// 画像をFirebase Storageにアップロード
+    private func uploadImage(to path: String) async -> String? {
         guard let selectedImage = selectedImage,
               let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
             print("画像データの変換に失敗")
             return nil
         }
 
-        let iconRef = storage.reference().child("user_icons/\(userID).jpg")
+        let ref = storage.reference().child(path)
 
         do {
-            let _ = try await iconRef.putDataAsync(imageData)
-            let url = try await iconRef.downloadURL()
-            return url.absoluteString
+            let _ = try await ref.putDataAsync(imageData)
+            return try await ref.downloadURL().absoluteString
         } catch {
-            print("アイコン画像のアップロードエラー: \(error.localizedDescription)")
+            print("画像のアップロードエラー: \(error.localizedDescription)")
             return nil
-        }
-    }
-
-    // アイコンを更新
-    func updateUserIcon(for userID: String) async {
-        if let url = await uploadIcon(for: userID) {
-            do {
-                try await db.collection("users").document(userID).updateData(["iconURL": url])
-                print("アイコンURLを更新しました: \(url)")
-            } catch {
-                print("アイコンURLの更新エラー: \(error.localizedDescription)")
-            }
         }
     }
 }

@@ -26,7 +26,6 @@
 		3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30232CE5C3FF009C368B /* FirebaseAuth */; };
 		3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BAB30252CE5C414009C368B /* FirebaseStorage */; };
 		3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */; };
-		3BAB302A2CE5C6DE009C368B /* AuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB30292CE5C6DE009C368B /* AuthModel.swift */; };
 		3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302B2CE5C705009C368B /* AuthViewModel.swift */; };
 		3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302E2CE5C7D8009C368B /* LoginView.swift */; };
 		3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB30302CE5C7F3009C368B /* SignUpView.swift */; };
@@ -81,7 +80,6 @@
 		3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingViewModel.swift; sourceTree = "<group>"; };
 		3BA737E42CE7365200FFEACC /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		3BAB30292CE5C6DE009C368B /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		3BAB302B2CE5C705009C368B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		3BAB302E2CE5C7D8009C368B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3BAB30302CE5C7F3009C368B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				3B56D0A22CE59FC7001BF220 /* MapModel.swift */,
-				3BAB30292CE5C6DE009C368B /* AuthModel.swift */,
 				3BE0701D2CE5E9BF0032838F /* ChatModel.swift */,
 				3BE070212CE5E9FD0032838F /* UserModel.swift */,
 				3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */,
@@ -428,7 +425,6 @@
 				3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */,
 				3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
-				3BAB302A2CE5C6DE009C368B /* AuthModel.swift in Sources */,
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,

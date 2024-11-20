@@ -61,9 +61,7 @@ struct ChatView: View {
                 viewModel.startListeningForMessages()
             }
         }
-        .alert(item: $viewModel.errorMessage) { error in
-            Alert(title: Text("エラー"), message: Text(error.message), dismissButton: .default(Text("OK")))
-        }
+        
     }
 }
 
