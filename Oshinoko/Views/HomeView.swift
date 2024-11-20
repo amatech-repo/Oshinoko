@@ -10,24 +10,20 @@ import MapKit
 
 struct HomeView: View {
     // MARK: - State Properties
-    @State private var selectedPin: Pin? // タップされたピン
-    @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置の座標
-    @State private var isShowingInformationModal = false // 情報入力モーダルの表示フラグ
-    @State var selection = 1 // タブ選択状態
+    @State private var selectedPin: Pin?
+    @State private var newPinCoordinate: CLLocationCoordinate2D?
+    @State private var isShowingInformationModal = false
+    @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
 
     // MARK: - Observed ViewModels
-    @StateObject private var chatViewModel = ChatViewModel(pinID: "") // Chat用ViewModel
-    @ObservedObject var pinsViewModel: PinsViewModel // ピン管理用ViewModel
+    @StateObject private var chatViewModel = ChatViewModel(pinID: "")
+    @ObservedObject var pinsViewModel: PinsViewModel
 
-    // MARK: - Body
     var body: some View {
         ZStack {
-            // 背景色を設定
-            Color.red
-                .ignoresSafeArea() // 安全領域を無視して全体に適用
+            Color.red.ignoresSafeArea()
 
-            // コンテンツ (TabView)
             TabView(selection: $selection) {
                 mapTab
                     .tabItem {
@@ -35,13 +31,13 @@ struct HomeView: View {
                     }
                     .tag(1)
 
-                textTab(title: "Tab 2 Content")
+                ChatTab(viewModel: chatViewModel, currentUserID: "12345", currentUserName: "Erika Sakurai", currentUserIcon: nil)
                     .tabItem {
                         Label("AI", systemImage: "message")
                     }
                     .tag(2)
 
-                textTab(title: "Tab 3 Content")
+                BookmarksTab(bookmarks: $bookmarks) // Refactored to a separate component
                     .tabItem {
                         Label("Bookmark", systemImage: "person")
                     }
@@ -53,27 +49,23 @@ struct HomeView: View {
     // MARK: - Tab 1: Map Tab
     private var mapTab: some View {
         VStack(spacing: 0) {
-            ZStack {
-                // カスタム MapView
-                MapView(
-                    pinsViewModel: pinsViewModel,
-                    selectedPin: $selectedPin,
-                    newPinCoordinate: $newPinCoordinate,
-                    isShowingModal: $isShowingInformationModal,
-                    onLongPress: { coordinate in
-                        newPinCoordinate = coordinate // 修正済み: 型適合
-                        isShowingInformationModal = true
-                    }
-                )
-                .frame(height: 720)
-                .frame(maxWidth: CGFloat.infinity) // 修正済み: 明示的なCGFloat
-                .onAppear {
-                    Task {
-                        await pinsViewModel.fetchPins()
-                    }
+            MapView(
+                pinsViewModel: pinsViewModel,
+                selectedPin: $selectedPin,
+                newPinCoordinate: $newPinCoordinate,
+                isShowingModal: $isShowingInformationModal,
+                onLongPress: { coordinate in
+                    newPinCoordinate = coordinate
+                    isShowingInformationModal = true
+                }
+            )
+            .frame(maxWidth: .infinity, maxHeight: 720)
+            .onAppear {
+                Task {
+                    await pinsViewModel.fetchPins()
                 }
             }
-            Spacer() // タブバーを見やすくするためにスペースを調整
+            Spacer()
         }
         .sheet(isPresented: $isShowingInformationModal) {
             if let coordinate = newPinCoordinate {
@@ -89,8 +81,7 @@ struct HomeView: View {
                                 metadata: metadata
                             )
                         }
-                        newPinCoordinate = nil
-                        isShowingInformationModal = false
+                        resetModalState()
                     }
                 )
             }
@@ -100,19 +91,8 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Tab 2 and Tab 3: Placeholder Views
-    private func textTab(title: String) -> some View {
-        List(bookmarks, id: \.self) { bookmark in
-            VStack(alignment: .leading) {
-                Text(bookmark.address ?? "住所なし")
-                Text("座標: \(bookmark.latitude), \(bookmark.longitude)")
-                    .font(.caption)
-            }
-        }
-        .onAppear {
-            bookmarks = CoreDataManager.shared.fetchBookmarks()
-        }
-        .background(Color(.systemBackground)) // タブごとに背景色を統一
+    private func resetModalState() {
+        newPinCoordinate = nil
+        isShowingInformationModal = false
     }
 }
-

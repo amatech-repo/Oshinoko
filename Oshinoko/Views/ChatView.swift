@@ -68,32 +68,17 @@ struct ChatView: View {
 struct ChatMessageView: View {
     let message: ChatMessage
     let isCurrentUser: Bool
-    
+
     var body: some View {
         HStack {
             if !isCurrentUser {
-                if let iconURL = message.senderIconURL, let url = URL(string: iconURL) {
-                    AsyncImage(url: url) { image in
-                        image.resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                    } placeholder: {
-                        Circle()
-                            .fill(Color.gray)
-                            .frame(width: 40, height: 40)
-                    }
-                } else {
-                    Circle()
-                        .fill(Color.gray)
-                        .frame(width: 40, height: 40)
-                }
+                ProfileImageView(url: message.senderIconURL)
             }
+
             VStack(alignment: isCurrentUser ? .trailing : .leading) {
                 if message.isImage, let imageURL = message.imageURL {
                     AsyncImage(url: URL(string: imageURL)) { image in
-                        image.resizable()
-                            .scaledToFit()
+                        image.resizable().scaledToFit()
                     } placeholder: {
                         ProgressView()
                     }
@@ -105,20 +90,33 @@ struct ChatMessageView: View {
                         .cornerRadius(8)
                 }
             }
+
             if isCurrentUser {
-                if let iconURL = message.senderIconURL, let url = URL(string: iconURL) {
-                    AsyncImage(url: url) { image in
-                        image.resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                    } placeholder: {
-                        Circle()
-                            .fill(Color.gray)
-                            .frame(width: 40, height: 40)
-                    }
-                }
+                ProfileImageView(url: message.senderIconURL)
             }
+        }
+    }
+}
+
+struct ProfileImageView: View {
+    let url: String?
+
+    var body: some View {
+        if let url = url, let imageURL = URL(string: url) {
+            AsyncImage(url: imageURL) { image in
+                image.resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+            } placeholder: {
+                Circle()
+                    .fill(Color.gray)
+                    .frame(width: 40, height: 40)
+            }
+        } else {
+            Circle()
+                .fill(Color.gray)
+                .frame(width: 40, height: 40)
         }
     }
 }

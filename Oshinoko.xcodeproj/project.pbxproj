@@ -11,6 +11,8 @@
 		3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */; };
 		3B1194EE2CEDFCBA00FBC27F /* InformationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */; };
 		3B1194F22CEDFEFF00FBC27F /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194F12CEDFEFF00FBC27F /* CustomText.swift */; };
+		3B1194F42CEE025000FBC27F /* ChatTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194F32CEE025000FBC27F /* ChatTab.swift */; };
+		3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194F52CEE027700FBC27F /* BookmarksTab.swift */; };
 		3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F322CE6478700083F5E /* PinViewsModel.swift */; };
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
@@ -71,6 +73,8 @@
 		3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookmarkModel.xcdatamodel; sourceTree = "<group>"; };
 		3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationModal.swift; sourceTree = "<group>"; };
 		3B1194F12CEDFEFF00FBC27F /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
+		3B1194F32CEE025000FBC27F /* ChatTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTab.swift; sourceTree = "<group>"; };
+		3B1194F52CEE027700FBC27F /* BookmarksTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksTab.swift; sourceTree = "<group>"; };
 		3B181F322CE6478700083F5E /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -172,6 +176,8 @@
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
 				3B56D0A82CE5C053001BF220 /* PinDetailView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
+				3B1194F32CEE025000FBC27F /* ChatTab.swift */,
+				3B1194F52CEE027700FBC27F /* BookmarksTab.swift */,
 				3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
 				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
@@ -433,6 +439,7 @@
 				3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
+				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
 				3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */,
@@ -441,6 +448,7 @@
 				3B1194F22CEDFEFF00FBC27F /* CustomText.swift in Sources */,
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
+				3B1194F42CEE025000FBC27F /* ChatTab.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
 				3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */,
 				3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */,
