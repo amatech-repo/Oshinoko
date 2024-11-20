@@ -20,7 +20,9 @@ struct LoginView: View {
                 .padding(.bottom, 20)
 
             CustomTextField(placeholder: "Email", text: $authViewModel.email)
+                .padding()
             CustomSecureField(placeholder: "Password", text: $authViewModel.password)
+                .padding()
 
             if !authViewModel.errorMessage.isEmpty {
                 Text(authViewModel.errorMessage)
@@ -46,13 +48,13 @@ struct LoginView: View {
                     )
                     .foregroundColor(.white)
             }
+            .padding()
 
             Button(action: {
                 appState.screenState = .signUp
             }) {
                 Text("Don't have an account? Sign Up")
                     .font(.footnote)
-                    .foregroundColor(.white) // 白色で見やすく
             }
         }
         .ignoresSafeArea()

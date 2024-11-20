@@ -74,7 +74,7 @@ struct CustomTextField: View {
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white.opacity(0.2)) // 半透明の白色背景
+                    .fill(Color.white.opacity(0.5)) // 半透明の白色背景
                     .shadow(radius: 7)
             )
             .autocapitalization(.none)
@@ -92,7 +92,7 @@ struct CustomSecureField: View {
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white.opacity(0.2)) // 半透明の白色背景
+                    .fill(Color.white.opacity(0.5)) // 半透明の白色背景
                     .shadow(radius: 7)
             )
             .autocapitalization(.none)

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B1194E92CEDF35300FBC27F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194E82CEDF35300FBC27F /* CoreDataManager.swift */; };
+		3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */; };
 		3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F322CE6478700083F5E /* PinViewsModel.swift */; };
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
 		3B56D0A52CE5A025001BF220 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A42CE5A025001BF220 /* MapViewModel.swift */; };
@@ -65,6 +67,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B1194E82CEDF35300FBC27F /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookmarkModel.xcdatamodel; sourceTree = "<group>"; };
 		3B181F322CE6478700083F5E /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		3B56D0A42CE5A025001BF220 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 				3BE0701D2CE5E9BF0032838F /* ChatModel.swift */,
 				3BE070212CE5E9FD0032838F /* UserModel.swift */,
 				3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */,
+				3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -152,6 +157,7 @@
 				3BAB302B2CE5C705009C368B /* AuthViewModel.swift */,
 				3BE070232CE5EA950032838F /* UserViewModel.swift */,
 				3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */,
+				3B1194E82CEDF35300FBC27F /* CoreDataManager.swift */,
 				3B181F322CE6478700083F5E /* PinViewsModel.swift */,
 				3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */,
 				3B6C95B22CE7257100097366 /* GeocodingViewModel.swift */,
@@ -429,6 +435,7 @@
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
+				3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */,
 				3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
@@ -448,6 +455,7 @@
 				3BAF4B232CECD2A00045179C /* GradientBackgroundView.swift in Sources */,
 				3BE070242CE5EA950032838F /* UserViewModel.swift in Sources */,
 				3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */,
+				3B1194E92CEDF35300FBC27F /* CoreDataManager.swift in Sources */,
 				3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -841,6 +849,19 @@
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */,
+			);
+			currentVersion = 3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */;
+			path = BookmarksDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3BC2A0EA2CE4CC650008DDA9 /* Project object */;
 }

@@ -118,6 +118,24 @@ struct PinDetailView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 400)
                 
+                Button("ブックマーク") {
+                    if let latitude = latitude, let longitude = longitude {
+                        CoreDataManager.shared.saveBookmark(
+                            id: pin.id ?? "idがないよ",
+                            latitude: latitude,
+                            longitude: longitude,
+                            address: prefectureName ?? "住所不明",
+                            title: pin.metadata.title,
+                            description: pin.metadata.description
+                        )
+                        print("ブックマークを保存しました")
+                    } else {
+                        print("座標が取得できません")
+                    }
+                }
+                .padding()
+                
+
                 Button {
                     if let latitude = latitude, let longitude = longitude {
                         pinsViewModel.calculateRoute(to: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))

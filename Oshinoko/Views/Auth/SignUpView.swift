@@ -54,7 +54,9 @@ struct SignUpView: View {
             }
 
             CustomTextField(placeholder: "Email", text: $authViewModel.email)
+                .padding()
             CustomSecureField(placeholder: "Password", text: $authViewModel.password)
+                .padding()
 
             if !authViewModel.errorMessage.isEmpty {
                 Text(authViewModel.errorMessage)
@@ -80,14 +82,15 @@ struct SignUpView: View {
                     )
                     .foregroundColor(.white)
             }
+            .padding()
 
             Button(action: {
                 appState.screenState = .login
             }) {
                 Text("Already have an account? Log In")
                     .font(.footnote)
-                    .foregroundColor(.white) // 白色で見やすく
             }
+            .padding()
         }
         .ignoresSafeArea()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
