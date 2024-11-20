@@ -9,7 +9,7 @@ import SwiftUI
 
 import SwiftUI
 
-struct GlassmorphismBackground: ViewModifier {
+struct BackgroundModifier: ViewModifier {
     let colors: [Color]
     let blurRadius: CGFloat
     let opacity: Double
@@ -42,7 +42,7 @@ extension View {
         blurRadius: CGFloat = 20,
         opacity: Double = 0.25
     ) -> some View {
-        self.modifier(GlassmorphismBackground(colors: colors, blurRadius: blurRadius, opacity: opacity))
+        self.modifier(BackgroundModifier(colors: colors, blurRadius: blurRadius, opacity: opacity))
     }
 }
 
@@ -60,43 +60,6 @@ extension Color {
         let blue = Double(rgbValue & 0xFF) / 255.0
 
         self.init(red: red, green: green, blue: blue)
-    }
-}
-
-import SwiftUI
-
-struct CustomTextField: View {
-    var placeholder: String
-    @Binding var text: String
-
-    var body: some View {
-        TextField(placeholder, text: $text)
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white.opacity(0.5)) // 半透明の白色背景
-                    .shadow(radius: 7)
-            )
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-
-    }
-}
-
-struct CustomSecureField: View {
-    var placeholder: String
-    @Binding var text: String
-
-    var body: some View {
-        SecureField(placeholder, text: $text)
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white.opacity(0.5)) // 半透明の白色背景
-                    .shadow(radius: 7)
-            )
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
     }
 }
 

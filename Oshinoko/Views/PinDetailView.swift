@@ -10,6 +10,7 @@ import MapKit
 
 struct PinDetailView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(\.presentationMode) private var presentationMode
     let pin: Pin
 
     @ObservedObject private var pinsViewModel: PinsViewModel
@@ -32,24 +33,33 @@ struct PinDetailView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
-                pinDetailsSection
-                addressSection
-                Divider()
-                mapSection
-                Divider()
-                chatSection
-                actionButtons
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    pinDetailsSection
+                    addressSection
+                    Divider()
+                    mapSection
+                    Divider()
+                    chatSection
+                    actionButtons
+                }
+                .padding()
             }
-            .padding()
+            .onAppear {
+                setupData()
+            }
+            .navigationTitle("ピン詳細")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("キャンセル") {
+                        cancelAllActions() // キャンセル時にすべてリセット
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
         }
-        .onAppear {
-            setupData()
-        }
-        .navigationTitle("ピン詳細")
-        .navigationBarTitleDisplayMode(.inline)
-        .padding()
     }
 
     // MARK: - Section Views
@@ -122,7 +132,7 @@ struct PinDetailView: View {
             .padding()
 
             if isRouteDisplayed {
-                Button("キャンセル") {
+                Button("経路解除") {
                     cancelRoute()
                 }
             }
@@ -161,12 +171,18 @@ struct PinDetailView: View {
     private func calculateRoute() {
         if let latitude = latitude, let longitude = longitude {
             pinsViewModel.calculateRoute(to: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+            isRouteDisplayed = true
         }
     }
 
     private func cancelRoute() {
         pinsViewModel.isRouteDisplayed = false
         pinsViewModel.currentRoute = nil
+        isRouteDisplayed = false
+    }
+
+    private func cancelAllActions() {
+        cancelRoute() // 青い線を削除
     }
 }
 
