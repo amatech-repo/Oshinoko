@@ -42,15 +42,17 @@ class PinsViewModel: ObservableObject {
         }
     }
     
-    // ピンを取得
     func fetchPins() async {
         do {
             let snapshot = try await db.collection("pins").getDocuments()
-            pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
+            DispatchQueue.main.async { [weak self] in
+                self?.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
+            }
         } catch {
             print("ピンの取得エラー: \(error.localizedDescription)")
         }
     }
+
     
     // 経路計算
     func calculateRoute(to destination: CLLocationCoordinate2D) {

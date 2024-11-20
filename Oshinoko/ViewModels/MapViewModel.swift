@@ -54,11 +54,14 @@ class MapPinsViewModel: ObservableObject {
     func fetchPins() async {
         do {
             let snapshot = try await db.collection("pins").getDocuments()
-            self.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
+            DispatchQueue.main.async { [weak self] in
+                self?.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
+            }
         } catch {
             print("ピンの取得エラー: \(error.localizedDescription)")
         }
     }
+
     
     func addPin(coordinate: Coordinate, metadata: Metadata) async {
         guard let userIconURL = AuthViewModel.shared.icon else {

@@ -32,35 +32,42 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        let currentAnnotations = uiView.annotations.compactMap { $0 as? MKPointAnnotation }
-        let newAnnotations = pinsViewModel.pins.map { pin -> MKPointAnnotation in
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
-            annotation.title = pin.metadata.title
-            return annotation
-        }
-        
-        // アノテーションの追加と削除
-        let toRemove = currentAnnotations.filter { !newAnnotations.contains($0) }
-        let toAdd = newAnnotations.filter { !currentAnnotations.contains($0) }
-        
-        uiView.removeAnnotations(toRemove)
-        uiView.addAnnotations(toAdd)
-        
-        // 経路の更新
-        if let route = pinsViewModel.currentRoute, pinsViewModel.isRouteDisplayed {
-            if !uiView.overlays.contains(where: { $0 is MKPolyline }) {
-                uiView.addOverlay(route.polyline)
+        // アノテーションを更新
+        DispatchQueue.main.async {
+            let currentAnnotations = uiView.annotations.compactMap { $0 as? MKPointAnnotation }
+            let newAnnotations = pinsViewModel.pins.map { pin -> MKPointAnnotation in
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
+                annotation.title = pin.metadata.title
+                return annotation
             }
-        } else {
-            uiView.removeOverlays(uiView.overlays)
+
+            let toRemove = currentAnnotations.filter { !newAnnotations.contains($0) }
+            let toAdd = newAnnotations.filter { !currentAnnotations.contains($0) }
+
+            uiView.removeAnnotations(toRemove)
+            uiView.addAnnotations(toAdd)
+
+            // 経路の更新
+            if let route = pinsViewModel.currentRoute, pinsViewModel.isRouteDisplayed {
+                if !uiView.overlays.contains(where: { $0 is MKPolyline }) {
+                    uiView.addOverlay(route.polyline)
+                }
+            } else {
+                uiView.removeOverlays(uiView.overlays)
+            }
         }
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    
+
+    // onAppearでFirestoreのデータを待つ
+       @MainActor func onAppear() async {
+           await pinsViewModel.fetchPins()
+       }
+
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
         
