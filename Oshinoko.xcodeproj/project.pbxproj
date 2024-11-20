@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		3B1194E92CEDF35300FBC27F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194E82CEDF35300FBC27F /* CoreDataManager.swift */; };
 		3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */; };
+		3B1194EE2CEDFCBA00FBC27F /* InformationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */; };
 		3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F322CE6478700083F5E /* PinViewsModel.swift */; };
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
-		3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* ModalView.swift */; };
+		3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* PinDetailView.swift */; };
 		3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */; };
 		3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */; };
 		3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */; };
@@ -67,10 +68,11 @@
 /* Begin PBXFileReference section */
 		3B1194E82CEDF35300FBC27F /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookmarkModel.xcdatamodel; sourceTree = "<group>"; };
+		3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationModal.swift; sourceTree = "<group>"; };
 		3B181F322CE6478700083F5E /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		3B56D0A82CE5C053001BF220 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
+		3B56D0A82CE5C053001BF220 /* PinDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinDetailView.swift; sourceTree = "<group>"; };
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardModel.swift; sourceTree = "<group>"; };
 		3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardViewModel.swift; sourceTree = "<group>"; };
@@ -166,8 +168,9 @@
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
-				3B56D0A82CE5C053001BF220 /* ModalView.swift */,
+				3B56D0A82CE5C053001BF220 /* PinDetailView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
+				3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
 				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
 				3BAF4B222CECD2A00045179C /* GradientBackgroundView.swift */,
@@ -422,8 +425,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B1194EE2CEDFCBA00FBC27F /* InformationModal.swift in Sources */,
 				3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */,
-				3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */,
+				3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
