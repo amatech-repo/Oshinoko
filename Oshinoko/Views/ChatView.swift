@@ -13,7 +13,7 @@ struct ChatView: View {
     let currentUserID: String
     let currentUserName: String
     let currentUserIcon: String?
-
+    
     var body: some View {
         VStack {
             if viewModel.isLoading {
@@ -42,7 +42,7 @@ struct ChatView: View {
                         .padding()
                     }
                 }
-
+                
                 HStack {
                     TextField("メッセージを入力", text: $viewModel.messageText)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -70,7 +70,7 @@ struct ChatView: View {
 struct ChatMessageView: View {
     let message: ChatMessage
     let isCurrentUser: Bool
-
+    
     var body: some View {
         HStack {
             if !isCurrentUser {

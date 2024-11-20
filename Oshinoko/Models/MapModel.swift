@@ -9,7 +9,7 @@ struct MapAnnotationItem: Identifiable {
     let id: UUID
     let coordinate: CLLocationCoordinate2D
     let color: Color
-
+    
     init(id: UUID = UUID(), coordinate: CLLocationCoordinate2D, color: Color) {
         self.id = id
         self.coordinate = coordinate

@@ -13,10 +13,10 @@ struct InformationModal: View {
     @EnvironmentObject var authViewModel: AuthViewModel // AuthViewModelを追加
     let coordinate: CLLocationCoordinate2D
     let onSave: (Metadata) -> Void
-
+    
     @State private var title: String = ""
     @State private var description: String = ""
-
+    
     var body: some View {
         NavigationView {
             Form {
@@ -51,7 +51,7 @@ extension CLLocationCoordinate2D: Equatable {
 struct PinDetailView: View {
     @EnvironmentObject var authViewModel: AuthViewModel // 環境オブジェクトとして authViewModel を追加
     let pin: Pin
-
+    
     @ObservedObject private var pinsViewModel: PinsViewModel
     @State private var isRouteDisplayed: Bool = false
     @State private var currentRoute: MKRoute? = nil
@@ -64,19 +64,19 @@ struct PinDetailView: View {
     @State private var subLocalityName: String? = nil
     @State private var prefecturalCapital: String? = nil
     @StateObject private var geocodingManager = GeocodingManager()
-
+    
     init(pin: Pin, pinsViewModel: PinsViewModel) {
         self.pin = pin
         self.pinsViewModel = pinsViewModel
         _chatViewModel = StateObject(wrappedValue: ChatViewModel(pinID: pin.wrappedID))
     }
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 Text("タイトル: \(pin.metadata.title)")
                 Text("説明: \(pin.metadata.description)")
-
+                
                 if let prefecture = prefectureName, let city = cityName {
                     if let subLocality = subLocalityName {
                         Text("住所: \(prefecture) \(city) \(subLocality)")
@@ -87,13 +87,13 @@ struct PinDetailView: View {
                     Text("住所を取得中...")
                         .foregroundColor(.gray)
                 }
-
+                
                 if let capital = prefecturalCapital {
                     Text("県庁所在地: \(capital)")
                 }
-
+                
                 Divider()
-
+                
                 if let latitude = latitude, let longitude = longitude {
                     TouristCardView(
                         placesManager: placesManager,
@@ -105,7 +105,7 @@ struct PinDetailView: View {
                     Text("位置情報が利用できません")
                         .foregroundColor(.gray)
                 }
-
+                
                 ChatView(
                     viewModel: chatViewModel,
                     currentUserID: authViewModel.userID ?? "", // @EnvironmentObject を利用
@@ -117,7 +117,7 @@ struct PinDetailView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 400)
-
+                
                 Button {
                     if let latitude = latitude, let longitude = longitude {
                         pinsViewModel.calculateRoute(to: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
@@ -127,7 +127,7 @@ struct PinDetailView: View {
                 }
                 .disabled(pinsViewModel.isRouteDisplayed)
                 .padding()
-
+                
                 if pinsViewModel.isRouteDisplayed {
                     Button("キャンセル") {
                         pinsViewModel.isRouteDisplayed = false
@@ -140,7 +140,7 @@ struct PinDetailView: View {
         .onAppear {
             latitude = pin.coordinate.latitude
             longitude = pin.coordinate.longitude
-
+            
             geocodingManager.getAddressDetails(for: pin.coordinate.toCLLocationCoordinate2D()) { prefecture, city, subLocality in
                 self.prefectureName = prefecture
                 self.cityName = city

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct LoginView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var authViewModel: AuthViewModel
@@ -18,6 +16,7 @@ struct LoginView: View {
             Text("Welcome Back")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .foregroundColor(.white)
                 .padding(.bottom, 20)
 
             CustomTextField(placeholder: "Email", text: $authViewModel.email)
@@ -37,21 +36,29 @@ struct LoginView: View {
                 }
             }) {
                 Text("Log In")
+                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(hex: "91DDCF").opacity(0.7))
+                            .shadow(radius: 5)
+                    )
                     .foregroundColor(.white)
-                    .cornerRadius(8)
             }
 
             Button(action: {
                 appState.screenState = .signUp
             }) {
                 Text("Don't have an account? Sign Up")
-                    .foregroundColor(.blue)
+                    .font(.footnote)
+                    .foregroundColor(.white) // 白色で見やすく
             }
         }
-        .padding()
-        .frame(maxWidth: 400)
+        .ignoresSafeArea()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .glassmorphismBackground(
+            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
+        )
     }
 }
