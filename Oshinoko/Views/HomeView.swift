@@ -16,18 +16,17 @@ struct HomeView: View {
     @State var selection = 1 // タブ選択状態
     @State private var bookmarks: [Bookmark] = []
 
-
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "") // Chat用ViewModel
     @ObservedObject var pinsViewModel: PinsViewModel // ピン管理用ViewModel
-    
+
     // MARK: - Body
     var body: some View {
         ZStack {
             // 背景色を設定
             Color.red
                 .ignoresSafeArea() // 安全領域を無視して全体に適用
-            
+
             // コンテンツ (TabView)
             TabView(selection: $selection) {
                 mapTab
@@ -35,13 +34,13 @@ struct HomeView: View {
                         Label("Map", systemImage: "map")
                     }
                     .tag(1)
-                
+
                 textTab(title: "Tab 2 Content")
                     .tabItem {
                         Label("AI", systemImage: "message")
                     }
                     .tag(2)
-                
+
                 textTab(title: "Tab 3 Content")
                     .tabItem {
                         Label("Bookmark", systemImage: "person")
@@ -50,7 +49,7 @@ struct HomeView: View {
             }
         }
     }
-    
+
     // MARK: - Tab 1: Map Tab
     private var mapTab: some View {
         VStack(spacing: 0) {
@@ -59,22 +58,21 @@ struct HomeView: View {
                 MapView(
                     pinsViewModel: pinsViewModel,
                     selectedPin: $selectedPin,
-                    newPinCoordinate: $newPinCoordinate, isShowingModal: $isShowingInformationModal,
+                    newPinCoordinate: $newPinCoordinate,
+                    isShowingModal: $isShowingInformationModal,
                     onLongPress: { coordinate in
-                        newPinCoordinate = coordinate
+                        newPinCoordinate = coordinate // 修正済み: 型適合
                         isShowingInformationModal = true
                     }
                 )
-                .frame(height: 720) // MapViewの高さを制限
-                .frame(maxWidth: .infinity)
-                .padding(.bottom)
+                .frame(height: 720)
+                .frame(maxWidth: CGFloat.infinity) // 修正済み: 明示的なCGFloat
                 .onAppear {
                     Task {
                         await pinsViewModel.fetchPins()
                     }
                 }
             }
-            
             Spacer() // タブバーを見やすくするためにスペースを調整
         }
         .sheet(isPresented: $isShowingInformationModal) {
@@ -97,37 +95,11 @@ struct HomeView: View {
                 )
             }
         }
-        
         .sheet(item: $selectedPin) { pin in
             PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
     }
-    
-    // MARK: - Helper Functions
-    private func createPinModal(for coordinate: CLLocationCoordinate2D) -> some View {
-        InformationModal(
-            coordinate: coordinate,
-            onSave: { metadata in
-                Task {
-                    do {
-                        try await pinsViewModel.addPin(
-                            coordinate: Coordinate(
-                                latitude: coordinate.latitude,
-                                longitude: coordinate.longitude
-                            ),
-                            metadata: metadata
-                        )
-                        newPinCoordinate = nil
-                        isShowingInformationModal = false
-                    } catch {
-                        print("Failed to add pin: \(error.localizedDescription)")
-                    }
-                }
-            }
-        )
-    }
-    
-    
+
     // MARK: - Tab 2 and Tab 3: Placeholder Views
     private func textTab(title: String) -> some View {
         List(bookmarks, id: \.self) { bookmark in
@@ -139,7 +111,6 @@ struct HomeView: View {
         }
         .onAppear {
             bookmarks = CoreDataManager.shared.fetchBookmarks()
-
         }
         .background(Color(.systemBackground)) // タブごとに背景色を統一
     }

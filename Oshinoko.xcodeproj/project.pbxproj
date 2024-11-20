@@ -11,7 +11,6 @@
 		3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */; };
 		3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F322CE6478700083F5E /* PinViewsModel.swift */; };
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
-		3B56D0A52CE5A025001BF220 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A42CE5A025001BF220 /* MapViewModel.swift */; };
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
 		3B56D0A92CE5C053001BF220 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* ModalView.swift */; };
 		3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */; };
@@ -71,7 +70,6 @@
 		3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookmarkModel.xcdatamodel; sourceTree = "<group>"; };
 		3B181F322CE6478700083F5E /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
-		3B56D0A42CE5A025001BF220 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		3B56D0A82CE5C053001BF220 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -153,7 +151,6 @@
 		3B2E302F2CE4DB68001F3553 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				3B56D0A42CE5A025001BF220 /* MapViewModel.swift */,
 				3BAB302B2CE5C705009C368B /* AuthViewModel.swift */,
 				3BE070232CE5EA950032838F /* UserViewModel.swift */,
 				3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */,
@@ -450,7 +447,6 @@
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */,
 				3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */,
-				3B56D0A52CE5A025001BF220 /* MapViewModel.swift in Sources */,
 				3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */,
 				3BAF4B232CECD2A00045179C /* GradientBackgroundView.swift in Sources */,
 				3BE070242CE5EA950032838F /* UserViewModel.swift in Sources */,
