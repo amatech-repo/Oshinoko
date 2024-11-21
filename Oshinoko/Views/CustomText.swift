@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct CustomTextField: View {
     var placeholder: String
@@ -42,3 +43,76 @@ struct CustomSecureField: View {
     }
 }
 
+struct CustomButton: View {
+    let title: String
+    let action: () -> Void
+    let backgroundColor: Color
+    let opacity: Double
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(backgroundColor.opacity(opacity))
+                        .shadow(radius: 5)
+                )
+                .foregroundColor(.white)
+        }
+        .padding()
+    }
+}
+
+struct ProfileImagePicker: View {
+    @Binding var selectedImage: UIImage?
+
+    var body: some View {
+        if let image = selectedImage {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 200)
+                .clipShape(Circle())
+                .overlay(
+                    Circle().stroke(Color.white.opacity(0.5), lineWidth: 2)
+                )
+                .shadow(radius: 10)
+                .padding(.bottom)
+        } else {
+            PhotosPicker(selection: Binding(
+                get: { nil },
+                set: { newItem in
+                    if let newItem {
+                        Task {
+                            selectedImage = await loadImage(item: newItem)
+                        }
+                    }
+                }
+            )) {
+                Text("Select Profile Image")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white.opacity(0.2))
+                            .shadow(radius: 5)
+                    )
+            }
+        }
+    }
+
+    private func loadImage(item: PhotosPickerItem) async -> UIImage? {
+        do {
+            if let data = try await item.loadTransferable(type: Data.self) {
+                return UIImage(data: data)
+            }
+        } catch {
+            print("Image loading error: \(error.localizedDescription)")
+        }
+        return nil
+    }
+}

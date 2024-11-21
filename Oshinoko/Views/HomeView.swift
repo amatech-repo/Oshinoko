@@ -44,6 +44,9 @@ struct HomeView: View {
                     .tag(3)
             }
         }
+        .glassmorphismBackground(
+            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
+        )
     }
 
     // MARK: - Tab 1: Map Tab
@@ -89,6 +92,9 @@ struct HomeView: View {
         .sheet(item: $selectedPin) { pin in
             PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
+        .glassmorphismBackground(
+            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
+        )
     }
 
     private func resetModalState() {
