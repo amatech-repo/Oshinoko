@@ -1,37 +1,85 @@
-//
-//  PinViewsModel.swift
-//  Oshinoko
-//
-//  Created by 櫻井絵理香 on 2024/11/14.
-//
-
 import Foundation
-import FirebaseFirestore
+import SwiftUI
 import MapKit
+import FirebaseFirestore
 
 @MainActor
 class PinsViewModel: ObservableObject {
-    @Published var pins: [Pin] = [] // 全てのピン情報
-    @Published var messages: [ChatMessage] = [] // 選択中のピンのチャットメッセージ
+    // MARK: - Published Properties
+    @Published var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917),
+        span: MKCoordinateSpan(latitudeDelta: 5.0, longitudeDelta: 5.0)
+    )
+    @Published var pins: [Pin] = []
+    @Published var messages: [ChatMessage] = []
+    @Published var isRouteDisplayed = false
     @Published var currentRoute: MKRoute? = nil
-    @Published var isRouteDisplayed: Bool = false
-    @Published var currentLocation: CLLocationCoordinate2D? = nil // 現在地を格納
-    @Published var chatViewModels: [String: ChatViewModel] = [:] // 各ピンごとのチャットモデル
-    private let authViewModel: AuthViewModel
-    
-    
-    private var locationManager = LocationManager()
-    private var currentDirections: MKDirections? // 現在の経路計算インスタンス
+    @Published var currentLocation: CLLocationCoordinate2D? = nil
+    @Published var chatViewModels: [String: ChatViewModel] = [:]
+
+    // MARK: - Private Properties
     private let db = Firestore.firestore()
-    
+    private var locationManager = LocationManager()
+    private var currentDirections: MKDirections? = nil
+    private let authViewModel: AuthViewModel
+
+    // MARK: - Initializer
     init(authViewModel: AuthViewModel) {
-        self.authViewModel = authViewModel // AuthViewModel を外部から注入
-        // LocationManager の現在地を監視
+        self.authViewModel = authViewModel
+        // Observe current location updates from LocationManager
         locationManager.$currentLocation
             .assign(to: &$currentLocation)
     }
-    
-    // ChatViewModel を取得または生成
+
+    // MARK: - Pin Management
+
+    /// Fetch pins from Firestore
+    func fetchPins() async {
+        do {
+            let snapshot = try await db.collection("pins").getDocuments()
+            self.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
+        } catch {
+            print("Error fetching pins: \(error.localizedDescription)")
+        }
+    }
+
+    /// Add a new pin
+    func addPin(coordinate: Coordinate, metadata: Metadata) async {
+        // アイコンがない場合はデフォルトを使用
+        let userIconURL = fetchUserIcon() ?? "default-icon-url-or-system-image" // デフォルト画像
+
+        let pin = Pin(
+            id: UUID().uuidString,
+            coordinate: coordinate,
+            metadata: metadata,
+            iconURL: userIconURL
+        )
+
+        do {
+            try await savePinToFirestore(pin: pin)
+            pins.append(pin)
+        } catch {
+            print("Error adding pin: \(error.localizedDescription)")
+        }
+    }
+
+    private func fetchUserIcon() -> String? {
+        // アイコンがあれば返す、なければnil
+        return authViewModel.icon
+    }
+
+
+    /// Fetch messages for a specific pin
+    func fetchMessages(for pinID: String) async {
+        do {
+            let snapshot = try await db.collection("pins").document(pinID).collection("chats").order(by: "timestamp").getDocuments()
+            messages = snapshot.documents.compactMap { try? $0.data(as: ChatMessage.self) }
+        } catch {
+            print("Error fetching messages: \(error.localizedDescription)")
+        }
+    }
+
+    /// Retrieve or create a ChatViewModel for a specific pin
     func getChatViewModel(for pinID: String) -> ChatViewModel {
         if let viewModel = chatViewModels[pinID] {
             return viewModel
@@ -41,36 +89,21 @@ class PinsViewModel: ObservableObject {
             return newViewModel
         }
     }
-    
-    func fetchPins() async {
-        do {
-            let snapshot = try await db.collection("pins").getDocuments()
-            DispatchQueue.main.async { [weak self] in
-                self?.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
-            }
-        } catch {
-            print("ピンの取得エラー: \(error.localizedDescription)")
-        }
-    }
 
-    
-    // 経路計算
+    // MARK: - Route Management
+
+    /// Calculate a route to the destination coordinate
     func calculateRoute(to destination: CLLocationCoordinate2D) {
-        currentDirections?.cancel() // 前回の計算をキャンセル
-        let request = MKDirections.Request()
-        request.source = MKMapItem.forCurrentLocation()
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
-        request.transportType = .automobile
-        
+        clearRoute()
+        let request = createDirectionsRequest(to: destination)
         let directions = MKDirections(request: request)
         self.currentDirections = directions
-        
+
         directions.calculate { [weak self] response, error in
             if let error = error {
-                print("経路計算エラー: \(error.localizedDescription)")
+                print("Route calculation error: \(error.localizedDescription)")
                 return
             }
-            
             guard let route = response?.routes.first else { return }
             DispatchQueue.main.async {
                 self?.currentRoute = route
@@ -78,64 +111,36 @@ class PinsViewModel: ObservableObject {
             }
         }
     }
-    
-    // 経路表示をクリア
+
+    /// Clear the currently displayed route
     func clearRoute() {
         isRouteDisplayed = false
         currentRoute = nil
         currentDirections?.cancel()
     }
-    
-    // ピンに関連するチャットメッセージを取得
-    func fetchMessages(for pinID: String) async {
-        do {
-            let snapshot = try await db.collection("pins").document(pinID).collection("chats").order(by: "timestamp").getDocuments()
-            messages = snapshot.documents.compactMap { try? $0.data(as: ChatMessage.self) }
-        } catch {
-            print("チャットメッセージの取得エラー: \(error.localizedDescription)")
-        }
-    }
-    
-    func addPin(coordinate: Coordinate, metadata: Metadata) async {
-        let userIconURL = fetchUserIcon()
-        let pin = Pin(
-            id: UUID().uuidString,
-            coordinate: coordinate,
-            metadata: metadata,
-            iconURL: userIconURL // 取得したユーザーアイコンURLを使用
-        )
-        do {
-            try await savePinToFirestore(pin: pin)
-            pins.append(pin)
-        } catch {
-            print("Firestoreエラー: \(error.localizedDescription)")
-        }
-    }
-    
-    private func fetchUserIcon() -> String {
-        // ユーザーアイコンURLを取得、デフォルト画像のURLまたは名前を返す
-        if let userIconURL = authViewModel.icon {
-            return userIconURL
-        } else {
-            print("ユーザーアイコンが見つかりません。以下が考えられる原因です：")
-            print("- ユーザーがアイコンを設定していない")
-            print("- 認証が未完了、または情報取得が失敗")
-            print("- AuthViewModelのiconプロパティがnil")
-            return "systemImage.defaultAvatar" // システム画像の名前や適当なデフォルト画像
-        }
-    }
-    
+
+    // MARK: - Private Helpers
+
+    /// Save a pin to Firestore
     private func savePinToFirestore(pin: Pin) async throws {
         let pinData = try Firestore.Encoder().encode(pin)
         try await db.collection("pins").addDocument(data: pinData)
     }
-    
-    // 座標の比較 (許容範囲)
+
+    /// Create a directions request
+    private func createDirectionsRequest(to destination: CLLocationCoordinate2D) -> MKDirections.Request {
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
+        request.transportType = .automobile
+        return request
+    }
+
+    // MARK: - Coordinate Comparison
+
+    /// Compare two coordinates with a tolerance
     func areCoordinatesEqual(_ lhs: CLLocationCoordinate2D, _ rhs: CLLocationCoordinate2D, tolerance: Double = 0.0001) -> Bool {
         return abs(lhs.latitude - rhs.latitude) < tolerance && abs(lhs.longitude - rhs.longitude) < tolerance
     }
-    
-    
 }
-
 

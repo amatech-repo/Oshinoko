@@ -21,24 +21,26 @@ struct ContentView: View {
     @StateObject private var appState = AppState()
     @StateObject private var authViewModel = AuthViewModel()
     @ObservedObject var pinsViewModel: PinsViewModel
-    
+
     var body: some View {
         NavigationStack {
-            if appState.screenState == .login {
+            switch appState.screenState {
+            case .login:
                 LoginView()
                     .environmentObject(appState)
                     .environmentObject(authViewModel)
-            } else if appState.screenState == .signUp {
+            case .signUp:
                 SignUpView()
                     .environmentObject(appState)
                     .environmentObject(authViewModel)
-            } else {
+            case .home:
                 HomeView(pinsViewModel: pinsViewModel)
                     .environmentObject(appState)
                     .environmentObject(authViewModel)
             }
         }
+        .glassmorphismBackground(
+            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
+        )
     }
 }
-
-

@@ -8,72 +8,72 @@
 import SwiftUI
 import MapKit
 
+
+import SwiftUI
+import MapKit
+
 struct HomeView: View {
     // MARK: - State Properties
-    @State private var selectedPin: Pin? // タップされたピン
-    @State private var newPinCoordinate: CLLocationCoordinate2D? // 長押し位置の座標
-    @State private var isShowingInformationModal = false // 情報入力モーダルの表示フラグ
-    @State var selection = 1 // タブ選択状態
-    
+    @State private var selectedPin: Pin?
+    @State private var newPinCoordinate: CLLocationCoordinate2D?
+    @State private var isShowingInformationModal = false
+    @State private var selection = 1
+    @State private var bookmarks: [Bookmark] = []
+
     // MARK: - Observed ViewModels
-    @StateObject private var chatViewModel = ChatViewModel(pinID: "") // Chat用ViewModel
-    @ObservedObject var pinsViewModel: PinsViewModel // ピン管理用ViewModel
-    
-    // MARK: - Body
+    @StateObject private var chatViewModel = ChatViewModel(pinID: "")
+    @ObservedObject var pinsViewModel: PinsViewModel
+
     var body: some View {
         ZStack {
-            // 背景色を設定
-            Color.red
-                .ignoresSafeArea() // 安全領域を無視して全体に適用
-            
-            // コンテンツ (TabView)
+            Color.clear.ignoresSafeArea()
+
             TabView(selection: $selection) {
                 mapTab
                     .tabItem {
-                        Label("Map", systemImage: "map")
+                        CustomTabItem(icon: "map", text: "Map", isSelected: selection == 1)
                     }
                     .tag(1)
-                
-                textTab(title: "Tab 2 Content")
+
+                ChatTab(viewModel: chatViewModel, currentUserID: "12345", currentUserName: "Erika Sakurai", currentUserIcon: nil)
                     .tabItem {
-                        Label("AI", systemImage: "message")
+                        CustomTabItem(icon: "message", text: "AI", isSelected: selection == 2)
                     }
                     .tag(2)
-                
-                textTab(title: "Tab 3 Content")
+
+                BookmarksTab(bookmarks: $bookmarks)
                     .tabItem {
-                        Label("Bookmark", systemImage: "person")
+                        CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
                     }
                     .tag(3)
             }
+            .onAppear {
+                configureTabBarAppearance() // タブの色設定を反映
+            }
         }
+        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
-    
+
     // MARK: - Tab 1: Map Tab
     private var mapTab: some View {
         VStack(spacing: 0) {
-            ZStack {
-                // カスタム MapView
-                MapView(
-                    pinsViewModel: pinsViewModel,
-                    selectedPin: $selectedPin,
-                    newPinCoordinate: $newPinCoordinate, isShowingModal: $isShowingInformationModal,
-                    onLongPress: { coordinate in
-                        newPinCoordinate = coordinate
-                        isShowingInformationModal = true
-                    }
-                )
-                .frame(height: 720) // MapViewの高さを制限
-                .frame(maxWidth: .infinity)
-                .padding(.bottom)
-                .onAppear {
-                    Task {
-                        await pinsViewModel.fetchPins()
-                    }
+            MapView(
+                pinsViewModel: pinsViewModel,
+                selectedPin: $selectedPin,
+                newPinCoordinate: $newPinCoordinate,
+                isShowingModal: $isShowingInformationModal,
+                onLongPress: { coordinate in
+                    newPinCoordinate = coordinate
+                    isShowingInformationModal = true
+                }
+            )
+            .frame(maxWidth: .infinity, maxHeight: 790)
+            .onAppear {
+                Task {
+                    await pinsViewModel.fetchPins()
                 }
             }
-            
-            Spacer() // タブバーを見やすくするためにスペースを調整
+            Spacer()
         }
         .sheet(isPresented: $isShowingInformationModal) {
             if let coordinate = newPinCoordinate {
@@ -89,52 +89,64 @@ struct HomeView: View {
                                 metadata: metadata
                             )
                         }
-                        newPinCoordinate = nil
-                        isShowingInformationModal = false
+                        resetModalState()
                     }
                 )
             }
         }
-        
         .sheet(item: $selectedPin) { pin in
             PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
+        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
-    
-    // MARK: - Helper Functions
-    private func createPinModal(for coordinate: CLLocationCoordinate2D) -> some View {
-        InformationModal(
-            coordinate: coordinate,
-            onSave: { metadata in
-                Task {
-                    do {
-                        try await pinsViewModel.addPin(
-                            coordinate: Coordinate(
-                                latitude: coordinate.latitude,
-                                longitude: coordinate.longitude
-                            ),
-                            metadata: metadata
-                        )
-                        newPinCoordinate = nil
-                        isShowingInformationModal = false
-                    } catch {
-                        print("Failed to add pin: \(error.localizedDescription)")
-                    }
-                }
-            }
-        )
+
+    private func resetModalState() {
+        newPinCoordinate = nil
+        isShowingInformationModal = false
     }
-    
-    
-    // MARK: - Tab 2 and Tab 3: Placeholder Views
-    private func textTab(title: String) -> some View {
-        VStack {
-            Text(title)
-                .font(.largeTitle)
-                .padding()
-            Spacer()
-        }
-        .background(Color(.systemBackground)) // タブごとに背景色を統一
+
+    // MARK: - Tab Bar Appearance
+    private func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+
+        // 背景を透明感のあるピンク色に設定
+        let backgroundColor = UIColor(named: "F19ED2")?.withAlphaComponent(0.8) ?? UIColor(red: 241/255, green: 158/255, blue: 210/255, alpha: 0.3)
+        appearance.backgroundColor = backgroundColor
+
+        // タブの影を削除してスムーズにする
+        appearance.shadowImage = UIImage()
+        appearance.shadowColor = nil
+
+        // すべてのスタイルに適用
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+        UITabBar.appearance().standardAppearance = appearance
     }
 }
 
+// MARK: - CustomTabItem
+struct CustomTabItem: View {
+    let icon: String
+    let text: String
+    let isSelected: Bool
+
+    var body: some View {
+        VStack {
+            Image(systemName: icon)
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(isSelected ? Color(hex: "F19ED2") : .white.opacity(0.9))
+                .padding()
+                .background(
+                    Circle()
+                        .fill(isSelected ? Color(hex: "F19ED2").opacity(0.2) : Color.clear)
+                        .shadow(color: isSelected ? Color(hex: "F19ED2").opacity(0.7) : Color.clear, radius: isSelected ? 5 : 0)
+                )
+            CustomText(
+                text: text,
+                font: .caption,
+                foregroundColor: isSelected ? Color(hex: "F19ED2") : .white.opacity(0.7)
+            )
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
