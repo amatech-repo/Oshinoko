@@ -8,6 +8,10 @@
 import SwiftUI
 import MapKit
 
+
+import SwiftUI
+import MapKit
+
 struct HomeView: View {
     // MARK: - State Properties
     @State private var selectedPin: Pin?
@@ -22,31 +26,32 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            Color.red.ignoresSafeArea()
+            Color.clear.ignoresSafeArea()
 
             TabView(selection: $selection) {
                 mapTab
                     .tabItem {
-                        Label("Map", systemImage: "map")
+                        CustomTabItem(icon: "map", text: "Map", isSelected: selection == 1)
                     }
                     .tag(1)
 
                 ChatTab(viewModel: chatViewModel, currentUserID: "12345", currentUserName: "Erika Sakurai", currentUserIcon: nil)
                     .tabItem {
-                        Label("AI", systemImage: "message")
+                        CustomTabItem(icon: "message", text: "AI", isSelected: selection == 2)
                     }
                     .tag(2)
 
-                BookmarksTab(bookmarks: $bookmarks) // Refactored to a separate component
+                BookmarksTab(bookmarks: $bookmarks)
                     .tabItem {
-                        Label("Bookmark", systemImage: "person")
+                        CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
                     }
                     .tag(3)
             }
+            .onAppear {
+                configureTabBarAppearance() // タブの色設定を反映
+            }
         }
-        .glassmorphismBackground(
-            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
-        )
+        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
 
     // MARK: - Tab 1: Map Tab
@@ -62,7 +67,7 @@ struct HomeView: View {
                     isShowingInformationModal = true
                 }
             )
-            .frame(maxWidth: .infinity, maxHeight: 720)
+            .frame(maxWidth: .infinity, maxHeight: 790)
             .onAppear {
                 Task {
                     await pinsViewModel.fetchPins()
@@ -92,13 +97,56 @@ struct HomeView: View {
         .sheet(item: $selectedPin) { pin in
             PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
         }
-        .glassmorphismBackground(
-            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
-        )
+        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
 
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false
+    }
+
+    // MARK: - Tab Bar Appearance
+    private func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+
+        // 背景を透明感のあるピンク色に設定
+        let backgroundColor = UIColor(named: "F19ED2")?.withAlphaComponent(0.8) ?? UIColor(red: 241/255, green: 158/255, blue: 210/255, alpha: 0.3)
+        appearance.backgroundColor = backgroundColor
+
+        // タブの影を削除してスムーズにする
+        appearance.shadowImage = UIImage()
+        appearance.shadowColor = nil
+
+        // すべてのスタイルに適用
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+        UITabBar.appearance().standardAppearance = appearance
+    }
+}
+
+// MARK: - CustomTabItem
+struct CustomTabItem: View {
+    let icon: String
+    let text: String
+    let isSelected: Bool
+
+    var body: some View {
+        VStack {
+            Image(systemName: icon)
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(isSelected ? Color(hex: "F19ED2") : .white.opacity(0.9))
+                .padding()
+                .background(
+                    Circle()
+                        .fill(isSelected ? Color(hex: "F19ED2").opacity(0.2) : Color.clear)
+                        .shadow(color: isSelected ? Color(hex: "F19ED2").opacity(0.7) : Color.clear, radius: isSelected ? 5 : 0)
+                )
+            CustomText(
+                text: text,
+                font: .caption,
+                foregroundColor: isSelected ? Color(hex: "F19ED2") : .white.opacity(0.7)
+            )
+        }
+        .frame(maxWidth: .infinity)
     }
 }
