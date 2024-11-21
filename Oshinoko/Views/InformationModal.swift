@@ -19,18 +19,23 @@ struct InformationModal: View {
 
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("詳細情報")) {
-                    TextField("タイトル", text: $title)
-                    TextField("説明", text: $description)
-                }
+            VStack {
+                CustomText(text: "詳細情報", font: .headline)
+                CustomTextField(placeholder: "タイトル", text: $title)
+                CustomTextField(placeholder: "説明", text: $description)
             }
+            .padding()
+            .glassmorphismBackground(colors: [
+                Color(hex: "91DDCF"),
+                Color(hex: "E8C5E5"),
+                Color(hex: "F19ED2")
+            ])
             .navigationTitle("ピン情報を入力")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("キャンセル") {
-                        // 何もしない（必要ならカスタマイズ可能）
+                        // 必要ならロジックを追加
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -41,7 +46,7 @@ struct InformationModal: View {
                             title: title
                         ))
                     }
-                    .disabled(title.isEmpty || description.isEmpty) // バリデーション追加
+                    .disabled(title.isEmpty || description.isEmpty) // バリデーション
                 }
             }
         }
