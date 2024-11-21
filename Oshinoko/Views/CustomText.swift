@@ -116,3 +116,19 @@ struct ProfileImagePicker: View {
         return nil
     }
 }
+
+import SwiftUI
+
+struct CustomText: View {
+    var text: String
+    var font: Font = .body
+    var foregroundColor: Color = .white
+    var shadowColor: Color = .black.opacity(0.9)
+    var shadowRadius: CGFloat = 2
+
+    var body: some View {
+        Text(text)
+            .font(font)
+            .foregroundColor(foregroundColor)
+    }
+}

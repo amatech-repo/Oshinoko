@@ -35,13 +35,19 @@ struct PinDetailView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(spacing: 20) {
                     pinDetailsSection
+                        .glassmorphismSection()
+
                     addressSection
-                    Divider()
+                        .glassmorphismSection()
+
                     mapSection
-                    Divider()
+                        .glassmorphismSection()
+
                     chatSection
+                        .glassmorphismSection()
+
                     actionButtons
                 }
                 .padding()
@@ -49,12 +55,17 @@ struct PinDetailView: View {
             .onAppear {
                 setupData()
             }
+            .glassmorphismBackground(colors: [
+                Color(hex: "91DDCF"),
+                Color(hex: "E8C5E5"),
+                Color(hex: "F19ED2")
+            ])
             .navigationTitle("ピン詳細")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("キャンセル") {
-                        cancelAllActions() // キャンセル時にすべてリセット
+                        cancelAllActions()
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
@@ -66,8 +77,9 @@ struct PinDetailView: View {
 
     private var pinDetailsSection: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("タイトル: \(pin.metadata.title)")
-            Text("説明: \(pin.metadata.description)")
+            CustomText(text: "タイトル: \(pin.metadata.title)", font: .headline,foregroundColor: .gray)
+            CustomText(text: "説明: \(pin.metadata.description)", font: .subheadline, foregroundColor: .gray)
+
         }
     }
 
@@ -75,16 +87,18 @@ struct PinDetailView: View {
         VStack(alignment: .leading, spacing: 5) {
             if let prefecture = prefectureName, let city = cityName {
                 if let subLocality = subLocalityName {
-                    Text("住所: \(prefecture) \(city) \(subLocality)")
+                    CustomText(text: "住所: \(prefecture) \(city) \(subLocality)", font: .headline, foregroundColor: .gray)
                 } else {
-                    Text("住所: \(prefecture) \(city)")
+                    CustomText(text: "住所: \(prefecture) \(city)")
                 }
             } else {
-                Text("住所を取得中...").foregroundColor(.gray)
+                CustomText(text: "住所を取得中...", foregroundColor: .gray)
             }
 
             if let capital = prefecturalCapital {
-                Text("県庁所在地: \(capital)")
+                CustomText(text: "県庁所在地: \(capital)", font: .subheadline, foregroundColor: .gray)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
         }
     }
@@ -99,7 +113,8 @@ struct PinDetailView: View {
                 )
                 .frame(height: 300)
             } else {
-                Text("位置情報が利用できません").foregroundColor(.gray)
+                Text("位置情報が利用できません")
+                    .foregroundColor(.gray)
             }
         }
     }
@@ -120,21 +135,28 @@ struct PinDetailView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 10) {
-            Button("ブックマーク") {
-                saveBookmark()
-            }
-            .padding()
+            CustomButton(
+                title: "ブックマーク",
+                action: saveBookmark,
+                backgroundColor: Color(hex: "91DDCF"),
+                opacity: 0.7
+            )
 
-            Button("行く") {
-                calculateRoute()
-            }
+            CustomButton(
+                title: "行く",
+                action: calculateRoute,
+                backgroundColor: Color(hex: "E8C5E5"),
+                opacity: 0.7
+            )
             .disabled(isRouteDisplayed)
-            .padding()
 
             if isRouteDisplayed {
-                Button("経路解除") {
-                    cancelRoute()
-                }
+                CustomButton(
+                    title: "経路解除",
+                    action: cancelRoute,
+                    backgroundColor: Color(hex: "F19ED2"),
+                    opacity: 0.7
+                )
             }
         }
     }
@@ -182,11 +204,24 @@ struct PinDetailView: View {
     }
 
     private func cancelAllActions() {
-        cancelRoute() // 青い線を削除
+        cancelRoute()
     }
 }
 
 
+
+// MARK: - Glassmorphism Section Modifier
+extension View {
+    func glassmorphismSection() -> some View {
+        self
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white.opacity(0.6))
+                    .shadow(radius: 5)
+            )
+    }
+}
 
 extension CLLocationCoordinate2D: Equatable {
     public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {

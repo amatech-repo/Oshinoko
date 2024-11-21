@@ -39,5 +39,8 @@ struct ContentView: View {
                     .environmentObject(authViewModel)
             }
         }
+        .glassmorphismBackground(
+            colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")]
+        )
     }
 }
