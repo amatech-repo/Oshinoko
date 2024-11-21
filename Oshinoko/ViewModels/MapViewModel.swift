@@ -5,120 +5,97 @@ import FirebaseFirestore
 
 @MainActor
 class MapPinsViewModel: ObservableObject {
-    @Published var region: MKCoordinateRegion
+    // MARK: - Published Properties
+    @Published var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917),
+        span: MKCoordinateSpan(latitudeDelta: 5.0, longitudeDelta: 5.0)
+    )
     @Published var annotations: [MapAnnotationItem] = []
     @Published var pins: [Pin] = []
     @Published var messages: [ChatMessage] = []
-    @Published var isRouteDisplayed: Bool = false
+    @Published var isRouteDisplayed = false
     @Published var currentRoute: MKRoute? = nil
 
+    // MARK: - Private Properties
     private let db = Firestore.firestore()
 
-    init() {
-        self.region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917),
-            span: MKCoordinateSpan(latitudeDelta: 5.0, longitudeDelta: 5.0)
-        )
-    }
+    // MARK: - Methods
 
+    /// Calculate route to the given destination coordinate
     func calculateRoute(to destination: CLLocationCoordinate2D) {
-        removeRouteOverlay() // 古い経路を削除
-
-        let request = MKDirections.Request()
-        request.source = MKMapItem.forCurrentLocation()
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
-        request.transportType = .automobile
-
+        clearRoute()
+        let request = createDirectionsRequest(to: destination)
         let directions = MKDirections(request: request)
-        directions.calculate { [weak self] response, error in
-            guard let self = self else { return }
 
+        directions.calculate { [weak self] response, error in
             if let error = error {
-                print("経路計算エラー: \(error.localizedDescription)")
+                print("Route calculation error: \(error.localizedDescription)")
                 return
             }
-
             guard let route = response?.routes.first else { return }
-            DispatchQueue.main.async {
-                self.currentRoute = route
-                self.isRouteDisplayed = true
-            }
+            self?.updateRoute(route)
         }
     }
 
-    func removeRouteOverlay() {
+    /// Remove the current route overlay
+    func clearRoute() {
         isRouteDisplayed = false
         currentRoute = nil
     }
 
+    /// Fetch pins from Firestore
     func fetchPins() async {
         do {
             let snapshot = try await db.collection("pins").getDocuments()
             self.pins = snapshot.documents.compactMap { try? $0.data(as: Pin.self) }
-            self.annotations = pins.map { pin in
-                MapAnnotationItem(coordinate: pin.coordinate.toCLLocationCoordinate2D(), color: Color.green)
-            }
         } catch {
-            print("ピンの取得エラー: \(error.localizedDescription)")
+            print("Error fetching pins: \(error.localizedDescription)")
         }
     }
 
-    func onPinTapped(annotation: MapAnnotationItem) {
-        guard let pin = pins.first(where: { areCoordinatesEqual($0.coordinate.toCLLocationCoordinate2D(), annotation.coordinate) }) else {
-            print("Error: Pin data not found for tapped annotation")
-            return
-        }
-        guard let pinID = pin.id else {
-            print("Error: Pin ID is nil")
+    /// Add a pin to Firestore and local state
+    func addPin(coordinate: Coordinate, metadata: Metadata) async {
+        guard let userIconURL = AuthViewModel.shared.icon else {
+            print("User icon is missing")
             return
         }
 
-        Task {
-            await fetchMessages(for: pinID)
+        let pin = Pin(id: UUID().uuidString, coordinate: coordinate, metadata: metadata, iconURL: userIconURL)
+        do {
+            try await db.collection("pins").addDocument(data: Firestore.Encoder().encode(pin))
+            pins.append(pin)
+        } catch {
+            print("Error adding pin: \(error.localizedDescription)")
         }
     }
 
-    func areCoordinatesEqual(_ lhs: CLLocationCoordinate2D, _ rhs: CLLocationCoordinate2D) -> Bool {
-        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
-    }
-
+    /// Fetch chat messages for a specific pin
     func fetchMessages(for pinID: String) async {
         do {
             let snapshot = try await db.collection("pins").document(pinID).collection("chats").order(by: "timestamp").getDocuments()
-            self.messages = snapshot.documents.compactMap { try? $0.data(as: ChatMessage.self) }
+            messages = snapshot.documents.compactMap { try? $0.data(as: ChatMessage.self) }
         } catch {
-            print("チャットメッセージの取得エラー: \(error.localizedDescription)")
+            print("Error fetching messages: \(error.localizedDescription)")
         }
     }
 
-    func addPin(coordinate: CLLocationCoordinate2D, metadata: Metadata) async {
-        let newPin = Pin(
-            id: nil,
-            coordinate: Coordinate(latitude: coordinate.latitude, longitude: coordinate.longitude),
-            metadata: metadata
-        )
+    // MARK: - Private Helpers
 
-        do {
-            try await addPinToFirestore(pin: newPin)
-            await fetchPins() // 再取得して更新
-        } catch {
-            print("Failed to add pin: \(error.localizedDescription)")
-        }
+    /// Create a directions request
+    private func createDirectionsRequest(to destination: CLLocationCoordinate2D) -> MKDirections.Request {
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
+        request.transportType = .automobile
+        return request
     }
 
-    private func addPinToFirestore(pin: Pin) async throws {
-        let pinData = try Firestore.Encoder().encode(pin)
-
-        do {
-            let _ = try await db.collection("pins").addDocument(data: pinData)
-        } catch {
-            throw error
+    /// Update the current route state
+    private func updateRoute(_ route: MKRoute) {
+        DispatchQueue.main.async {
+            self.currentRoute = route
+            self.isRouteDisplayed = true
         }
     }
 }
 
-extension Coordinate {
-    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
-    }
-}

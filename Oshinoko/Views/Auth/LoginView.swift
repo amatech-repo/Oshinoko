@@ -8,38 +8,44 @@
 import SwiftUI
 
 struct LoginView: View {
-    @ObservedObject var authViewModel: AuthViewModel
-    @Binding var screenState: ScreenState
+    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var authViewModel: AuthViewModel
 
     var body: some View {
-        VStack {
-            TextField("Email", text: $authViewModel.email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+        VStack(spacing: 16) {
+            Text("Welcome Back")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.bottom, 20)
+
+            CustomTextField(placeholder: "Email", text: $authViewModel.email)
+                .padding()
+            CustomSecureField(placeholder: "Password", text: $authViewModel.password)
                 .padding()
 
-            SecureField("Password", text: $authViewModel.password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
 
-            if !authViewModel.errorMessage.isEmpty {
-                Text(authViewModel.errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
-            }
+            CustomButton(
+                title: "Log In",
+                action: {
+                    Task {
+                        await authViewModel.logIn()
+                        if authViewModel.isAuthenticated {
+                            appState.screenState = .home
+                        }
+                    }
+                },
+                backgroundColor: Color(hex: "91DDCF"),
+                opacity: 0.7
+            )
 
-            Button("Log In") {
-                authViewModel.logIn()
-                if authViewModel.isAuthenticated {
-                    screenState = .home
-                }
+            Button(action: {
+                appState.screenState = .signUp
+            }) {
+                Text("Don't have an account? Sign Up")
+                    .font(.footnote)
             }
-            .padding()
-
-            Button("Don't have an account? Sign Up") {
-                screenState = .signUp
-            }
-            .foregroundColor(.blue)
         }
-        .padding()
+        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
 }

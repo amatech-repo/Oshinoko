@@ -9,11 +9,11 @@ import SwiftUI
 
 struct PlaceImageView: View {
     let photoReference: String?
-
+    
     var body: some View {
         if let photoReference = photoReference {
             let photoURL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=\(photoReference)&key=AIzaSyBybc9S1ppDKOpjTioOKxSaiq-E56y6xmY"
-
+            
             AsyncImage(url: URL(string: photoURL)) { phase in
                 switch phase {
                 case .empty:

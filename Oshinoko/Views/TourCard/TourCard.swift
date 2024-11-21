@@ -9,7 +9,7 @@ import SwiftUI
 import WebKit
 
 struct TouristCard: View {
-
+    
     let place: Place
     var body: some View {
         NavigationLink(destination: PlaceSearchWebView(query: place.name)) {
@@ -18,12 +18,12 @@ struct TouristCard: View {
                     .frame(height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .clipped()
-
+                
                 VStack(alignment: .leading, spacing: 4) {
                     Text(place.name)
-
+                    
                     Text(place.vicinity)
-
+                    
                     if let rating = place.rating {
                         RatingView(rating: rating)
                     }
@@ -38,7 +38,7 @@ struct TouristCard: View {
 
 struct RatingView: View {
     let rating: Double
-
+    
     var body: some View {
         HStack(spacing: 4) {
             ForEach(0..<Int(rating.rounded()), id: \.self) { _ in
@@ -55,10 +55,10 @@ struct RatingView: View {
 
 struct PlaceSearchWebView: UIViewRepresentable {
     let query: String
-
+    
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
-
+        
         if let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             let urlString = "https://www.google.com/search?q=\(encodedQuery)"
             if let url = URL(string: urlString) {
@@ -66,10 +66,10 @@ struct PlaceSearchWebView: UIViewRepresentable {
                 webView.load(request)
             }
         }
-
+        
         return webView
     }
-
+    
     func updateUIView(_ uiView: WKWebView, context: Context) {
     }
 }

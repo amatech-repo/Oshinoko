@@ -11,11 +11,11 @@ struct TouristCardView: View {
     @ObservedObject var placesManager: PlacesAPIManager
     @Binding var latitude: Double?
     @Binding var longitude: Double?
-
+    
     var body: some View {
         VStack {
             if placesManager.isLoading {
-               Text("ローディング")
+                Text("ローディング")
             } else if placesManager.nearbyPlaces.isEmpty {
                 MessageView(message: "No nearby tourist spots found.")
             } else {
@@ -33,13 +33,13 @@ struct TouristCardView: View {
             updatePlaces()
         }
     }
-
+    
     private func updatePlacesIfNeeded() {
         if placesManager.nearbyPlaces.isEmpty {
             updatePlaces()
         }
     }
-
+    
     private func updatePlaces() {
         if let lat = latitude, let lon = longitude {
             Task {
@@ -52,7 +52,7 @@ struct TouristCardView: View {
 
 struct MessageView: View {
     let message: String
-
+    
     var body: some View {
         Text(message)
     }
@@ -60,7 +60,7 @@ struct MessageView: View {
 
 struct TouristPlacesTabView: View {
     let places: [Place]
-
+    
     var body: some View {
         TabView {
             ForEach(places) { place in
