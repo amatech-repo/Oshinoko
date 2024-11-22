@@ -29,10 +29,20 @@ class AuthViewModel: ObservableObject {
 
 
 
-        // 初期化時にUserDefaultsからデータを読み取る
-        init() {
-            loadIconFromUserDefaults()
+    init() {
+        loadIconFromUserDefaults()
+        loadUserIDFromUserDefaults()
+    }
+
+    private func loadUserIDFromUserDefaults() {
+        if let savedUserID = getUserIDFromUserDefaults() {
+            self.userID = savedUserID
+            print("⭐️ UserDefaultsから読み込まれたuserID: \(savedUserID)")
+        } else {
+            print("⚠️ UserDefaultsにuserIDが保存されていません")
         }
+    }
+
 
     private func saveIconToUserDefaults(iconURL: String) {
         UserDefaults.standard.set(iconURL, forKey: "iconURL")
@@ -63,9 +73,10 @@ class AuthViewModel: ObservableObject {
             print("Logged in user: \(result.user.uid)")
             isAuthenticated = true
             userID = result.user.uid
+            saveUserIDToUserDefaults(userID: result.user.uid) // 保存
 
             // Firestoreからユーザー情報を取得
-            if let fetchedData = try await fetchUserData(for: result.user.uid) { // 修正: userData を fetchedData に変更
+            if let fetchedData = try await fetchUserData(for: result.user.uid) {
                 icon = fetchedData["iconURL"] as? String
                 if let iconURL = icon {
                     saveIconToUserDefaults(iconURL: iconURL) // ローカル保存
@@ -82,6 +93,7 @@ class AuthViewModel: ObservableObject {
 
 
 
+
     /// 新規登録
     func signUp() async {
         do {
@@ -89,6 +101,7 @@ class AuthViewModel: ObservableObject {
             let result = try await auth.createUser(withEmail: email, password: password)
             let userID = result.user.uid
             self.userID = userID
+            saveUserIDToUserDefaults(userID: userID) // 保存
             print("⭐️サインアップ成功: \(userID)")
 
             // プロフィール画像をアップロード
@@ -114,6 +127,7 @@ class AuthViewModel: ObservableObject {
 
 
 
+
     // MARK: - Private Helpers
 
     /// Firestoreにユーザー情報を保存
@@ -126,6 +140,16 @@ class AuthViewModel: ObservableObject {
         print("⭐️AuthViewModelで保存するデータ: \(userData)") // デバッグ用
         try await db.collection("users").document(userID).setData(userData)
     }
+
+    private func saveUserIDToUserDefaults(userID: String) {
+        UserDefaults.standard.set(userID, forKey: "userID")
+        print("⭐️ UserDefaultsに保存されたuserID: \(userID)")
+    }
+
+    private func getUserIDFromUserDefaults() -> String? {
+        UserDefaults.standard.string(forKey: "userID")
+    }
+
 
 
 
