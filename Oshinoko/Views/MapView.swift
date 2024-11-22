@@ -90,6 +90,32 @@ struct MapView: UIViewRepresentable {
             }
         }
 
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            guard !(annotation is MKUserLocation) else {
+                return nil // ユーザー位置にはカスタムビューを適用しない
+            }
+
+            let annotationIdentifier = "CustomPin"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+
+            if annotationView == nil {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+                annotationView?.canShowCallout = true // ピンのタップで詳細を表示可能にする
+
+                // カスタム画像の設定
+                annotationView?.image = UIImage(named: "custom-pin-image") ?? UIImage(systemName: "mappin")
+
+                // アクセサリビュー（例: 詳細ボタン）を追加
+                let detailButton = UIButton(type: .detailDisclosure)
+                annotationView?.rightCalloutAccessoryView = detailButton
+            } else {
+                annotationView?.annotation = annotation
+            }
+
+            return annotationView
+        }
+
+
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let polyline = overlay as? MKPolyline {
                 let renderer = MKPolylineRenderer(polyline: polyline)
