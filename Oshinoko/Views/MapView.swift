@@ -90,30 +90,40 @@ struct MapView: UIViewRepresentable {
             }
         }
 
-        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            guard !(annotation is MKUserLocation) else {
-                return nil // ユーザー位置にはカスタムビューを適用しない
-            }
+        @MainActor func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            let identifier = "Pin"
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
 
-            let annotationIdentifier = "CustomPin"
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
-
-            if annotationView == nil {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-                annotationView?.canShowCallout = true // ピンのタップで詳細を表示可能にする
-
-                // カスタム画像の設定
-                annotationView?.image = UIImage(named: "custom-pin-image") ?? UIImage(systemName: "mappin")
-
-                // アクセサリビュー（例: 詳細ボタン）を追加
-                let detailButton = UIButton(type: .detailDisclosure)
-                annotationView?.rightCalloutAccessoryView = detailButton
+            if view == nil {
+                view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view?.canShowCallout = true
             } else {
-                annotationView?.annotation = annotation
+                view?.annotation = annotation
             }
 
-            return annotationView
+            // アイコンURLから画像をダウンロードして設定
+            if let pin = parent.pinsViewModel.pins.first(where: {
+                $0.coordinate.latitude == annotation.coordinate.latitude &&
+                $0.coordinate.longitude == annotation.coordinate.longitude
+            }), let url = URL(string: pin.iconURL ?? "") {
+                Task {
+                    do {
+                        let (data, _) = try await URLSession.shared.data(from: url)
+                        if let image = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                view?.image = image
+                            }
+                        }
+                    } catch {
+                        print("画像の取得エラー: \(error.localizedDescription)")
+                    }
+                }
+            }
+
+
+            return view
         }
+
 
 
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {

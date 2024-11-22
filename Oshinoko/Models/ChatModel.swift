@@ -23,7 +23,7 @@ struct Pin: Codable, Identifiable, Equatable {
         id ?? UUID().uuidString
     }
     
-    let iconURL: String? // アイコン画像のURLを追加
+    var iconURL: String? // アイコン画像のURLを追加
 }
 
 struct Coordinate: Codable {
