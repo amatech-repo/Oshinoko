@@ -43,10 +43,20 @@ class PinsViewModel: ObservableObject {
         }
     }
 
+   
+
+
     /// Add a new pin
     func addPin(coordinate: Coordinate, metadata: Metadata) async {
-        // アイコンがない場合はデフォルトを使用
-        let userIconURL = fetchUserIcon() ?? "default-icon-url-or-system-image" // デフォルト画像
+        // UserDefaultsから再取得
+        if authViewModel.icon == nil {
+            authViewModel.loadIconFromUserDefaults()
+        }
+
+        guard let userIconURL = authViewModel.icon else {
+            print("エラー: アイコンURLが未設定です。再ログインしてください。")
+            return
+        }
 
         let pin = Pin(
             id: UUID().uuidString,
@@ -55,13 +65,22 @@ class PinsViewModel: ObservableObject {
             iconURL: userIconURL
         )
 
+        print("⭐️ Pin内容確認: \(pin)") // デバッグ用
+
         do {
+            // Firestoreに保存
             try await savePinToFirestore(pin: pin)
             pins.append(pin)
         } catch {
-            print("Error adding pin: \(error.localizedDescription)")
+            print("ピン追加エラー: \(error.localizedDescription)")
         }
     }
+
+
+
+
+
+
 
     private func fetchUserIcon() -> String? {
         // アイコンがあれば返す、なければnil

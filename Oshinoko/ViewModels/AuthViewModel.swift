@@ -27,6 +27,33 @@ class AuthViewModel: ObservableObject {
     private let storage = Storage.storage()
     private let db = Firestore.firestore()
 
+
+
+        // 初期化時にUserDefaultsからデータを読み取る
+        init() {
+            loadIconFromUserDefaults()
+        }
+
+    private func saveIconToUserDefaults(iconURL: String) {
+        UserDefaults.standard.set(iconURL, forKey: "iconURL")
+        print("⭐️ UserDefaultsに保存されたiconURL: \(iconURL)")
+    }
+
+        func loadIconFromUserDefaults() {
+            if let savedIconURL = getIconFromUserDefaults() {
+                self.icon = savedIconURL
+                print("⭐️ UserDefaultsから読み込まれたiconURL: \(savedIconURL)")
+            } else {
+                print("⚠️ UserDefaultsにiconURLが保存されていません")
+            }
+        }
+
+        private func getIconFromUserDefaults() -> String? {
+            UserDefaults.standard.string(forKey: "iconURL")
+        }
+
+
+
     // MARK: - Public Methods
 
     /// ログイン
@@ -38,33 +65,54 @@ class AuthViewModel: ObservableObject {
             userID = result.user.uid
 
             // Firestoreからユーザー情報を取得
-            if let userData = try await fetchUserData(for: result.user.uid) {
-                name = userData["name"] as? String ?? "Unknown User"
-                icon = userData["iconURL"] as? String
+            if let fetchedData = try await fetchUserData(for: result.user.uid) { // 修正: userData を fetchedData に変更
+                icon = fetchedData["iconURL"] as? String
+                if let iconURL = icon {
+                    saveIconToUserDefaults(iconURL: iconURL) // ローカル保存
+                }
+                print("⭐️loginユーザーのアイコンURL: \(icon ?? "なし")")
             }
         } catch {
             errorMessage = error.localizedDescription
         }
     }
 
+
+
+
+
+
     /// 新規登録
     func signUp() async {
         do {
+            // Firebase Authenticationでユーザー作成
             let result = try await auth.createUser(withEmail: email, password: password)
             let userID = result.user.uid
-
-            // アイコン画像をアップロード
-            let imageURL = await uploadProfileImage(for: userID)
-
-            // Firestoreにユーザー情報を保存
-            try await saveUserData(userID: userID, imageURL: imageURL)
-            isAuthenticated = true
             self.userID = userID
-            self.icon = imageURL
+            print("⭐️サインアップ成功: \(userID)")
+
+            // プロフィール画像をアップロード
+            let imageURL = await uploadProfileImage(for: userID)
+            self.icon = imageURL // `icon` プロパティに設定
+
+            if let imageURL = imageURL {
+                // Firestoreにユーザー情報を保存
+                try await saveUserData(userID: userID, imageURL: imageURL)
+                saveIconToUserDefaults(iconURL: imageURL) // UserDefaultsに保存
+                print("⭐️サインアップ完了、アイコンURL: \(imageURL)")
+            } else {
+                print("⚠️ プロフィール画像のアップロードに失敗")
+            }
+
+            isAuthenticated = true
         } catch {
+            // エラーハンドリング
             errorMessage = error.localizedDescription
+            print("サインアップエラー: \(errorMessage)")
         }
     }
+
+
 
     // MARK: - Private Helpers
 
@@ -72,12 +120,14 @@ class AuthViewModel: ObservableObject {
     private func saveUserData(userID: String, imageURL: String?) async throws {
         let userData: [String: Any] = [
             "id": userID,
-            "email": email,
-            "name": name,
-            "iconURL": imageURL ?? "" // デフォルトURL
+            "email": email,                        // email を保存
+            "iconURL": imageURL ?? "default-icon-url" // デフォルトURL
         ]
+        print("⭐️AuthViewModelで保存するデータ: \(userData)") // デバッグ用
         try await db.collection("users").document(userID).setData(userData)
     }
+
+
 
     /// Firestoreからユーザー情報を取得
     private func fetchUserData(for userID: String) async throws -> [String: Any]? {
