@@ -43,25 +43,95 @@ class PinsViewModel: ObservableObject {
         }
     }
 
+   
+
+
     /// Add a new pin
     func addPin(coordinate: Coordinate, metadata: Metadata) async {
-        // アイコンがない場合はデフォルトを使用
-        let userIconURL = fetchUserIcon() ?? "default-icon-url-or-system-image" // デフォルト画像
+        // ユーザーアイコンを確認
+        if authViewModel.icon == nil {
+            authViewModel.loadIconFromUserDefaults()
+        }
 
+        guard let userIconURL = authViewModel.icon, let userID = authViewModel.userID else {
+            print("エラー: ユーザー情報（アイコンまたはID）が見つかりません。再ログインしてください。")
+            return
+        }
+
+        let pinID = UUID().uuidString
         let pin = Pin(
-            id: UUID().uuidString,
+            id: pinID,
             coordinate: coordinate,
             metadata: metadata,
-            iconURL: userIconURL
+            iconURL: userIconURL // AuthViewModelから取得したURLを利用
         )
 
+        print("⭐️ 新しいPinのデータ: \(pin)") // デバッグ用
+
         do {
-            try await savePinToFirestore(pin: pin)
+            // FirestoreにPinを保存
+            try await savePinToFirestore(pin: pin, userID: userID, userIconURL: userIconURL)
+
+            // ローカルリストに追加
             pins.append(pin)
         } catch {
-            print("Error adding pin: \(error.localizedDescription)")
+            print("ピン追加エラー: \(error.localizedDescription)")
         }
     }
+
+    /// FirestoreにPinを保存
+    /// FirestoreにPinを保存
+    private func savePinToFirestore(pin: Pin, userID: String, userIconURL: String) async throws {
+        var pinData = try Firestore.Encoder().encode(pin)
+
+        // ユーザー情報を追加
+        pinData["userID"] = userID
+        pinData["userIconURL"] = userIconURL
+
+        // Firestoreに保存
+        try await db.collection("pins").document(pin.id ?? "無理でした").setData(pinData)
+        print("⭐️ Firestoreに保存されたデータ: \(pinData)")
+    }
+
+
+    /// Firestoreから指定されたuserIDのiconURLを取得
+    private func fetchIconURL(for userID: String) async throws -> String? {
+        let document = try await db.collection("users").document(userID).getDocument()
+        let data = document.data()
+        return data?["iconURL"] as? String
+    }
+
+    /// ピンをFirestoreから取得し、iconURLをマップデータに追加
+    func fetchPinsAndUpdateWithIcons() async {
+        do {
+            // Firestoreからピンデータを取得
+            let snapshot = try await db.collection("pins").getDocuments()
+            var fetchedPins = snapshot.documents.compactMap { document -> Pin? in
+                try? document.data(as: Pin.self)
+            }
+
+            // 各ピンのuserIDからiconURLを取得して更新
+            // 各ピンのuserIDからiconURLを取得して更新
+            for i in 0..<fetchedPins.count {
+                var pin = fetchedPins[i] // 配列の要素を一時的にコピー
+                let userID = pin.metadata.createdBy
+                let iconURL = try await fetchIconURL(for: userID)
+                pin.iconURL = iconURL ?? ""
+            }
+
+            // マップに反映するピンを更新
+            DispatchQueue.main.async {
+                self.pins = fetchedPins
+            }
+        } catch {
+            print("ピンまたはアイコンURL取得エラー: \(error.localizedDescription)")
+        }
+    }
+
+
+
+
+
 
     private func fetchUserIcon() -> String? {
         // アイコンがあれば返す、なければnil

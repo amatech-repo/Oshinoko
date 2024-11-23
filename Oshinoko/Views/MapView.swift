@@ -90,6 +90,51 @@ struct MapView: UIViewRepresentable {
             }
         }
 
+        @MainActor func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            let identifier = "Pin"
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+
+            if view == nil {
+                view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view?.canShowCallout = true
+            } else {
+                view?.annotation = annotation
+            }
+
+            // アイコンURLから画像をダウンロードして設定
+            if let pin = parent.pinsViewModel.pins.first(where: {
+                $0.coordinate.latitude == annotation.coordinate.latitude &&
+                $0.coordinate.longitude == annotation.coordinate.longitude
+            }), let url = URL(string: pin.iconURL ?? "") {
+                Task {
+                    do {
+                        let (data, _) = try await URLSession.shared.data(from: url)
+                        if let image = UIImage(data: data) {
+                            // 画像のサイズを調整
+                            let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 40, height: 40))
+                            DispatchQueue.main.async {
+                                view?.image = resizedImage
+                            }
+                        }
+                    } catch {
+                        print("画像の取得エラー: \(error.localizedDescription)")
+                    }
+                }
+            }
+
+            return view
+        }
+
+        func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+            let renderer = UIGraphicsImageRenderer(size: targetSize)
+            return renderer.image { _ in
+                image.draw(in: CGRect(origin: .zero, size: targetSize))
+            }
+        }
+
+
+
+
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let polyline = overlay as? MKPolyline {
                 let renderer = MKPolylineRenderer(polyline: polyline)
