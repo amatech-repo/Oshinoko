@@ -22,6 +22,7 @@ class AuthViewModel: ObservableObject {
     @Published var userID: String?
     @Published var icon: String?
     @Published var name: String = ""
+    @Published var isProcessing: Bool = false
 
     private let auth = Auth.auth()
     private let storage = Storage.storage()
@@ -52,6 +53,9 @@ class AuthViewModel: ObservableObject {
 
     // MARK: - ログイン
     func logIn() async {
+        isProcessing = true // 処理開始
+        defer { isProcessing = false } // 処理終了後に解除
+
         do {
             let result = try await auth.signIn(withEmail: email, password: password)
             print("Logged in user: \(result.user.uid)")
@@ -74,6 +78,9 @@ class AuthViewModel: ObservableObject {
 
     // MARK: - 新規登録
     func signUp() async {
+        isProcessing = true // 処理開始
+        defer { isProcessing = false } // 処理終了後に解除
+
         do {
             // Firebase Authenticationでユーザー作成
             let result = try await auth.createUser(withEmail: email, password: password)
