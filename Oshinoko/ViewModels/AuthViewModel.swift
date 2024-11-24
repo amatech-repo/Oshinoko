@@ -29,30 +29,26 @@ class AuthViewModel: ObservableObject {
 
     init() {
         Task {
-            await checkLoginStatus()
+            if !isAuthenticated { // 重複防止
+                await checkLoginStatus()
+            }
         }
     }
 
-    // MARK: - 起動時にログイン状態を確認
+    private var isLoginCheckInProgress = false
+
     func checkLoginStatus() async {
+        guard !isLoginCheckInProgress else { return }
+        isLoginCheckInProgress = true
+        defer { isLoginCheckInProgress = false } // タスク終了後に解除
+
         if let currentUser = auth.currentUser {
             userID = currentUser.uid
             isAuthenticated = true
-            print("⭐️ 自動ログイン成功: \(currentUser.uid)")
-
-            // Firestoreからユーザーデータをロード
-            if let fetchedData = try? await fetchUserData(for: currentUser.uid) {
-                icon = fetchedData["iconURL"] as? String
-                if let iconURL = icon {
-                    saveIconToUserDefaults(iconURL: iconURL) // ローカル保存
-                }
-                print("⭐️ 自動ログインユーザーのアイコンURL: \(icon ?? "なし")")
-            }
-        } else {
-            isAuthenticated = false
-            print("⚠️ 未ログイン状態です")
         }
     }
+
+
 
     // MARK: - ログイン
     func logIn() async {
