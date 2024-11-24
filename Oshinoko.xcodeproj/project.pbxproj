@@ -34,6 +34,7 @@
 		3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB302E2CE5C7D8009C368B /* LoginView.swift */; };
 		3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB30302CE5C7F3009C368B /* SignUpView.swift */; };
 		3BAF4B232CECD2A00045179C /* BackgroundModlfier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF4B222CECD2A00045179C /* BackgroundModlfier.swift */; };
+		3BB90DF22CF2FA0A000E0208 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB90DF12CF2FA0A000E0208 /* LoadingView.swift */; };
 		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
 		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
 		3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */; };
@@ -92,6 +93,7 @@
 		3BAB302E2CE5C7D8009C368B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3BAB30302CE5C7F3009C368B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3BAF4B222CECD2A00045179C /* BackgroundModlfier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModlfier.swift; sourceTree = "<group>"; };
+		3BB90DF12CF2FA0A000E0208 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oshinoko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoApp.swift; sourceTree = "<group>"; };
 		3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
+				3BB90DF12CF2FA0A000E0208 /* LoadingView.swift */,
 				3B56D0A82CE5C053001BF220 /* PinDetailView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
 				3B1194F32CEE025000FBC27F /* ChatTab.swift */,
@@ -439,6 +442,7 @@
 				3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
+				3BB90DF22CF2FA0A000E0208 /* LoadingView.swift in Sources */,
 				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
@@ -639,6 +643,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -672,6 +677,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

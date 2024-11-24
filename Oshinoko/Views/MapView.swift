@@ -46,12 +46,18 @@ struct MapView: UIViewRepresentable {
             annotation.title = pin.metadata.title
             return annotation
         }
-        let toRemove = currentAnnotations.filter { !newAnnotations.contains($0) }
-        let toAdd = newAnnotations.filter { !currentAnnotations.contains($0) }
+
+        // 必要な差分のみ適用
+        let currentSet = Set(currentAnnotations.map { $0.coordinate })
+        let newSet = Set(newAnnotations.map { $0.coordinate })
+
+        let toRemove = currentAnnotations.filter { !newSet.contains($0.coordinate) }
+        let toAdd = newAnnotations.filter { !currentSet.contains($0.coordinate) }
 
         mapView.removeAnnotations(toRemove)
         mapView.addAnnotations(toAdd)
     }
+
 
     private func updateOverlays(on mapView: MKMapView) {
         mapView.removeOverlays(mapView.overlays)
@@ -59,6 +65,11 @@ struct MapView: UIViewRepresentable {
             mapView.addOverlay(route.polyline)
         }
     }
+
+    class ImageCache {
+        static let shared = NSCache<NSString, UIImage>()
+    }
+
 
     // MARK: - Coordinator
 
@@ -101,23 +112,28 @@ struct MapView: UIViewRepresentable {
                 view?.annotation = annotation
             }
 
-            // アイコンURLから画像をダウンロードして設定
             if let pin = parent.pinsViewModel.pins.first(where: {
                 $0.coordinate.latitude == annotation.coordinate.latitude &&
                 $0.coordinate.longitude == annotation.coordinate.longitude
-            }), let url = URL(string: pin.iconURL ?? "") {
-                Task {
-                    do {
-                        let (data, _) = try await URLSession.shared.data(from: url)
-                        if let image = UIImage(data: data) {
-                            // 画像のサイズを調整
-                            let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 40, height: 40))
-                            DispatchQueue.main.async {
-                                view?.image = resizedImage
+            }), let iconURLString = pin.iconURL, let iconURL = URL(string: iconURLString) {
+                // キャッシュチェック
+                if let cachedImage = ImageCache.shared.object(forKey: NSString(string: iconURLString)) {
+                    view?.image = cachedImage
+                } else {
+                    // ダウンロードとキャッシュ保存
+                    Task {
+                        do {
+                            let (data, _) = try await URLSession.shared.data(from: iconURL)
+                            if let image = UIImage(data: data) {
+                                let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 40, height: 40))
+                                ImageCache.shared.setObject(resizedImage, forKey: NSString(string: iconURLString))
+                                DispatchQueue.main.async {
+                                    view?.image = resizedImage
+                                }
                             }
+                        } catch {
+                            print("画像の取得エラー: \(error.localizedDescription)")
                         }
-                    } catch {
-                        print("画像の取得エラー: \(error.localizedDescription)")
                     }
                 }
             }
@@ -150,6 +166,13 @@ struct MapView: UIViewRepresentable {
 extension Coordinate {
     func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+    }
+}
+
+extension CLLocationCoordinate2D: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(latitude)
+        hasher.combine(longitude)
     }
 }
 
