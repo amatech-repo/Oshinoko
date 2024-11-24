@@ -38,9 +38,16 @@ struct BookmarkRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(bookmark.address ?? "No Address")
-                .font(.headline)
-                .foregroundColor(.black)
+            HStack {
+                Text(bookmark.cityName ?? "No City") // デバッグ用
+                    .onAppear {
+                        print("City in Row: \(bookmark.cityName ?? "nil")")
+                    }
+                Text(bookmark.address ?? "No Address")
+                    .onAppear {
+                        print("Address in Row: \(bookmark.address ?? "nil")")
+                    }
+            }
             Text("Coordinates: \(bookmark.latitude), \(bookmark.longitude)")
                 .font(.caption)
                 .foregroundColor(.gray)

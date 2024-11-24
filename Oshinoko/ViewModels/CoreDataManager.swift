@@ -26,12 +26,12 @@ class CoreDataManager {
         container.viewContext
     }
 
-    // 座標と住所を保存
     func saveBookmark(
         id: String,
         latitude: Double,
         longitude: Double,
         address: String?,
+        cityName: String?,
         title: String?,
         description: String?
     ) {
@@ -40,10 +40,17 @@ class CoreDataManager {
         bookmark.latitude = latitude
         bookmark.longitude = longitude
         bookmark.address = address
+        bookmark.cityName = cityName // 市区町村を保存
 
+        // デバッグ: 保存値を確認
+        print("Saving Bookmark:")
+        print("ID: \(id), Latitude: \(latitude), Longitude: \(longitude)")
+        print("Address: \(address ?? "nil"), City: \(cityName ?? "nil")")
 
         saveContext()
     }
+
+
 
     // 保存したブックマークを取得
     func fetchBookmarks() -> [Bookmark] {
