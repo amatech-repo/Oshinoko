@@ -171,16 +171,25 @@ struct PinDetailView: View {
             self.prefectureName = prefecture
             self.cityName = city
             self.subLocalityName = subLocality
+
+            print("住所取得完了: \(prefecture ?? "nil") \(city ?? "nil") \(subLocality ?? "nil")")
         }
     }
 
+
     private func saveBookmark() {
+        // 値を確認
+        print("Saving bookmark with:")
+        print("Prefecture: \(prefectureName ?? "nil")")
+        print("City: \(cityName ?? "nil")")
+
         if let latitude = latitude, let longitude = longitude {
             CoreDataManager.shared.saveBookmark(
                 id: pin.id ?? "idがないよ",
                 latitude: latitude,
                 longitude: longitude,
                 address: prefectureName ?? "住所不明",
+                cityName: cityName ?? "市区町村不明",
                 title: pin.metadata.title,
                 description: pin.metadata.description
             )
@@ -189,6 +198,7 @@ struct PinDetailView: View {
             print("座標が取得できません")
         }
     }
+
 
     private func calculateRoute() {
         if let latitude = latitude, let longitude = longitude {

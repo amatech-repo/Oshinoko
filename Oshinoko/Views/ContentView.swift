@@ -15,6 +15,14 @@ enum ScreenState {
 
 class AppState: ObservableObject {
     @Published var screenState: ScreenState = .login
+    @Published var isLoading: Bool = true
+
+    func finishLoading() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            // 2秒後にローディングを終了
+            self.isLoading = false
+        }
+    }
 }
 
 struct ContentView: View {

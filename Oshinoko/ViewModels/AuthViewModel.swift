@@ -22,6 +22,7 @@ class AuthViewModel: ObservableObject {
     @Published var userID: String?
     @Published var icon: String?
     @Published var name: String = ""
+    @Published var isProcessing: Bool = false
 
     private let auth = Auth.auth()
     private let storage = Storage.storage()
@@ -29,33 +30,32 @@ class AuthViewModel: ObservableObject {
 
     init() {
         Task {
-            await checkLoginStatus()
+            if !isAuthenticated { // 重複防止
+                await checkLoginStatus()
+            }
         }
     }
 
-    // MARK: - 起動時にログイン状態を確認
+    private var isLoginCheckInProgress = false
+
     func checkLoginStatus() async {
+        guard !isLoginCheckInProgress else { return }
+        isLoginCheckInProgress = true
+        defer { isLoginCheckInProgress = false } // タスク終了後に解除
+
         if let currentUser = auth.currentUser {
             userID = currentUser.uid
             isAuthenticated = true
-            print("⭐️ 自動ログイン成功: \(currentUser.uid)")
-
-            // Firestoreからユーザーデータをロード
-            if let fetchedData = try? await fetchUserData(for: currentUser.uid) {
-                icon = fetchedData["iconURL"] as? String
-                if let iconURL = icon {
-                    saveIconToUserDefaults(iconURL: iconURL) // ローカル保存
-                }
-                print("⭐️ 自動ログインユーザーのアイコンURL: \(icon ?? "なし")")
-            }
-        } else {
-            isAuthenticated = false
-            print("⚠️ 未ログイン状態です")
         }
     }
 
+
+
     // MARK: - ログイン
     func logIn() async {
+        isProcessing = true // 処理開始
+        defer { isProcessing = false } // 処理終了後に解除
+
         do {
             let result = try await auth.signIn(withEmail: email, password: password)
             print("Logged in user: \(result.user.uid)")
@@ -78,6 +78,9 @@ class AuthViewModel: ObservableObject {
 
     // MARK: - 新規登録
     func signUp() async {
+        isProcessing = true // 処理開始
+        defer { isProcessing = false } // 処理終了後に解除
+
         do {
             // Firebase Authenticationでユーザー作成
             let result = try await auth.createUser(withEmail: email, password: password)
