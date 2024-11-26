@@ -17,6 +17,8 @@
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
 		3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* PinDetailView.swift */; };
+		3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B5BB52F2CF54F2600EE28C2 /* LoadingAnimation.json */; };
+		3B5BB5332CF54F8000EE28C2 /* LoadingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5BB5322CF54F8000EE28C2 /* LoadingAnimationView.swift */; };
 		3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */; };
 		3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */; };
 		3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */; };
@@ -80,6 +82,8 @@
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		3B56D0A82CE5C053001BF220 /* PinDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinDetailView.swift; sourceTree = "<group>"; };
+		3B5BB52F2CF54F2600EE28C2 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
+		3B5BB5322CF54F8000EE28C2 /* LoadingAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationView.swift; sourceTree = "<group>"; };
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardModel.swift; sourceTree = "<group>"; };
 		3B6C95A62CE7073D00097366 /* TourCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCardViewModel.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 		3B2E30302CE4DB7D001F3553 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B5BB5312CF54F3100EE28C2 /* LoadingAnimation */,
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
@@ -195,6 +200,15 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3B5BB5312CF54F3100EE28C2 /* LoadingAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				3B5BB52F2CF54F2600EE28C2 /* LoadingAnimation.json */,
+				3B5BB5322CF54F8000EE28C2 /* LoadingAnimationView.swift */,
+			);
+			path = LoadingAnimation;
 			sourceTree = "<group>";
 		};
 		3B6C95AF2CE70A1D00097366 /* TourCard */ = {
@@ -412,6 +426,7 @@
 			files = (
 				3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */,
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
+				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
 				3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,6 +461,7 @@
 				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
+				3B5BB5332CF54F8000EE28C2 /* LoadingAnimationView.swift in Sources */,
 				3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */,
 				3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */,
 				3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */,
@@ -643,7 +659,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UIUserInterfaceStyle = light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -677,7 +693,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UIUserInterfaceStyle = light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

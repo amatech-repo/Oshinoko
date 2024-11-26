@@ -67,12 +67,7 @@ struct SignUpView: View {
 struct LoadingOverlay: View {
     var body: some View {
         ZStack {
-            Color.black.opacity(0.5).ignoresSafeArea()
-            ProgressView("Loading...")
-                .progressViewStyle(CircularProgressViewStyle())
-                .padding()
-                .background(Color.white)
-                .cornerRadius(10)
+            LoadingAnimationView(lottieFile: "LoadingAnimation")
         }
     }
 }
