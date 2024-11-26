@@ -125,10 +125,10 @@ struct MapView: UIViewRepresentable {
                         do {
                             let (data, _) = try await URLSession.shared.data(from: iconURL)
                             if let image = UIImage(data: data) {
-                                let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 40, height: 40))
-                                ImageCache.shared.setObject(resizedImage, forKey: NSString(string: iconURLString))
+                                let circularImage = makeCircularImage(image: image, size: CGSize(width: 40, height: 40))
+                                ImageCache.shared.setObject(circularImage, forKey: NSString(string: iconURLString))
                                 DispatchQueue.main.async {
-                                    view?.image = resizedImage
+                                    view?.image = circularImage
                                 }
                             }
                         } catch {
