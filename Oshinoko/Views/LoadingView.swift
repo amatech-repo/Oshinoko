@@ -10,6 +10,7 @@ import SwiftUI
 struct LoadingView: View {
     var body: some View {
         VStack {
+            LoadingAnimationView(lottieFile: "LoadingAnimation")
             ProgressView("Loading...")
                 .progressViewStyle(CircularProgressViewStyle())
                 .padding()
