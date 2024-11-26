@@ -39,13 +39,21 @@ struct BookmarkRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(bookmark.cityName ?? "No City") // デバッグ用
+                Text(bookmark.cityName ?? "No City")
                     .onAppear {
                         print("City in Row: \(bookmark.cityName ?? "nil")")
                     }
                 Text(bookmark.address ?? "No Address")
                     .onAppear {
                         print("Address in Row: \(bookmark.address ?? "nil")")
+                    }
+            }
+            if let subLocality = bookmark.subLocality { // 町名や地区名が存在する場合のみ表示
+                Text(subLocality)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .onAppear {
+                        print("SubLocality in Row: \(subLocality)")
                     }
             }
             Text("Coordinates: \(bookmark.latitude), \(bookmark.longitude)")
@@ -55,3 +63,4 @@ struct BookmarkRow: View {
         .padding()
     }
 }
+

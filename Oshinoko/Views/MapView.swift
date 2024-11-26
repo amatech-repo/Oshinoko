@@ -125,10 +125,10 @@ struct MapView: UIViewRepresentable {
                         do {
                             let (data, _) = try await URLSession.shared.data(from: iconURL)
                             if let image = UIImage(data: data) {
-                                let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 40, height: 40))
-                                ImageCache.shared.setObject(resizedImage, forKey: NSString(string: iconURLString))
+                                let circularImage = makeCircularImage(image: image, size: CGSize(width: 40, height: 40))
+                                ImageCache.shared.setObject(circularImage, forKey: NSString(string: iconURLString))
                                 DispatchQueue.main.async {
-                                    view?.image = resizedImage
+                                    view?.image = circularImage
                                 }
                             }
                         } catch {
@@ -147,6 +147,42 @@ struct MapView: UIViewRepresentable {
                 image.draw(in: CGRect(origin: .zero, size: targetSize))
             }
         }
+
+        func makeCircularImage(image: UIImage, size: CGSize) -> UIImage {
+            // 比率を維持したリサイズ
+            let resizedImage = resizeImageWithAspectFit(image: image, targetSize: size)
+
+            // 丸形に加工
+            let diameter = min(size.width, size.height)
+            let bounds = CGRect(x: 0, y: 0, width: diameter, height: diameter)
+
+            UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
+            let context = UIGraphicsGetCurrentContext()
+
+            context?.addEllipse(in: bounds)
+            context?.clip()
+            resizedImage.draw(in: bounds)
+
+            let circularImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            return circularImage ?? resizedImage
+        }
+
+        func resizeImageWithAspectFit(image: UIImage, targetSize: CGSize) -> UIImage {
+            let widthRatio = targetSize.width / image.size.width
+            let heightRatio = targetSize.height / image.size.height
+            let scale = min(widthRatio, heightRatio)
+            let newSize = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+
+            UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+            image.draw(in: CGRect(origin: .zero, size: newSize))
+            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            return resizedImage ?? image
+        }
+
 
 
 

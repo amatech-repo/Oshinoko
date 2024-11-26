@@ -190,6 +190,7 @@ struct PinDetailView: View {
                 longitude: longitude,
                 address: prefectureName ?? "住所不明",
                 cityName: cityName ?? "市区町村不明",
+                subLocality: subLocalityName ?? "subLocalないよ",
                 title: pin.metadata.title,
                 description: pin.metadata.description
             )
