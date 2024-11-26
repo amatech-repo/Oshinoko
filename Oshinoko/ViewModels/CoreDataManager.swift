@@ -32,6 +32,7 @@ class CoreDataManager {
         longitude: Double,
         address: String?,
         cityName: String?,
+        subLocality: String?, // 新しく追加
         title: String?,
         description: String?
     ) {
@@ -40,28 +41,35 @@ class CoreDataManager {
         bookmark.latitude = latitude
         bookmark.longitude = longitude
         bookmark.address = address
-        bookmark.cityName = cityName // 市区町村を保存
+        bookmark.cityName = cityName
+        bookmark.subLocality = subLocality // 保存
 
         // デバッグ: 保存値を確認
         print("Saving Bookmark:")
         print("ID: \(id), Latitude: \(latitude), Longitude: \(longitude)")
-        print("Address: \(address ?? "nil"), City: \(cityName ?? "nil")")
+        print("Address: \(address ?? "nil"), City: \(cityName ?? "nil"), SubLocality: \(subLocality ?? "nil")")
 
         saveContext()
     }
 
 
 
-    // 保存したブックマークを取得
+
     func fetchBookmarks() -> [Bookmark] {
         let request: NSFetchRequest<Bookmark> = Bookmark.fetchRequest()
         do {
-            return try context.fetch(request)
+            let bookmarks = try context.fetch(request)
+            bookmarks.forEach { bookmark in
+                print("フェッチされたデータ:")
+                print("Address: \(bookmark.address ?? "nil"), City: \(bookmark.cityName ?? "nil"), SubLocality: \(bookmark.subLocality ?? "nil")")
+            }
+            return bookmarks
         } catch {
             print("ブックマーク取得エラー: \(error.localizedDescription)")
             return []
         }
     }
+
 
     // ブックマークを削除
     func deleteBookmark(bookmark: Bookmark) {
