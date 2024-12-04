@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 class PlacesAPIManager: ObservableObject {
-    private let apiKey = "AIzaSyBybc9S1ppDKOpjTioOKxSaiq-E56y6xmY"
+    private let apiKey = "AIzaSyBkzoY1cz_4tWupQ1rFcSqDXGCdzTEEZkU"
     private let baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
     
     @Published var nearbyPlaces: [Place] = []
