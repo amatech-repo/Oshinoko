@@ -11,12 +11,15 @@
 		3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */; };
 		3B1194EE2CEDFCBA00FBC27F /* InformationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */; };
 		3B1194F22CEDFEFF00FBC27F /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194F12CEDFEFF00FBC27F /* CustomText.swift */; };
-		3B1194F42CEE025000FBC27F /* ChatTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194F32CEE025000FBC27F /* ChatTab.swift */; };
 		3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1194F52CEE027700FBC27F /* BookmarksTab.swift */; };
 		3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B181F322CE6478700083F5E /* PinViewsModel.swift */; };
 		3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A22CE59FC7001BF220 /* MapModel.swift */; };
 		3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A62CE5A04B001BF220 /* MapView.swift */; };
 		3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B56D0A82CE5C053001BF220 /* PinDetailView.swift */; };
+		3B585CA42D03F19F000E8E6B /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 3B585CA32D03F19F000E8E6B /* GoogleGenerativeAI */; };
+		3B585CA62D03F1C0000E8E6B /* GenerativeAI-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B585CA52D03F1C0000E8E6B /* GenerativeAI-Info.plist */; };
+		3B585CA82D03F257000E8E6B /* GeminiAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B585CA72D03F257000E8E6B /* GeminiAPIModel.swift */; };
+		3B585CAA2D03F278000E8E6B /* AIChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B585CA92D03F278000E8E6B /* AIChatView.swift */; };
 		3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3B5BB52F2CF54F2600EE28C2 /* LoadingAnimation.json */; };
 		3B5BB5332CF54F8000EE28C2 /* LoadingAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5BB5322CF54F8000EE28C2 /* LoadingAnimationView.swift */; };
 		3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */; };
@@ -77,12 +80,14 @@
 		3B1194EB2CEDF37600FBC27F /* BookmarkModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookmarkModel.xcdatamodel; sourceTree = "<group>"; };
 		3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationModal.swift; sourceTree = "<group>"; };
 		3B1194F12CEDFEFF00FBC27F /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
-		3B1194F32CEE025000FBC27F /* ChatTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTab.swift; sourceTree = "<group>"; };
 		3B1194F52CEE027700FBC27F /* BookmarksTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksTab.swift; sourceTree = "<group>"; };
 		3B181F322CE6478700083F5E /* PinViewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinViewsModel.swift; path = Oshinoko/ViewModels/PinViewsModel.swift; sourceTree = SOURCE_ROOT; };
 		3B56D0A22CE59FC7001BF220 /* MapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 		3B56D0A62CE5A04B001BF220 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		3B56D0A82CE5C053001BF220 /* PinDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinDetailView.swift; sourceTree = "<group>"; };
+		3B585CA52D03F1C0000E8E6B /* GenerativeAI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GenerativeAI-Info.plist"; sourceTree = "<group>"; };
+		3B585CA72D03F257000E8E6B /* GeminiAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiAPIModel.swift; sourceTree = "<group>"; };
+		3B585CA92D03F278000E8E6B /* AIChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIChatView.swift; sourceTree = "<group>"; };
 		3B5BB52F2CF54F2600EE28C2 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		3B5BB5322CF54F8000EE28C2 /* LoadingAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationView.swift; sourceTree = "<group>"; };
 		3B5F9DDB2CE61D1C0033289D /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -127,6 +132,7 @@
 				3B6C95AA2CE707B000097366 /* Alamofire in Frameworks */,
 				3B7F69562CE5519E00518695 /* FirebaseFirestore in Frameworks */,
 				3BAB30262CE5C414009C368B /* FirebaseStorage in Frameworks */,
+				3B585CA42D03F19F000E8E6B /* GoogleGenerativeAI in Frameworks */,
 				3BAB30242CE5C3FF009C368B /* FirebaseAuth in Frameworks */,
 				3BDECED02CE553A700700A7F /* Lottie in Frameworks */,
 			);
@@ -157,6 +163,7 @@
 				3BE070212CE5E9FD0032838F /* UserModel.swift */,
 				3B6C95A42CE6E0CC00097366 /* TourCardModel.swift */,
 				3B1194EA2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld */,
+				3B585CA72D03F257000E8E6B /* GeminiAPIModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -184,9 +191,9 @@
 				3BAB302D2CE5C7C1009C368B /* Auth */,
 				3B56D0A62CE5A04B001BF220 /* MapView.swift */,
 				3BB90DF12CF2FA0A000E0208 /* LoadingView.swift */,
+				3B585CA92D03F278000E8E6B /* AIChatView.swift */,
 				3B56D0A82CE5C053001BF220 /* PinDetailView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
-				3B1194F32CEE025000FBC27F /* ChatTab.swift */,
 				3B1194F52CEE027700FBC27F /* BookmarksTab.swift */,
 				3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
@@ -243,6 +250,7 @@
 		3BC2A0E92CE4CC650008DDA9 = {
 			isa = PBXGroup;
 			children = (
+				3B585CA52D03F1C0000E8E6B /* GenerativeAI-Info.plist */,
 				3BAB30272CE5C4B2009C368B /* GoogleService-Info.plist */,
 				3BC2A0F42CE4CC650008DDA9 /* Oshinoko */,
 				3BC2A1052CE4CC670008DDA9 /* OshinokoTests */,
@@ -333,6 +341,7 @@
 				3BAB30232CE5C3FF009C368B /* FirebaseAuth */,
 				3BAB30252CE5C414009C368B /* FirebaseStorage */,
 				3B6C95A92CE707B000097366 /* Alamofire */,
+				3B585CA32D03F19F000E8E6B /* GoogleGenerativeAI */,
 			);
 			productName = Oshinoko;
 			productReference = 3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */;
@@ -410,6 +419,7 @@
 				3B7F69532CE5513000518695 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				3BDECECE2CE5538200700A7F /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3B6C95A82CE7076D00097366 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				3B585CA22D03F18A000E8E6B /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 3BC2A0F32CE4CC650008DDA9 /* Products */;
 			projectDirPath = "";
@@ -428,6 +438,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */,
+				3B585CA62D03F1C0000E8E6B /* GenerativeAI-Info.plist in Resources */,
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
 				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
 				3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */,
@@ -471,7 +482,6 @@
 				3B1194F22CEDFEFF00FBC27F /* CustomText.swift in Sources */,
 				3BE0701C2CE5DEA70032838F /* HomeView.swift in Sources */,
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
-				3B1194F42CEE025000FBC27F /* ChatTab.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
 				3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */,
 				3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */,
@@ -481,6 +491,7 @@
 				83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */,
 				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
+				3B585CA82D03F257000E8E6B /* GeminiAPIModel.swift in Sources */,
 				3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */,
 				3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */,
 				3B181F332CE6478700083F5E /* PinViewsModel.swift in Sources */,
@@ -488,6 +499,7 @@
 				3BE070242CE5EA950032838F /* UserViewModel.swift in Sources */,
 				3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */,
 				3B1194E92CEDF35300FBC27F /* CoreDataManager.swift in Sources */,
+				3B585CAA2D03F278000E8E6B /* AIChatView.swift in Sources */,
 				3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -830,6 +842,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B585CA22D03F18A000E8E6B /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
 		3B6C95A82CE7076D00097366 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -857,6 +877,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3B585CA32D03F19F000E8E6B /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B585CA22D03F18A000E8E6B /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
 		3B6C95A92CE707B000097366 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3B6C95A82CE7076D00097366 /* XCRemoteSwiftPackageReference "Alamofire" */;
