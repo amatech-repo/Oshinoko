@@ -15,6 +15,10 @@ struct HomeView: View {
     @State private var isShowingInformationModal = false
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
+    @State private var selectedCoordinate: CLLocationCoordinate2D?
+    @State private var shouldZoom = false // ズームを制御するフラグ
+
+
 
 
     // MARK: - Observed ViewModels
@@ -39,11 +43,16 @@ struct HomeView: View {
                     }
                     .tag(2)
 
-                BookmarksTab(bookmarks: $bookmarks)
-                    .tabItem {
-                        CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
-                    }
-                    .tag(3)
+                BookmarksTab(
+                    bookmarks: $bookmarks,
+                    selectedCoordinate: $selectedCoordinate,
+                    tabSelection: $selection, // タブ切り替え用
+                    shouldZoom: $shouldZoom
+                )
+                .tabItem {
+                    CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
+                }
+                .tag(3)
             }
             .onAppear {
                 configureTabBarAppearance() // タブの色設定を反映
@@ -60,12 +69,15 @@ struct HomeView: View {
                     pinsViewModel: pinsViewModel,
                     selectedPin: $selectedPin,
                     newPinCoordinate: $newPinCoordinate,
-                    isShowingModal: $isShowingInformationModal,
+                    isShowingModal: $isShowingInformationModal, // 修正: Bool 型
+                    selectedCoordinate: $selectedCoordinate,   // 修正: CLLocationCoordinate2D? 型
+                    shouldZoom: $shouldZoom,                   // 修正: ズームフラグ
                     onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
                     }
                 )
+
                 .frame(maxWidth: .infinity, maxHeight: 790)
                 .onAppear {
                     Task {
@@ -109,9 +121,9 @@ struct HomeView: View {
     }
 
     private func checkTutorialVisibility() {
-           let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
-           isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
-       }
+        let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
+        isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+    }
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false
