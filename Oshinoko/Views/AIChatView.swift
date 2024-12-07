@@ -59,8 +59,6 @@ struct AIChatView: View {
             }
         }
         .glassmorphismBackground(colors: [Color(hex: "FFB3C1"), Color(hex: "FFD6A5")])
-        .onAppear {
-        }
     }
 
     func generateRespons() {
