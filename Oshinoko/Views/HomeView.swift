@@ -176,7 +176,11 @@ struct TutorialOverlay: View {
         "さぁ、君もおすすめのスポットにピンを立てて、みんなに教えてあげよう！"
     ]
     
-    private let images = []
+    private let images = [
+        "Map_tutorial1",
+        "Map_Tutorial3",
+        "Detail_Tutorail",
+    ]
 
     var body: some View {
         ZStack {
@@ -189,14 +193,49 @@ struct TutorialOverlay: View {
 
             // メッセージ表示
             if tapCount < messages.count {
-                Text(messages[tapCount])
-                    .font(.headline)
+                
+                Rectangle()
+                    .frame(width: 325,height:675)
                     .foregroundColor(.white)
+                    .cornerRadius(30)
+                    
                     .padding()
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .multilineTextAlignment(.center)
+                VStack{
+                    ZStack{
+                        Image(images[tapCount])
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(25)
+                        
+                        if (tapCount < 2){
+                            HoldAnimationView(lottieFile: "hold")
+                                .frame(width:100 , height: 100)
+                                .offset(x: -30,y:20)
+                        }
+                        
+                        
+                        Text(messages[tapCount])
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.black.opacity(0.8))
+                            .cornerRadius(10)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .offset(y: -150)
+                        
+                    }
+                    .frame(width:300,height:600)
                     .padding()
+                    
+                    if(tapCount == 0) {
+                        Text("⚫︎  ⚪︎  ⚪︎")
+                    } else if (tapCount == 1) {
+                        Text("⚪︎  ⚫︎  ⚪︎")
+                    } else {
+                        Text("⚪︎  ⚪︎  ⚫︎")
+                    }
+                }
             }
         }
         .opacity(isVisible ? 1 : 0) // 表示状態に応じて透明度を変更

@@ -56,7 +56,9 @@
 		3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C12CE5F061007B17D8 /* ChatView.swift */; };
 		3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C42CE5F306007B17D8 /* ImagePicker.swift */; };
 		F85778312D04517100543AEE /* HoldAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778302D04517000543AEE /* HoldAnimationView.swift */; };
-		F85778332D04518200543AEE /* hold.json in Resources */ = {isa = PBXBuildFile; fileRef = F85778322D04518200543AEE /* hold.json */; };
+		F857783D2D04ABA900543AEE /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = F857783C2D04ABA900543AEE /* Tutorial.swift */; };
+		F8F1526E2D04C8D900F00888 /* HoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F1526D2D04C8D900F00888 /* HoldView.swift */; };
+		F8F1527A2D04CCC000F00888 /* HoldAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = F8F152792D04CCC000F00888 /* HoldAnimation.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,7 +125,9 @@
 		3BF751C12CE5F061007B17D8 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		3BF751C42CE5F306007B17D8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		F85778302D04517000543AEE /* HoldAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldAnimationView.swift; sourceTree = "<group>"; };
-		F85778322D04518200543AEE /* hold.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hold.json; sourceTree = "<group>"; };
+		F857783C2D04ABA900543AEE /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		F8F1526D2D04C8D900F00888 /* HoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldView.swift; sourceTree = "<group>"; };
+		F8F152792D04CCC000F00888 /* HoldAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = HoldAnimation.json; path = ../../../../../Downloads/HoldAnimation.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +207,7 @@
 				3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */,
 				3BAF4B222CECD2A00045179C /* BackgroundModlfier.swift */,
 				3B1194F12CEDFEFF00FBC27F /* CustomText.swift */,
+				F857783C2D04ABA900543AEE /* Tutorial.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -324,8 +329,9 @@
 		F857782F2D04514B00543AEE /* HoldAnimaition */ = {
 			isa = PBXGroup;
 			children = (
-				F85778322D04518200543AEE /* hold.json */,
+				F8F152792D04CCC000F00888 /* HoldAnimation.json */,
 				F85778302D04517000543AEE /* HoldAnimationView.swift */,
+				F8F1526D2D04C8D900F00888 /* HoldView.swift */,
 			);
 			path = HoldAnimaition;
 			sourceTree = "<group>";
@@ -449,10 +455,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */,
+				F8F1527A2D04CCC000F00888 /* HoldAnimation.json in Resources */,
 				3B585CA62D03F1C0000E8E6B /* GenerativeAI-Info.plist in Resources */,
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
 				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
-				F85778332D04518200543AEE /* hold.json in Resources */,
 				3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,9 +485,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B1194EE2CEDFCBA00FBC27F /* InformationModal.swift in Sources */,
+				F857783D2D04ABA900543AEE /* Tutorial.swift in Sources */,
 				3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */,
 				3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
+				F8F1526E2D04C8D900F00888 /* HoldView.swift in Sources */,
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
 				3BB90DF22CF2FA0A000E0208 /* LoadingView.swift in Sources */,
 				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
@@ -677,7 +685,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
-				DEVELOPMENT_TEAM = 922N7TF68N;
+				DEVELOPMENT_TEAM = Q9LNNKWRKW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "バックグラウンドで位置を取得します";
@@ -693,7 +701,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.erichan.Oshinokoa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kami.Oshinokoa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -711,7 +719,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Oshinoko/Preview Content\"";
-				DEVELOPMENT_TEAM = 922N7TF68N;
+				DEVELOPMENT_TEAM = Q9LNNKWRKW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "バックグラウンドで位置を取得します";
@@ -727,7 +735,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.erichan.Oshinokoa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kami.Oshinokoa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
