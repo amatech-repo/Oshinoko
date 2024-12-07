@@ -23,6 +23,7 @@ struct HomeView: View {
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "")
     @ObservedObject var pinsViewModel: PinsViewModel
+    @State private var isTutorialVisible: Bool = true
 
     var body: some View {
         ZStack {
@@ -56,49 +57,57 @@ struct HomeView: View {
 
     // MARK: - Tab 1: Map Tab
     private var mapTab: some View {
-        VStack(spacing: 0) {
-            MapView(
-                pinsViewModel: pinsViewModel,
-                selectedPin: $selectedPin,
-                newPinCoordinate: $newPinCoordinate,
-                isShowingModal: $isShowingInformationModal,
-                onLongPress: { coordinate in
-                    newPinCoordinate = coordinate
-                    isShowingInformationModal = true
-                }
-            )
-            .frame(maxWidth: .infinity, maxHeight: 790)
-            .onAppear {
-                Task {
-                    await pinsViewModel.fetchPins()
-                }
-            }
-            Spacer()
-        }
-        .sheet(isPresented: $isShowingInformationModal) {
-            if let coordinate = newPinCoordinate {
-                InformationModal(
-                    coordinate: coordinate,
-                    onSave: { metadata in
-                        Task {
-                            await pinsViewModel.addPin(
-                                coordinate: Coordinate(
-                                    latitude: coordinate.latitude,
-                                    longitude: coordinate.longitude
-                                ),
-                                metadata: metadata
-                            )
-                        }
-                        resetModalState()
+        ZStack {
+            VStack(spacing: 0) {
+                MapView(
+                    pinsViewModel: pinsViewModel,
+                    selectedPin: $selectedPin,
+                    newPinCoordinate: $newPinCoordinate,
+                    isShowingModal: $isShowingInformationModal,
+                    onLongPress: { coordinate in
+                        newPinCoordinate = coordinate
+                        isShowingInformationModal = true
                     }
                 )
+                .frame(maxWidth: .infinity, maxHeight: 790)
+                .onAppear {
+                    Task {
+                        await pinsViewModel.fetchPins()
+                    }
+                }
+                Spacer()
+            }
+            .sheet(isPresented: $isShowingInformationModal) {
+                if let coordinate = newPinCoordinate {
+                    InformationModal(
+                        coordinate: coordinate,
+                        onSave: { metadata in
+                            Task {
+                                await pinsViewModel.addPin(
+                                    coordinate: Coordinate(
+                                        latitude: coordinate.latitude,
+                                        longitude: coordinate.longitude
+                                    ),
+                                    metadata: metadata
+                                )
+                            }
+                            resetModalState()
+                        }
+                    )
+                }
+            }
+            .sheet(item: $selectedPin) { pin in
+                PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
+            }
+            .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
+
+            // チュートリアルオーバーレイを重ねる
+            if isTutorialVisible {
+                TutorialOverlay(isVisible: $isTutorialVisible)
             }
         }
-        .sheet(item: $selectedPin) { pin in
-            PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
-        }
-        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
+
 
     private func resetModalState() {
         newPinCoordinate = nil
@@ -148,5 +157,55 @@ struct CustomTabItem: View {
             )
         }
         .frame(maxWidth: .infinity)
+    }
+}
+
+
+struct TutorialOverlay: View {
+    @State private var tapCount: Int = 0
+    @Binding var isVisible: Bool // 表示状態を管理
+
+    let maxTaps: Int = 3 // タップ回数の上限
+
+    // キャラクター風のメッセージリスト
+    private let messages = [
+        "ねぇねぇ！地図の空いてる場所を長押ししてみて！ピンが立てられるんだよ！共有もできちゃう！",
+        "ほら、地図にあるアイコンをタップしてみて！観光地やみんなのコメントが見れるよ！",
+        "さぁ、君もおすすめのスポットにピンを立てて、みんなに教えてあげよう！"
+    ]
+
+    var body: some View {
+        ZStack {
+            // 透明な背景
+            Color.black.opacity(0.5)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    handleTap()
+                }
+
+            // メッセージ表示
+            if tapCount < messages.count {
+                Text(messages[tapCount])
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(10)
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
+        }
+        .opacity(isVisible ? 1 : 0) // 表示状態に応じて透明度を変更
+        .animation(.easeInOut, value: isVisible) // アニメーション
+        .transition(.opacity) // フェードイン・アウトのトランジション
+    }
+
+    private func handleTap() {
+        tapCount += 1
+        if tapCount >= maxTaps {
+            withAnimation {
+                isVisible = false // 非表示にする
+            }
+        }
     }
 }
