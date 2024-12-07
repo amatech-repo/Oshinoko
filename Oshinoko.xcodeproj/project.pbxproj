@@ -61,6 +61,7 @@
 		F85778242D0419B600543AEE /* AddListAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778232D0419B600543AEE /* AddListAnimationView.swift */; };
 		F85778262D0419BF00543AEE /* AddList.json in Resources */ = {isa = PBXBuildFile; fileRef = F85778252D0419BF00543AEE /* AddList.json */; };
 		F85778282D041BC400543AEE /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778272D041BC400543AEE /* AddListView.swift */; };
+		83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C9540C2D04182900987E2B /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +133,7 @@
 		F85778232D0419B600543AEE /* AddListAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListAnimationView.swift; sourceTree = "<group>"; };
 		F85778252D0419BF00543AEE /* AddList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AddList.json; sourceTree = "<group>"; };
 		F85778272D041BC400543AEE /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
+		83C9540C2D04182900987E2B /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +221,7 @@
 		3B2E30312CE4DB9C001F3553 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				83C9540C2D04182900987E2B /* ColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				3BE070222CE5E9FD0032838F /* UserModel.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
 				3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */,
+				83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */,
 				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B585CA82D03F257000E8E6B /* GeminiAPIModel.swift in Sources */,
