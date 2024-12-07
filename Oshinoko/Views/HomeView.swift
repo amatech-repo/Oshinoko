@@ -8,10 +8,6 @@
 import SwiftUI
 import MapKit
 
-
-import SwiftUI
-import MapKit
-
 struct HomeView: View {
     // MARK: - State Properties
     @State private var selectedPin: Pin?
@@ -19,6 +15,7 @@ struct HomeView: View {
     @State private var isShowingInformationModal = false
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
+
 
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "")
@@ -106,9 +103,15 @@ struct HomeView: View {
                 TutorialOverlay(isVisible: $isTutorialVisible)
             }
         }
+        .onAppear {
+            checkTutorialVisibility() // チュートリアル表示状態を確認
+        }
     }
 
-
+    private func checkTutorialVisibility() {
+           let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
+           isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+       }
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false
@@ -167,7 +170,6 @@ struct TutorialOverlay: View {
 
     let maxTaps: Int = 3 // タップ回数の上限
 
-    // キャラクター風のメッセージリスト
     private let messages = [
         "ねぇねぇ！地図の空いてる場所を長押ししてみて！ピンが立てられるんだよ！共有もできちゃう！",
         "ほら、地図にあるアイコンをタップしてみて！観光地やみんなのコメントが見れるよ！",
@@ -205,7 +207,12 @@ struct TutorialOverlay: View {
         if tapCount >= maxTaps {
             withAnimation {
                 isVisible = false // 非表示にする
+                saveTutorialSeenFlag() // 表示済みフラグを設定
             }
         }
+    }
+
+    private func saveTutorialSeenFlag() {
+        UserDefaults.standard.set(true, forKey: "hasSeenTutorial")
     }
 }
