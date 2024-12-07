@@ -41,11 +41,15 @@ struct HomeView: View {
                     }
                     .tag(2)
 
-                BookmarksTab(bookmarks: $bookmarks, selectedCoordinate: $selectedCoordinate)
-                    .tabItem {
-                        CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
-                    }
-                    .tag(3)
+                BookmarksTab(
+                    bookmarks: $bookmarks,
+                    selectedCoordinate: $selectedCoordinate,
+                    tabSelection: $selection // タブ切り替え用
+                )
+                .tabItem {
+                    CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
+                }
+                .tag(3)
             }
             .onAppear {
                 configureTabBarAppearance() // タブの色設定を反映
