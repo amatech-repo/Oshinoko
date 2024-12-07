@@ -16,6 +16,8 @@ struct HomeView: View {
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
     @State private var selectedCoordinate: CLLocationCoordinate2D?
+    @State private var shouldZoom = false // ズームを制御するフラグ
+
 
 
 
@@ -44,7 +46,8 @@ struct HomeView: View {
                 BookmarksTab(
                     bookmarks: $bookmarks,
                     selectedCoordinate: $selectedCoordinate,
-                    tabSelection: $selection // タブ切り替え用
+                    tabSelection: $selection, // タブ切り替え用
+                    shouldZoom: $shouldZoom
                 )
                 .tabItem {
                     CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
@@ -66,12 +69,15 @@ struct HomeView: View {
                     pinsViewModel: pinsViewModel,
                     selectedPin: $selectedPin,
                     newPinCoordinate: $newPinCoordinate,
-                    isShowingModal: $isShowingInformationModal, selectedCoordinate: $selectedCoordinate,
+                    isShowingModal: $isShowingInformationModal, // 修正: Bool 型
+                    selectedCoordinate: $selectedCoordinate,   // 修正: CLLocationCoordinate2D? 型
+                    shouldZoom: $shouldZoom,                   // 修正: ズームフラグ
                     onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
                     }
                 )
+
                 .frame(maxWidth: .infinity, maxHeight: 790)
                 .onAppear {
                     Task {

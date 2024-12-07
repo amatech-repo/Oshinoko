@@ -8,6 +8,7 @@ struct MapView: UIViewRepresentable {
     @Binding var newPinCoordinate: CLLocationCoordinate2D?
     @Binding var isShowingModal: Bool
     @Binding var selectedCoordinate: CLLocationCoordinate2D? // 選択された座標
+    @Binding var shouldZoom: Bool
     let onLongPress: (CLLocationCoordinate2D) -> Void
 
     // MARK: - UIViewRepresentable Methods
@@ -30,6 +31,9 @@ struct MapView: UIViewRepresentable {
                 span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             )
             uiView.setRegion(region, animated: true)
+            DispatchQueue.main.async {
+                shouldZoom = false // ズーム完了後にフラグをリセット
+            }
         }
     }
 
@@ -86,6 +90,13 @@ struct MapView: UIViewRepresentable {
 
         init(_ parent: MapView) {
             self.parent = parent
+        }
+
+        func resetZoomFlag() {
+            // フラグをメインスレッド上でリセット
+            DispatchQueue.main.async {
+                self.parent.shouldZoom = false
+            }
         }
 
         // MARK: - Long Press Handling

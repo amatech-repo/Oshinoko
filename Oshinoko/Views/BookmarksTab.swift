@@ -12,6 +12,7 @@ struct BookmarksTab: View {
     @Binding var bookmarks: [Bookmark]
     @Binding var selectedCoordinate: CLLocationCoordinate2D?
     @Binding var tabSelection: Int
+    @Binding var shouldZoom: Bool
 
     var body: some View {
         ScrollView {
@@ -26,8 +27,8 @@ struct BookmarksTab: View {
                         )
                         .padding(.horizontal)
                         .onTapGesture {
-                                                    // 座標を設定してタブを切り替え
                                                     selectedCoordinate = CLLocationCoordinate2D(latitude: bookmark.latitude, longitude: bookmark.longitude)
+                                                    shouldZoom = true // ズームを有効化
                                                     tabSelection = 1 // mapTab に遷移
                                                 }
                 }
