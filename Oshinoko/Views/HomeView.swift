@@ -8,10 +8,6 @@
 import SwiftUI
 import MapKit
 
-
-import SwiftUI
-import MapKit
-
 struct HomeView: View {
     // MARK: - State Properties
     @State private var selectedPin: Pin?
@@ -20,9 +16,11 @@ struct HomeView: View {
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
 
+
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "")
     @ObservedObject var pinsViewModel: PinsViewModel
+    @State private var isTutorialVisible: Bool = true
 
     var body: some View {
         ZStack {
@@ -35,7 +33,7 @@ struct HomeView: View {
                     }
                     .tag(1)
 
-                ChatTab(viewModel: chatViewModel, currentUserID: "12345", currentUserName: "Erika Sakurai", currentUserIcon: nil)
+                AIChatView()
                     .tabItem {
                         CustomTabItem(icon: "message", text: "AI", isSelected: selection == 2)
                     }
@@ -56,50 +54,64 @@ struct HomeView: View {
 
     // MARK: - Tab 1: Map Tab
     private var mapTab: some View {
-        VStack(spacing: 0) {
-            MapView(
-                pinsViewModel: pinsViewModel,
-                selectedPin: $selectedPin,
-                newPinCoordinate: $newPinCoordinate,
-                isShowingModal: $isShowingInformationModal,
-                onLongPress: { coordinate in
-                    newPinCoordinate = coordinate
-                    isShowingInformationModal = true
-                }
-            )
-            .frame(maxWidth: .infinity, maxHeight: 790)
-            .onAppear {
-                Task {
-                    await pinsViewModel.fetchPins()
-                }
-            }
-            Spacer()
-        }
-        .sheet(isPresented: $isShowingInformationModal) {
-            if let coordinate = newPinCoordinate {
-                InformationModal(
-                    coordinate: coordinate,
-                    onSave: { metadata in
-                        Task {
-                            await pinsViewModel.addPin(
-                                coordinate: Coordinate(
-                                    latitude: coordinate.latitude,
-                                    longitude: coordinate.longitude
-                                ),
-                                metadata: metadata
-                            )
-                        }
-                        resetModalState()
+        ZStack {
+            VStack(spacing: 0) {
+                MapView(
+                    pinsViewModel: pinsViewModel,
+                    selectedPin: $selectedPin,
+                    newPinCoordinate: $newPinCoordinate,
+                    isShowingModal: $isShowingInformationModal,
+                    onLongPress: { coordinate in
+                        newPinCoordinate = coordinate
+                        isShowingInformationModal = true
                     }
                 )
+                .frame(maxWidth: .infinity, maxHeight: 790)
+                .onAppear {
+                    Task {
+                        await pinsViewModel.fetchPins()
+                    }
+                }
+                Spacer()
+            }
+            .sheet(isPresented: $isShowingInformationModal) {
+                if let coordinate = newPinCoordinate {
+                    InformationModal(
+                        coordinate: coordinate,
+                        onSave: { metadata in
+                            Task {
+                                await pinsViewModel.addPin(
+                                    coordinate: Coordinate(
+                                        latitude: coordinate.latitude,
+                                        longitude: coordinate.longitude
+                                    ),
+                                    metadata: metadata
+                                )
+                            }
+                            resetModalState()
+                        }
+                    )
+                }
+            }
+            .sheet(item: $selectedPin) { pin in
+                PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
+            }
+            .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
+
+            // チュートリアルオーバーレイを重ねる
+            if isTutorialVisible {
+                TutorialOverlay(isVisible: $isTutorialVisible)
             }
         }
-        .sheet(item: $selectedPin) { pin in
-            PinDetailView(pin: pin, pinsViewModel: pinsViewModel)
+        .onAppear {
+            checkTutorialVisibility() // チュートリアル表示状態を確認
         }
-        .glassmorphismBackground(colors: [Color(hex: "91DDCF"), Color(hex: "E8C5E5")])
     }
 
+    private func checkTutorialVisibility() {
+           let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
+           isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+       }
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false
@@ -148,5 +160,59 @@ struct CustomTabItem: View {
             )
         }
         .frame(maxWidth: .infinity)
+    }
+}
+
+
+struct TutorialOverlay: View {
+    @State private var tapCount: Int = 0
+    @Binding var isVisible: Bool // 表示状態を管理
+
+    let maxTaps: Int = 3 // タップ回数の上限
+
+    private let messages = [
+        "ねぇねぇ！地図の空いてる場所を長押ししてみて！ピンが立てられるんだよ！共有もできちゃう！",
+        "ほら、地図にあるアイコンをタップしてみて！観光地やみんなのコメントが見れるよ！",
+        "さぁ、君もおすすめのスポットにピンを立てて、みんなに教えてあげよう！"
+    ]
+
+    var body: some View {
+        ZStack {
+            // 透明な背景
+            Color.black.opacity(0.5)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    handleTap()
+                }
+
+            // メッセージ表示
+            if tapCount < messages.count {
+                Text(messages[tapCount])
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(10)
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
+        }
+        .opacity(isVisible ? 1 : 0) // 表示状態に応じて透明度を変更
+        .animation(.easeInOut, value: isVisible) // アニメーション
+        .transition(.opacity) // フェードイン・アウトのトランジション
+    }
+
+    private func handleTap() {
+        tapCount += 1
+        if tapCount >= maxTaps {
+            withAnimation {
+                isVisible = false // 非表示にする
+                saveTutorialSeenFlag() // 表示済みフラグを設定
+            }
+        }
+    }
+
+    private func saveTutorialSeenFlag() {
+        UserDefaults.standard.set(true, forKey: "hasSeenTutorial")
     }
 }
