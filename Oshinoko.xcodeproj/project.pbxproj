@@ -52,6 +52,7 @@
 		3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */; };
 		3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C12CE5F061007B17D8 /* ChatView.swift */; };
 		3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C42CE5F306007B17D8 /* ImagePicker.swift */; };
+		83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C9540C2D04182900987E2B /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		3BF751C12CE5F061007B17D8 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		3BF751C42CE5F306007B17D8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		83C9540C2D04182900987E2B /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 		3B2E30312CE4DB9C001F3553 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				83C9540C2D04182900987E2B /* ColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 				3BE070222CE5E9FD0032838F /* UserModel.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
 				3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */,
+				83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */,
 				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B56D0A32CE59FC7001BF220 /* MapModel.swift in Sources */,
