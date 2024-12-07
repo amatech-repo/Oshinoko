@@ -33,7 +33,7 @@ struct HomeView: View {
                     }
                     .tag(1)
 
-                ChatTab(viewModel: chatViewModel, currentUserID: "12345", currentUserName: "Erika Sakurai", currentUserIcon: nil)
+                AIChatView()
                     .tabItem {
                         CustomTabItem(icon: "message", text: "AI", isSelected: selection == 2)
                     }
