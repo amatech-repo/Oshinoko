@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct BookmarksTab: View {
     @Binding var bookmarks: [Bookmark]
+    @Binding var selectedCoordinate: CLLocationCoordinate2D?
 
     var body: some View {
         ScrollView {
@@ -22,6 +24,9 @@ struct BookmarksTab: View {
                                 .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
                         )
                         .padding(.horizontal)
+                        .onTapGesture {
+                            selectedCoordinate = CLLocationCoordinate2D(latitude: bookmark.latitude, longitude: bookmark.longitude)
+                        }
                 }
             }
             .padding(.top)
@@ -32,6 +37,7 @@ struct BookmarksTab: View {
         }
     }
 }
+
 
 struct BookmarkRow: View {
     let bookmark: Bookmark

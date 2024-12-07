@@ -15,6 +15,8 @@ struct HomeView: View {
     @State private var isShowingInformationModal = false
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
+    @State private var selectedCoordinate: CLLocationCoordinate2D?
+
 
 
     // MARK: - Observed ViewModels
@@ -39,7 +41,7 @@ struct HomeView: View {
                     }
                     .tag(2)
 
-                BookmarksTab(bookmarks: $bookmarks)
+                BookmarksTab(bookmarks: $bookmarks, selectedCoordinate: $selectedCoordinate)
                     .tabItem {
                         CustomTabItem(icon: "bookmark", text: "Bookmark", isSelected: selection == 3)
                     }
@@ -60,7 +62,7 @@ struct HomeView: View {
                     pinsViewModel: pinsViewModel,
                     selectedPin: $selectedPin,
                     newPinCoordinate: $newPinCoordinate,
-                    isShowingModal: $isShowingInformationModal,
+                    isShowingModal: $isShowingInformationModal, selectedCoordinate: $selectedCoordinate,
                     onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
@@ -109,9 +111,9 @@ struct HomeView: View {
     }
 
     private func checkTutorialVisibility() {
-           let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
-           isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
-       }
+        let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
+        isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+    }
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false
