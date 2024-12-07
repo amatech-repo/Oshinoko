@@ -11,13 +11,13 @@ import Lottie
 struct HoldAnimationView: UIViewRepresentable {
     var lottieFile : String
     var loopMode: LottieLoopMode = .loop
-    var speed: CGFloat = 0.8
+    var speed: CGFloat = 0.5
     
     func makeUIView(context: UIViewRepresentableContext<HoldAnimationView>) -> UIView {
         let view = UIView(frame: .zero)
         let animationView = LottieAnimationView()
-            // 表示したいアニメーションのファイル名
-            animationView.animation = Animation.named(name)
+        
+        animationView.animation = LottieAnimation.named(lottieFile)
             // 比率
             animationView.contentMode = .scaleAspectFit
             // ループモード
