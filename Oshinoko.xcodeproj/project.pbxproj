@@ -55,6 +55,8 @@
 		3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */; };
 		3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C12CE5F061007B17D8 /* ChatView.swift */; };
 		3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C42CE5F306007B17D8 /* ImagePicker.swift */; };
+		F85778312D04517100543AEE /* HoldAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778302D04517000543AEE /* HoldAnimationView.swift */; };
+		F85778332D04518200543AEE /* hold.json in Resources */ = {isa = PBXBuildFile; fileRef = F85778322D04518200543AEE /* hold.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +122,8 @@
 		3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		3BF751C12CE5F061007B17D8 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		3BF751C42CE5F306007B17D8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		F85778302D04517000543AEE /* HoldAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldAnimationView.swift; sourceTree = "<group>"; };
+		F85778322D04518200543AEE /* hold.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hold.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +188,7 @@
 		3B2E30302CE4DB7D001F3553 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F857782F2D04514B00543AEE /* HoldAnimaition */,
 				3B5BB5312CF54F3100EE28C2 /* LoadingAnimation */,
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
@@ -316,6 +321,15 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		F857782F2D04514B00543AEE /* HoldAnimaition */ = {
+			isa = PBXGroup;
+			children = (
+				F85778322D04518200543AEE /* hold.json */,
+				F85778302D04517000543AEE /* HoldAnimationView.swift */,
+			);
+			path = HoldAnimaition;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -438,6 +452,7 @@
 				3B585CA62D03F1C0000E8E6B /* GenerativeAI-Info.plist in Resources */,
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
 				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
+				F85778332D04518200543AEE /* hold.json in Resources */,
 				3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,6 +486,7 @@
 				3BB90DF22CF2FA0A000E0208 /* LoadingView.swift in Sources */,
 				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
+				F85778312D04517100543AEE /* HoldAnimationView.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
 				3B5BB5332CF54F8000EE28C2 /* LoadingAnimationView.swift in Sources */,
 				3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */,

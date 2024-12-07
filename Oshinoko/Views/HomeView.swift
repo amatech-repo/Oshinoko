@@ -175,6 +175,8 @@ struct TutorialOverlay: View {
         "ほら、地図にあるアイコンをタップしてみて！観光地やみんなのコメントが見れるよ！",
         "さぁ、君もおすすめのスポットにピンを立てて、みんなに教えてあげよう！"
     ]
+    
+    private let images = []
 
     var body: some View {
         ZStack {
