@@ -40,6 +40,9 @@
 		3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB30302CE5C7F3009C368B /* SignUpView.swift */; };
 		3BAF4B232CECD2A00045179C /* BackgroundModlfier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF4B222CECD2A00045179C /* BackgroundModlfier.swift */; };
 		3BB90DF22CF2FA0A000E0208 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB90DF12CF2FA0A000E0208 /* LoadingView.swift */; };
+		3BBC01032D05220C00C30C29 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBC01022D05220C00C30C29 /* Tutorial.swift */; };
+		3BBC01082D05230D00C30C29 /* HoldAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBC01052D05230C00C30C29 /* HoldAnimationView.swift */; };
+		3BBC010B2D05268300C30C29 /* HoldAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3BBC010A2D05268300C30C29 /* HoldAnimation.json */; };
 		3BC2A0F62CE4CC650008DDA9 /* OshinokoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */; };
 		3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */; };
 		3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BC2A0F92CE4CC670008DDA9 /* Assets.xcassets */; };
@@ -104,6 +107,9 @@
 		3BAB30302CE5C7F3009C368B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3BAF4B222CECD2A00045179C /* BackgroundModlfier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModlfier.swift; sourceTree = "<group>"; };
 		3BB90DF12CF2FA0A000E0208 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		3BBC01022D05220C00C30C29 /* Tutorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		3BBC01052D05230C00C30C29 /* HoldAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoldAnimationView.swift; sourceTree = "<group>"; };
+		3BBC010A2D05268300C30C29 /* HoldAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = HoldAnimation.json; path = ../../../../../../Desktop/HoldAnimation.json; sourceTree = "<group>"; };
 		3BC2A0F22CE4CC650008DDA9 /* Oshinoko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oshinoko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC2A0F52CE4CC650008DDA9 /* OshinokoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OshinokoApp.swift; sourceTree = "<group>"; };
 		3BC2A0F72CE4CC650008DDA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -186,6 +192,7 @@
 		3B2E30302CE4DB7D001F3553 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F857782F2D04514B00543AEE /* HoldAnimaition */,
 				3B5BB5312CF54F3100EE28C2 /* LoadingAnimation */,
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
@@ -194,6 +201,7 @@
 				3B585CA92D03F278000E8E6B /* AIChatView.swift */,
 				3B56D0A82CE5C053001BF220 /* PinDetailView.swift */,
 				3BE0701B2CE5DEA70032838F /* HomeView.swift */,
+				3BBC01022D05220C00C30C29 /* Tutorial.swift */,
 				3B1194F52CEE027700FBC27F /* BookmarksTab.swift */,
 				3B1194ED2CEDFCBA00FBC27F /* InformationModal.swift */,
 				3BF751C12CE5F061007B17D8 /* ChatView.swift */,
@@ -319,6 +327,15 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		F857782F2D04514B00543AEE /* HoldAnimaition */ = {
+			isa = PBXGroup;
+			children = (
+				3BBC010A2D05268300C30C29 /* HoldAnimation.json */,
+				3BBC01052D05230C00C30C29 /* HoldAnimationView.swift */,
+			);
+			path = HoldAnimaition;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -438,6 +455,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */,
+				3BBC010B2D05268300C30C29 /* HoldAnimation.json in Resources */,
 				3B585CA62D03F1C0000E8E6B /* GenerativeAI-Info.plist in Resources */,
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
 				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
@@ -467,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B1194EE2CEDFCBA00FBC27F /* InformationModal.swift in Sources */,
+				3BBC01032D05220C00C30C29 /* Tutorial.swift in Sources */,
 				3B6C95AE2CE70A0900097366 /* TourCard.swift in Sources */,
 				3B56D0A92CE5C053001BF220 /* PinDetailView.swift in Sources */,
 				3BC2A0F82CE4CC650008DDA9 /* ContentView.swift in Sources */,
@@ -489,6 +508,7 @@
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
 				3BA737E52CE7365200FFEACC /* LocationViewModel.swift in Sources */,
 				83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */,
+				3BBC01082D05230D00C30C29 /* HoldAnimationView.swift in Sources */,
 				3B6C95B12CE70A6300097366 /* PlaceImageView.swift in Sources */,
 				3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */,
 				3B585CA82D03F257000E8E6B /* GeminiAPIModel.swift in Sources */,

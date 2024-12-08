@@ -15,7 +15,7 @@ struct HomeView: View {
     @State private var isShowingInformationModal = false
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
-
+    @State private var searchQuery: String = "" // 検索クエリを追加
 
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "")
@@ -61,10 +61,10 @@ struct HomeView: View {
                     selectedPin: $selectedPin,
                     newPinCoordinate: $newPinCoordinate,
                     isShowingModal: $isShowingInformationModal,
-                    onLongPress: { coordinate in
+                    searchQuery: $searchQuery, onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
-                    }
+                    } // 検索クエリをバインディング
                 )
                 .frame(maxWidth: .infinity, maxHeight: 790)
                 .onAppear {
@@ -109,9 +109,10 @@ struct HomeView: View {
     }
 
     private func checkTutorialVisibility() {
-           let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
-           isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
-       }
+        let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
+        isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+    }
+
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false
@@ -164,55 +165,3 @@ struct CustomTabItem: View {
 }
 
 
-struct TutorialOverlay: View {
-    @State private var tapCount: Int = 0
-    @Binding var isVisible: Bool // 表示状態を管理
-
-    let maxTaps: Int = 3 // タップ回数の上限
-
-    private let messages = [
-        "ねぇねぇ！地図の空いてる場所を長押ししてみて！ピンが立てられるんだよ！共有もできちゃう！",
-        "ほら、地図にあるアイコンをタップしてみて！観光地やみんなのコメントが見れるよ！",
-        "さぁ、君もおすすめのスポットにピンを立てて、みんなに教えてあげよう！"
-    ]
-
-    var body: some View {
-        ZStack {
-            // 透明な背景
-            Color.black.opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    handleTap()
-                }
-
-            // メッセージ表示
-            if tapCount < messages.count {
-                Text(messages[tapCount])
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(10)
-                    .multilineTextAlignment(.center)
-                    .padding()
-            }
-        }
-        .opacity(isVisible ? 1 : 0) // 表示状態に応じて透明度を変更
-        .animation(.easeInOut, value: isVisible) // アニメーション
-        .transition(.opacity) // フェードイン・アウトのトランジション
-    }
-
-    private func handleTap() {
-        tapCount += 1
-        if tapCount >= maxTaps {
-            withAnimation {
-                isVisible = false // 非表示にする
-                saveTutorialSeenFlag() // 表示済みフラグを設定
-            }
-        }
-    }
-
-    private func saveTutorialSeenFlag() {
-        UserDefaults.standard.set(true, forKey: "hasSeenTutorial")
-    }
-}
