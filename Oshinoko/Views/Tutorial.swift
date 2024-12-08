@@ -1,18 +1,30 @@
 import SwiftUI
 
 struct Tutorial: View {
-    @State private var isOverlayVisible: Bool = true // TutorialOverlayの表示状態を管理
+    @AppStorage("hasSeenTutorial") private var hasSeenTutorial: Bool = false
+    @State private var isOverlayVisible: Bool = false
 
     var body: some View {
         ZStack {
-            // メインのTutorial内容
+            // Main Tutorial Content
             Text("Hello, World!")
                 .font(.largeTitle)
                 .padding()
 
-            // オーバーレイ
+            // Overlay
             if isOverlayVisible {
                 TutorialOverlay(isVisible: $isOverlayVisible)
+            }
+        }
+        .onAppear {
+            if !hasSeenTutorial {
+                isOverlayVisible = true
+            }
+        }
+        .onChange(of: isOverlayVisible) { newValue in
+            if !newValue {
+                // Mark the tutorial as seen
+                hasSeenTutorial = true
             }
         }
     }
@@ -35,7 +47,7 @@ struct TutorialOverlay: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                // 閉じるボタン
+                // Close Button
                 HStack {
                     Spacer()
                     Button(action: {

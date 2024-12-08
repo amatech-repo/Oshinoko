@@ -17,10 +17,13 @@ struct HomeView: View {
     @State private var bookmarks: [Bookmark] = []
     @State private var searchQuery: String = "" // 検索クエリを追加
 
+    // チュートリアル表示状態を AppStorage で管理
+    @AppStorage("hasSeenTutorial") private var hasSeenTutorial: Bool = false
+    @State private var isTutorialVisible: Bool = false
+
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "")
     @ObservedObject var pinsViewModel: PinsViewModel
-    @State private var isTutorialVisible: Bool = true
 
     var body: some View {
         ZStack {
@@ -64,7 +67,7 @@ struct HomeView: View {
                     searchQuery: $searchQuery, onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
-                    } // 検索クエリをバインディング
+                    }
                 )
                 .frame(maxWidth: .infinity, maxHeight: 790)
                 .onAppear {
@@ -104,13 +107,15 @@ struct HomeView: View {
             }
         }
         .onAppear {
-            checkTutorialVisibility() // チュートリアル表示状態を確認
+            if !hasSeenTutorial {
+                isTutorialVisible = true
+            }
         }
-    }
-
-    private func checkTutorialVisibility() {
-        let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
-        isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+        .onChange(of: isTutorialVisible) { newValue in
+            if !newValue {
+                hasSeenTutorial = true // チュートリアルが閉じられたらフラグを更新
+            }
+        }
     }
 
     private func resetModalState() {
