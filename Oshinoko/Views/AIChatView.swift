@@ -18,7 +18,7 @@ struct AIChatView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text("Hello I am Gemini")
+                Text("Hello!! I'm Gemini")
                     .font(.title2)
                     .fontWeight(.bold)
                 Text("何かお手伝いすることはありますか？")
@@ -45,11 +45,11 @@ struct AIChatView: View {
                         generateRespons()
                     }){
                         Image(systemName: "arrow.up")
-                            .frame(width: 40, height: 40)
+                            .frame(width: 50, height: 50)
                             .background(Color.green)
                             .foregroundColor(.white)
                             .clipShape(Circle())
-                    }.padding()
+                    }.padding(.trailing,22)
                 }
             }
 
@@ -58,6 +58,7 @@ struct AIChatView: View {
                 ProgressView()
             }
         }
+        .glassmorphismBackground(colors: [Color(hex: "FFB3C1"), Color(hex: "FFD6A5")])
     }
 
     func generateRespons() {
@@ -79,3 +80,6 @@ struct AIChatView: View {
     }
 }
 
+//#Preview {
+//    AIChatView()
+//}

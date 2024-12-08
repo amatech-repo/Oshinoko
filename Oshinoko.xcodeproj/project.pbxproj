@@ -200,6 +200,7 @@
 			children = (
 				F85778222D04199200543AEE /* AddListAnimation */,
 				F857781B2D040F7D00543AEE /* ErrorAnimaiton */,
+				F857782F2D04514B00543AEE /* HoldAnimaition */,
 				3B5BB5312CF54F3100EE28C2 /* LoadingAnimation */,
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
 				3BAB302D2CE5C7C1009C368B /* Auth */,
@@ -351,6 +352,13 @@
 				F85778232D0419B600543AEE /* AddListAnimationView.swift */,
 			);
 			path = AddListAnimation;
+		F857782F2D04514B00543AEE /* HoldAnimaition */ = {
+			isa = PBXGroup;
+			children = (
+				F85778322D04518200543AEE /* hold.json */,
+				F85778302D04517000543AEE /* HoldAnimationView.swift */,
+			);
+			path = HoldAnimaition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,6 +485,7 @@
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
 				F857781D2D040F9000543AEE /* ErrorAnimation.json in Resources */,
 				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
+				F85778332D04518200543AEE /* hold.json in Resources */,
 				3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,6 +520,7 @@
 				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
 				F85778212D040FFD00543AEE /* ErrorView.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
+				F85778312D04517100543AEE /* HoldAnimationView.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
 				F85778282D041BC400543AEE /* AddListView.swift in Sources */,
 				3B5BB5332CF54F8000EE28C2 /* LoadingAnimationView.swift in Sources */,
