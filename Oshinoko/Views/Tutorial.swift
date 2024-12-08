@@ -1,10 +1,8 @@
 import SwiftUI
 
 struct Tutorial: View {
-    @State private var isOverlayVisible: Bool = {
-        // Check UserDefaults for the tutorial flag
-        !UserDefaults.standard.bool(forKey: "hasSeenTutorial")
-    }()
+    @AppStorage("hasSeenTutorial") private var hasSeenTutorial: Bool = false
+    @State private var isOverlayVisible: Bool = false
 
     var body: some View {
         ZStack {
@@ -18,10 +16,15 @@ struct Tutorial: View {
                 TutorialOverlay(isVisible: $isOverlayVisible)
             }
         }
+        .onAppear {
+            if !hasSeenTutorial {
+                isOverlayVisible = true
+            }
+        }
         .onChange(of: isOverlayVisible) { newValue in
             if !newValue {
                 // Mark the tutorial as seen
-                UserDefaults.standard.set(true, forKey: "hasSeenTutorial")
+                hasSeenTutorial = true
             }
         }
     }

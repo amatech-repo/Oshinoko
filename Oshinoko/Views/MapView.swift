@@ -120,6 +120,17 @@ struct MapView: UIViewRepresentable {
             }
         }
 
+        // MARK: - Overlay Renderer
+        @MainActor func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if let polyline = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(polyline: polyline)
+                renderer.strokeColor = UIColor.blue.withAlphaComponent(0.7) // 経路の色
+                renderer.lineWidth = 5 // 経路の幅
+                return renderer
+            }
+            return MKOverlayRenderer(overlay: overlay)
+        }
+
         // MARK: - Annotation View
         @MainActor func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             let identifier = "Pin"
