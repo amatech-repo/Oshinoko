@@ -4,6 +4,18 @@
 ## MIRATABI
 - 将来、行きたい旅行先をリスト化して管理するアプリ。テレビやSNSで気になる・行ってみたいと思ったお店や観光地をリスト化することで次の旅行への楽しみを増やしつつ、行き先を選びやすくしてくれます。地図上から行きたい場所をピンで指すことでリストに保存すると共に、近くにある他の行きたい場所が地図上で直感的にわかりやすく、旅行計画が建てやすくなります。他のユーザーと共有する機能やAIとの会話による提案機能でこれからの旅行をより楽しませてくれるでしょう。
 
+### デモ画像
+<img src = "https://github.com/user-attachments/assets/38b3be2d-3d64-4d9c-bd2c-206b8601e218" width = "200">
+<img src = "https://github.com/user-attachments/assets/e92961fe-4409-49d8-8460-088cabc85d90" width = "200">
+<img src = "https://github.com/user-attachments/assets/79589473-fb7f-42b9-9bd9-79c2830c63f5" width = "200">
+<img src = "https://github.com/user-attachments/assets/522bd275-3957-4a14-8494-278488fc289d" width = "200">
+<img src = "https://github.com/user-attachments/assets/71e1fbd1-16f4-4cef-9c8b-2a7056a7d704" width = "200">
+<img src = "https://github.com/user-attachments/assets/4d5a6f95-edf2-486c-a7eb-14789fb8fdfe" width = "200">
+<img src = "https://github.com/user-attachments/assets/2f962df0-dd71-4034-9245-bfe53b4353a4" width = "200">
+<img src = "https://github.com/user-attachments/assets/6dcca820-9682-436a-8023-dfebea095bb4" width = "200">
+
+
+
 ## リンク
 - [Oshinoko リポジトリ](https://github.com/orukahairuka/Oshinoko)
 
