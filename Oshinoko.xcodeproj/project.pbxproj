@@ -55,7 +55,12 @@
 		3BF751C02CE5F046007B17D8 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */; };
 		3BF751C22CE5F061007B17D8 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C12CE5F061007B17D8 /* ChatView.swift */; };
 		3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF751C42CE5F306007B17D8 /* ImagePicker.swift */; };
-
+		F857781D2D040F9000543AEE /* ErrorAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = F857781C2D040F9000543AEE /* ErrorAnimation.json */; };
+		F857781F2D040FA500543AEE /* ErrorAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F857781E2D040FA500543AEE /* ErrorAnimationView.swift */; };
+		F85778212D040FFD00543AEE /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778202D040FFD00543AEE /* ErrorView.swift */; };
+		F85778242D0419B600543AEE /* AddListAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778232D0419B600543AEE /* AddListAnimationView.swift */; };
+		F85778262D0419BF00543AEE /* AddList.json in Resources */ = {isa = PBXBuildFile; fileRef = F85778252D0419BF00543AEE /* AddList.json */; };
+		F85778282D041BC400543AEE /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85778272D041BC400543AEE /* AddListView.swift */; };
 		83C9540D2D04182900987E2B /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C9540C2D04182900987E2B /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +127,12 @@
 		3BF751BF2CE5F046007B17D8 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		3BF751C12CE5F061007B17D8 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		3BF751C42CE5F306007B17D8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		F857781C2D040F9000543AEE /* ErrorAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ErrorAnimation.json; sourceTree = "<group>"; };
+		F857781E2D040FA500543AEE /* ErrorAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAnimationView.swift; sourceTree = "<group>"; };
+		F85778202D040FFD00543AEE /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		F85778232D0419B600543AEE /* AddListAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListAnimationView.swift; sourceTree = "<group>"; };
+		F85778252D0419BF00543AEE /* AddList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AddList.json; sourceTree = "<group>"; };
+		F85778272D041BC400543AEE /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		83C9540C2D04182900987E2B /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,6 +198,8 @@
 		3B2E30302CE4DB7D001F3553 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F85778222D04199200543AEE /* AddListAnimation */,
+				F857781B2D040F7D00543AEE /* ErrorAnimaiton */,
 				F857782F2D04514B00543AEE /* HoldAnimaition */,
 				3B5BB5312CF54F3100EE28C2 /* LoadingAnimation */,
 				3B6C95AF2CE70A1D00097366 /* TourCard */,
@@ -245,6 +258,8 @@
 			children = (
 				3BAB302E2CE5C7D8009C368B /* LoginView.swift */,
 				3BAB30302CE5C7F3009C368B /* SignUpView.swift */,
+				F85778202D040FFD00543AEE /* ErrorView.swift */,
+				F85778272D041BC400543AEE /* AddListView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -321,6 +336,22 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		F857781B2D040F7D00543AEE /* ErrorAnimaiton */ = {
+			isa = PBXGroup;
+			children = (
+				F857781C2D040F9000543AEE /* ErrorAnimation.json */,
+				F857781E2D040FA500543AEE /* ErrorAnimationView.swift */,
+			);
+			path = ErrorAnimaiton;
+			sourceTree = "<group>";
+		};
+		F85778222D04199200543AEE /* AddListAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				F85778252D0419BF00543AEE /* AddList.json */,
+				F85778232D0419B600543AEE /* AddListAnimationView.swift */,
+			);
+			path = AddListAnimation;
 		F857782F2D04514B00543AEE /* HoldAnimaition */ = {
 			isa = PBXGroup;
 			children = (
@@ -449,8 +480,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BC2A0FD2CE4CC670008DDA9 /* Preview Assets.xcassets in Resources */,
+				F85778262D0419BF00543AEE /* AddList.json in Resources */,
 				3B585CA62D03F1C0000E8E6B /* GenerativeAI-Info.plist in Resources */,
 				3BC2A0FA2CE4CC670008DDA9 /* Assets.xcassets in Resources */,
+				F857781D2D040F9000543AEE /* ErrorAnimation.json in Resources */,
 				3B5BB5302CF54F2600EE28C2 /* LoadingAnimation.json in Resources */,
 				F85778332D04518200543AEE /* hold.json in Resources */,
 				3BAB30282CE5C4B2009C368B /* GoogleService-Info.plist in Resources */,
@@ -485,9 +518,11 @@
 				3B6C95B32CE7257100097366 /* GeocodingViewModel.swift in Sources */,
 				3BB90DF22CF2FA0A000E0208 /* LoadingView.swift in Sources */,
 				3B1194F62CEE027700FBC27F /* BookmarksTab.swift in Sources */,
+				F85778212D040FFD00543AEE /* ErrorView.swift in Sources */,
 				3BF751C52CE5F306007B17D8 /* ImagePicker.swift in Sources */,
 				F85778312D04517100543AEE /* HoldAnimationView.swift in Sources */,
 				3BAB302F2CE5C7D8009C368B /* LoginView.swift in Sources */,
+				F85778282D041BC400543AEE /* AddListView.swift in Sources */,
 				3B5BB5332CF54F8000EE28C2 /* LoadingAnimationView.swift in Sources */,
 				3B1194EC2CEDF37600FBC27F /* BookmarksDataModel.xcdatamodeld in Sources */,
 				3B6C95A52CE6E0CC00097366 /* TourCardModel.swift in Sources */,
@@ -497,6 +532,7 @@
 				3BAB302C2CE5C705009C368B /* AuthViewModel.swift in Sources */,
 				3BAB30312CE5C7F3009C368B /* SignUpView.swift in Sources */,
 				3B6C95AC2CE709FA00097366 /* TourCardView.swift in Sources */,
+				F85778242D0419B600543AEE /* AddListAnimationView.swift in Sources */,
 				3B6C95A72CE7073D00097366 /* TourCardViewModel.swift in Sources */,
 				3BE070222CE5E9FD0032838F /* UserModel.swift in Sources */,
 				3B56D0A72CE5A04B001BF220 /* MapView.swift in Sources */,
@@ -513,6 +549,7 @@
 				3B5F9DDC2CE61D1C0033289D /* UIImageExtension.swift in Sources */,
 				3B1194E92CEDF35300FBC27F /* CoreDataManager.swift in Sources */,
 				3B585CAA2D03F278000E8E6B /* AIChatView.swift in Sources */,
+				F857781F2D040FA500543AEE /* ErrorAnimationView.swift in Sources */,
 				3BE0701E2CE5E9BF0032838F /* ChatModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
