@@ -9,31 +9,35 @@ import SwiftUI
 import Lottie
 
 struct HoldAnimationView: UIViewRepresentable {
-    var lottieFile : String
+
+    var lottieFile: String
     var loopMode: LottieLoopMode = .loop
-    var speed: CGFloat = 0.5
-    
+    var animationView = LottieAnimationView()
+
     func makeUIView(context: UIViewRepresentableContext<HoldAnimationView>) -> UIView {
-        let view = UIView(frame: .zero)
-        let animationView = LottieAnimationView()
-        
+        let view = UIView()
+
         animationView.animation = LottieAnimation.named(lottieFile)
-            // 比率
-            animationView.contentMode = .scaleAspectFit
-            // ループモード
-            animationView.loopMode = loopMode
-            animationView.play()
-        
-            animationView.animationSpeed = speed
-        
-            animationView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(animationView)
-            NSLayoutConstraint.activate([
-                animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
-                animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
-            ])
-            return view
-        }
-        func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<HoldAnimationView>) {
-        }
+        animationView.contentMode = .scaleAspectFill
+        animationView.loopMode = loopMode
+
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+
+        NSLayoutConstraint.activate([
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor)
+        ])
+
+        // アニメーションを初回表示時に再生する
+        animationView.play()
+
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<HoldAnimationView>) {
+        // アニメーションを必要に応じて再生
+        animationView.play()
+    }
 }
+
