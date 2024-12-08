@@ -15,7 +15,7 @@ struct HomeView: View {
     @State private var isShowingInformationModal = false
     @State private var selection = 1
     @State private var bookmarks: [Bookmark] = []
-
+    @State private var searchQuery: String = "" // 検索クエリを追加
 
     // MARK: - Observed ViewModels
     @StateObject private var chatViewModel = ChatViewModel(pinID: "")
@@ -61,10 +61,10 @@ struct HomeView: View {
                     selectedPin: $selectedPin,
                     newPinCoordinate: $newPinCoordinate,
                     isShowingModal: $isShowingInformationModal,
-                    onLongPress: { coordinate in
+                    searchQuery: $searchQuery, onLongPress: { coordinate in
                         newPinCoordinate = coordinate
                         isShowingInformationModal = true
-                    }
+                    } // 検索クエリをバインディング
                 )
                 .frame(maxWidth: .infinity, maxHeight: 790)
                 .onAppear {
@@ -109,9 +109,10 @@ struct HomeView: View {
     }
 
     private func checkTutorialVisibility() {
-           let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
-           isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
-       }
+        let hasSeenTutorial = UserDefaults.standard.bool(forKey: "hasSeenTutorial")
+        isTutorialVisible = !hasSeenTutorial // チュートリアルを未表示の場合のみ表示
+    }
+
     private func resetModalState() {
         newPinCoordinate = nil
         isShowingInformationModal = false

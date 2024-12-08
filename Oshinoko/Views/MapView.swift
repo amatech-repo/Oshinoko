@@ -7,22 +7,49 @@ struct MapView: UIViewRepresentable {
     @Binding var selectedPin: Pin?
     @Binding var newPinCoordinate: CLLocationCoordinate2D?
     @Binding var isShowingModal: Bool
+    @Binding var searchQuery: String
     let onLongPress: (CLLocationCoordinate2D) -> Void
 
     // MARK: - UIViewRepresentable Methods
+    func makeUIView(context: Context) -> UIView {
+        let containerView = UIView()
 
-    func makeUIView(context: Context) -> MKMapView {
+        // MapView
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         mapView.addGestureRecognizer(createLongPressGesture(context: context))
-        return mapView
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(mapView)
+
+        // SearchBar
+        let searchBar = UISearchBar()
+        searchBar.delegate = context.coordinator
+        searchBar.placeholder = "場所を検索"
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(searchBar)
+
+        // Layout
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: containerView.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            mapView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            mapView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            mapView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            mapView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        context.coordinator.mapView = mapView
+        return containerView
     }
 
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        updateAnnotations(on: uiView)
-        updateOverlays(on: uiView)
+    func updateUIView(_ uiView: UIView, context: Context) {
+        if let mapView = context.coordinator.mapView {
+            updateAnnotations(on: mapView)
+            updateOverlays(on: mapView)
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -30,7 +57,6 @@ struct MapView: UIViewRepresentable {
     }
 
     // MARK: - Helpers
-
     private func createLongPressGesture(context: Context) -> UILongPressGestureRecognizer {
         UILongPressGestureRecognizer(
             target: context.coordinator,
@@ -40,14 +66,13 @@ struct MapView: UIViewRepresentable {
 
     private func updateAnnotations(on mapView: MKMapView) {
         let currentAnnotations = mapView.annotations.compactMap { $0 as? MKPointAnnotation }
-        let newAnnotations = pinsViewModel.pins.map { pin -> MKPointAnnotation in
+        let newAnnotations = pinsViewModel.pins.map { pin in
             let annotation = MKPointAnnotation()
             annotation.coordinate = pin.coordinate.toCLLocationCoordinate2D()
             annotation.title = pin.metadata.title
             return annotation
         }
 
-        // 必要な差分のみ適用
         let currentSet = Set(currentAnnotations.map { $0.coordinate })
         let newSet = Set(newAnnotations.map { $0.coordinate })
 
@@ -58,7 +83,6 @@ struct MapView: UIViewRepresentable {
         mapView.addAnnotations(toAdd)
     }
 
-
     private func updateOverlays(on mapView: MKMapView) {
         mapView.removeOverlays(mapView.overlays)
         if let route = pinsViewModel.currentRoute, pinsViewModel.isRouteDisplayed {
@@ -66,15 +90,11 @@ struct MapView: UIViewRepresentable {
         }
     }
 
-    class ImageCache {
-        static let shared = NSCache<NSString, UIImage>()
-    }
-
-
     // MARK: - Coordinator
-
-    class Coordinator: NSObject, MKMapViewDelegate {
+    class Coordinator: NSObject, MKMapViewDelegate, UISearchBarDelegate {
         var parent: MapView
+        weak var mapView: MKMapView?
+        private var localSearch: MKLocalSearch?
 
         init(_ parent: MapView) {
             self.parent = parent
@@ -82,16 +102,14 @@ struct MapView: UIViewRepresentable {
 
         // MARK: - Long Press Handling
         @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
-            guard gesture.state == .began else { return }
-            if let mapView = gesture.view as? MKMapView {
-                let coordinate = mapView.convert(gesture.location(in: mapView), toCoordinateFrom: mapView)
-                parent.newPinCoordinate = coordinate
-                parent.isShowingModal = true
-                parent.onLongPress(coordinate) // 必要に応じて外部処理を呼び出し
-            }
+            guard gesture.state == .began, let mapView = gesture.view as? MKMapView else { return }
+            let coordinate = mapView.convert(gesture.location(in: mapView), toCoordinateFrom: mapView)
+            parent.newPinCoordinate = coordinate
+            parent.isShowingModal = true
+            parent.onLongPress(coordinate)
         }
 
-        // MARK: - Pin Selection Handling
+        // MARK: - Pin Selection
         @MainActor func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             guard let annotation = view.annotation as? MKPointAnnotation else { return }
             if let pin = parent.pinsViewModel.pins.first(where: {
@@ -101,6 +119,7 @@ struct MapView: UIViewRepresentable {
             }
         }
 
+        // MARK: - Annotation View
         @MainActor func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             let identifier = "Pin"
             var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
@@ -116,11 +135,9 @@ struct MapView: UIViewRepresentable {
                 $0.coordinate.latitude == annotation.coordinate.latitude &&
                 $0.coordinate.longitude == annotation.coordinate.longitude
             }), let iconURLString = pin.iconURL, let iconURL = URL(string: iconURLString) {
-                // キャッシュチェック
                 if let cachedImage = ImageCache.shared.object(forKey: NSString(string: iconURLString)) {
                     view?.image = cachedImage
                 } else {
-                    // ダウンロードとキャッシュ保存
                     Task {
                         do {
                             let (data, _) = try await URLSession.shared.data(from: iconURL)
@@ -141,18 +158,72 @@ struct MapView: UIViewRepresentable {
             return view
         }
 
-        func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-            let renderer = UIGraphicsImageRenderer(size: targetSize)
-            return renderer.image { _ in
-                image.draw(in: CGRect(origin: .zero, size: targetSize))
+        // MARK: - Search Handling
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            guard let query = searchBar.text, !query.isEmpty else {
+                print("検索クエリが空です")
+                return
+            }
+            print("検索開始: \(query)")
+            performSearch(query: query)
+        }
+
+        private func performSearch(query: String) {
+            guard let mapView = mapView else {
+                print("MapViewが見つかりません")
+                return
+            }
+
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = query
+            request.region = mapView.region
+
+            localSearch?.cancel()
+            localSearch = MKLocalSearch(request: request)
+            localSearch?.start { [weak self] response, error in
+                guard let self = self else { return }
+
+                if let error = error {
+                    print("検索エラー: \(error.localizedDescription)")
+                    return
+                }
+
+                guard let response = response else {
+                    print("検索結果がありません")
+                    return
+                }
+
+                print("検索結果: \(response.mapItems.count) 件")
+                self.updateMapWithSearchResults(response: response)
             }
         }
 
-        func makeCircularImage(image: UIImage, size: CGSize) -> UIImage {
-            // 比率を維持したリサイズ
-            let resizedImage = resizeImageWithAspectFit(image: image, targetSize: size)
+        private func updateMapWithSearchResults(response: MKLocalSearch.Response) {
+            guard let mapView = mapView else { return }
+            mapView.removeAnnotations(mapView.annotations)
 
-            // 丸形に加工
+            let annotations = response.mapItems.map { item -> MKPointAnnotation in
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = item.placemark.coordinate
+                annotation.title = item.name
+                annotation.subtitle = item.placemark.title // 詳細情報
+                return annotation
+            }
+
+            mapView.addAnnotations(annotations)
+
+            if let firstItem = response.mapItems.first {
+                let region = MKCoordinateRegion(
+                    center: firstItem.placemark.coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                )
+                mapView.setRegion(region, animated: true)
+            }
+        }
+
+        // MARK: - Image Helpers
+        func makeCircularImage(image: UIImage, size: CGSize) -> UIImage {
+            let resizedImage = resizeImageWithAspectFit(image: image, targetSize: size)
             let diameter = min(size.width, size.height)
             let bounds = CGRect(x: 0, y: 0, width: diameter, height: diameter)
 
@@ -182,26 +253,18 @@ struct MapView: UIViewRepresentable {
 
             return resizedImage ?? image
         }
-
-
-
-
-
-        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            if let polyline = overlay as? MKPolyline {
-                let renderer = MKPolylineRenderer(polyline: polyline)
-                renderer.strokeColor = .blue
-                renderer.lineWidth = 4
-                return renderer
-            }
-            return MKOverlayRenderer(overlay: overlay)
-        }
     }
 }
 
+// MARK: - ImageCache
+class ImageCache {
+    static let shared = NSCache<NSString, UIImage>()
+}
+
+// MARK: - Extensions
 extension Coordinate {
     func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
+        CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
     }
 }
 
