@@ -27,6 +27,7 @@ struct MapView: UIViewRepresentable {
         let searchBar = UISearchBar()
         searchBar.delegate = context.coordinator
         searchBar.placeholder = "場所を検索"
+        searchBar.showsCancelButton = true // キャンセルボタンを表示
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(searchBar)
 
@@ -165,8 +166,16 @@ struct MapView: UIViewRepresentable {
                 return
             }
             print("検索開始: \(query)")
+            searchBar.resignFirstResponder() // キーボードを閉じる
             performSearch(query: query)
         }
+
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.resignFirstResponder() // キーボードを閉じる
+            searchBar.text = nil // 検索クエリをクリア
+        }
+
+
 
         private func performSearch(query: String) {
             guard let mapView = mapView else {
