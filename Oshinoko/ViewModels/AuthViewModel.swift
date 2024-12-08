@@ -50,38 +50,31 @@ class AuthViewModel: ObservableObject {
     }
 
 
-
-    // MARK: - ログイン
-    func logIn() async {
-        isProcessing = true // 処理開始
-        defer { isProcessing = false } // 処理終了後に解除
-
-        do {
-            let result = try await auth.signIn(withEmail: email, password: password)
-            print("Logged in user: \(result.user.uid)")
-            isAuthenticated = true
-            userID = result.user.uid
-            saveUserIDToUserDefaults(userID: result.user.uid) // 保存
-
-            // Firestoreからユーザー情報を取得
-            if let fetchedData = try await fetchUserData(for: result.user.uid) {
-                icon = fetchedData["iconURL"] as? String
-                if let iconURL = icon {
-                    saveIconToUserDefaults(iconURL: iconURL) // ローカル保存
-                }
-                print("⭐️loginユーザーのアイコンURL: \(icon ?? "なし")")
-            }
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
+// MARK: - 新規登録
     // MARK: - 新規登録
     func signUp() async {
         isProcessing = true // 処理開始
         defer { isProcessing = false } // 処理終了後に解除
 
+        // プロフィール画像の確認
+        guard let _ = selectedImage else {
+            errorMessage = "プロフィール画像を選択してください。"
+            print("⚠️ プロフィール画像が選択されていません")
+            return
+        }
+
         do {
+            // Firestoreに同じメールが存在するか確認
+            let existingUsers = try await db.collection("users")
+                .whereField("email", isEqualTo: email)
+                .getDocuments()
+
+            if !existingUsers.documents.isEmpty {
+                errorMessage = "このメールアドレスはすでに登録されています。"
+                print("⚠️ メールアドレスが重複しています")
+                return
+            }
+
             // Firebase Authenticationでユーザー作成
             let result = try await auth.createUser(withEmail: email, password: password)
             let userID = result.user.uid
@@ -109,6 +102,43 @@ class AuthViewModel: ObservableObject {
             print("サインアップエラー: \(errorMessage)")
         }
     }
+
+    // MARK: - ログイン
+    func logIn() async {
+        isProcessing = true // 処理開始
+        defer { isProcessing = false } // 処理終了後に解除
+
+        do {
+            // Firestoreから該当するメールアドレスのユーザーを確認
+            let userDocs = try await db.collection("users")
+                .whereField("email", isEqualTo: email)
+                .getDocuments()
+
+            guard let userData = userDocs.documents.first else {
+                errorMessage = "メールアドレスが登録されていません。"
+                print("⚠️ メールアドレスが見つかりません")
+                return
+            }
+
+            let result = try await auth.signIn(withEmail: email, password: password)
+            print("Logged in user: \(result.user.uid)")
+            isAuthenticated = true
+            userID = result.user.uid
+            saveUserIDToUserDefaults(userID: result.user.uid) // 保存
+
+            // Firestoreからユーザー情報を取得
+            if let fetchedData = try await fetchUserData(for: result.user.uid) {
+                icon = fetchedData["iconURL"] as? String
+                if let iconURL = icon {
+                    saveIconToUserDefaults(iconURL: iconURL) // ローカル保存
+                }
+                print("⭐️loginユーザーのアイコンURL: \(icon ?? "なし")")
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
 
     func loadIconFromUserDefaults() {
         if let savedIconURL = getIconFromUserDefaults() {

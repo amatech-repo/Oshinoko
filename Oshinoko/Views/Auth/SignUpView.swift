@@ -42,7 +42,12 @@ struct SignUpView: View {
                     backgroundColor: authViewModel.isProcessing ? .gray : Color(hex: "F19ED2"), // 処理中はグレー
                     opacity: authViewModel.isProcessing ? 0.5 : 0.7 // 処理中は半透明
                 )
-                .disabled(authViewModel.isProcessing) // 処理中は無効化
+                .disabled(
+                    authViewModel.email.isEmpty ||
+                    authViewModel.password.isEmpty ||
+                    authViewModel.selectedImage == nil ||
+                    authViewModel.isProcessing
+                ) // 条件を満たさない場合、無効化
 
                 Button(action: {
                     appState.screenState = .login
