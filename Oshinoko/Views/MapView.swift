@@ -7,22 +7,34 @@ struct MapView: UIViewRepresentable {
     @Binding var selectedPin: Pin?
     @Binding var newPinCoordinate: CLLocationCoordinate2D?
     @Binding var isShowingModal: Bool
+    @Binding var selectedCoordinate: CLLocationCoordinate2D? // 選択された座標
+    @Binding var shouldZoom: Bool
     let onLongPress: (CLLocationCoordinate2D) -> Void
 
     // MARK: - UIViewRepresentable Methods
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
+        mapView.addGestureRecognizer(createLongPressGesture(context: context))
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
-        mapView.addGestureRecognizer(createLongPressGesture(context: context))
         return mapView
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
         updateAnnotations(on: uiView)
         updateOverlays(on: uiView)
+        if let selectedCoordinate = selectedCoordinate {
+            let region = MKCoordinateRegion(
+                center: selectedCoordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            )
+            uiView.setRegion(region, animated: true)
+            DispatchQueue.main.async {
+                shouldZoom = false // ズーム完了後にフラグをリセット
+            }
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -78,6 +90,13 @@ struct MapView: UIViewRepresentable {
 
         init(_ parent: MapView) {
             self.parent = parent
+        }
+
+        func resetZoomFlag() {
+            // フラグをメインスレッド上でリセット
+            DispatchQueue.main.async {
+                self.parent.shouldZoom = false
+            }
         }
 
         // MARK: - Long Press Handling
