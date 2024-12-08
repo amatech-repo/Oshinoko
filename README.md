@@ -30,13 +30,13 @@
 - **iOS**: 17.5
 
 ## 使用技術
--Swift
--Lottie
--Google Places 
--Gemini
--Alamofire
--Firestore
--Github
+- Swift
+- Lottie
+- Google Places 
+- Gemini
+- Alamofire
+- Firestore
+- Github
 
 ## 実行手順
 1. リポジトリをクローンします:
