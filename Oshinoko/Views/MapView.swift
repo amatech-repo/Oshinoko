@@ -85,7 +85,7 @@ struct MapView: UIViewRepresentable {
     }
 
     private func updateOverlays(on mapView: MKMapView) {
-        mapView.removeOverlays(mapView.overlays)
+        mapView.removeOverlays(mapView.overlays.filter { $0 is MKPolyline })
         if let route = pinsViewModel.currentRoute, pinsViewModel.isRouteDisplayed {
             mapView.addOverlay(route.polyline)
         }
@@ -126,6 +126,7 @@ struct MapView: UIViewRepresentable {
                 let renderer = MKPolylineRenderer(polyline: polyline)
                 renderer.strokeColor = UIColor.blue.withAlphaComponent(0.7) // 経路の色
                 renderer.lineWidth = 5 // 経路の幅
+                renderer.lineDashPattern = [NSNumber(value: 2), NSNumber(value: 4)] // 点線スタイル（任意）
                 return renderer
             }
             return MKOverlayRenderer(overlay: overlay)
@@ -172,28 +173,18 @@ struct MapView: UIViewRepresentable {
 
         // MARK: - Search Handling
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            guard let query = searchBar.text, !query.isEmpty else {
-                print("検索クエリが空です")
-                return
-            }
-            print("検索開始: \(query)")
-            searchBar.resignFirstResponder() // キーボードを閉じる
+            guard let query = searchBar.text, !query.isEmpty else { return }
+            searchBar.resignFirstResponder()
             performSearch(query: query)
         }
 
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.resignFirstResponder() // キーボードを閉じる
-            searchBar.text = nil // 検索クエリをクリア
+            searchBar.resignFirstResponder()
+            searchBar.text = nil
         }
 
-
-
         private func performSearch(query: String) {
-            guard let mapView = mapView else {
-                print("MapViewが見つかりません")
-                return
-            }
-
+            guard let mapView = mapView else { return }
             let request = MKLocalSearch.Request()
             request.naturalLanguageQuery = query
             request.region = mapView.region
@@ -201,43 +192,31 @@ struct MapView: UIViewRepresentable {
             localSearch?.cancel()
             localSearch = MKLocalSearch(request: request)
             localSearch?.start { [weak self] response, error in
-                guard let self = self else { return }
-
                 if let error = error {
                     print("検索エラー: \(error.localizedDescription)")
                     return
                 }
 
-                guard let response = response else {
-                    print("検索結果がありません")
-                    return
+                guard let response = response else { return }
+
+                let annotations = response.mapItems.map { item -> MKPointAnnotation in
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = item.placemark.coordinate
+                    annotation.title = item.name
+                    annotation.subtitle = item.placemark.title
+                    return annotation
                 }
 
-                print("検索結果: \(response.mapItems.count) 件")
-                self.updateMapWithSearchResults(response: response)
-            }
-        }
+                mapView.removeAnnotations(mapView.annotations)
+                mapView.addAnnotations(annotations)
 
-        private func updateMapWithSearchResults(response: MKLocalSearch.Response) {
-            guard let mapView = mapView else { return }
-            mapView.removeAnnotations(mapView.annotations)
-
-            let annotations = response.mapItems.map { item -> MKPointAnnotation in
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = item.placemark.coordinate
-                annotation.title = item.name
-                annotation.subtitle = item.placemark.title // 詳細情報
-                return annotation
-            }
-
-            mapView.addAnnotations(annotations)
-
-            if let firstItem = response.mapItems.first {
-                let region = MKCoordinateRegion(
-                    center: firstItem.placemark.coordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                )
-                mapView.setRegion(region, animated: true)
+                if let firstItem = response.mapItems.first {
+                    let region = MKCoordinateRegion(
+                        center: firstItem.placemark.coordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                    )
+                    mapView.setRegion(region, animated: true)
+                }
             }
         }
 
